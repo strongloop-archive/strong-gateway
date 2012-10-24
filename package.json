@@ -11,9 +11,7 @@
     "passport-http-bearer": "0.2.x",
     "passport-oauth2-client-password": "0.1.x",
     "connect-ensure-login": "0.1.x",
-    "restify": "1.4.x",
     "mongoose": "3.3.x",
-    "node-static": "0.6.x",
     "http-proxy": "0.8.4"
   }
 }
