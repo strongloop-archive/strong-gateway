@@ -101,6 +101,5 @@ passport.use(new BearerStrategy(
  * Authenticate the request using bearer token
  */
 exports.authenticate = function(scope, req, res, next) {
-  passport.authenticate('bearer',
-                        {session: false, scope: scope})(req, res, next); 
+  passport.authenticate('bearer', {session: false, scope: scope}) (req, res, next); 
 };

@@ -11,6 +11,7 @@ var express = require('express'),
   user = require('./user'), 
   proxy = require('./proxy'), 
   auth = require('./auth'), // Passport configuration
+  stats = require('./stats'), // Statsd instrumentation 
   sslCert = require('./private/ssl_cert')
 
 
@@ -47,11 +48,18 @@ app.use(function(req, res, next) {
 
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(app.router);
 app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 
+stats.instrument.count_success(auth, "authenticate", "node-api-platform.auth.counter");
+
+// Configure the oAuth access token authentication hook
 app.use('/protected', function(req, res, next) {
-  auth.authenticate('s1', req, res, next); }); 
+    console.log("Checking oAuth access token: " + req.path);
+    auth.authenticate('s1', req, res, next); 
+}); 
+
+// IMPORTANT: The router has to come after the oAuth2 access token check
+app.use(app.router);
 
 app.get('/', site.index);
 app.get('/login', site.loginForm);
