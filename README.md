@@ -1,3 +1,13 @@
+A REST API platform for Node.js
+===============================
+
+* oAuth 2.0 server
+* API proxy
+* API mediation
+* API explorer
+* API documentation
+* API metrics
+
 MongoDB backed oAuth 2.0 server
 ==============================
 
