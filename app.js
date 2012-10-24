@@ -1,16 +1,17 @@
 /**
  * Module dependencies.
  */
-var express = require('express')
-  , passport = require('passport')
-  , util = require('util')
-  , http = require('http')
-  , https = require('https') 
-  , site = require('./site')
-  , oauth2 = require('./oauth2')
-  , user = require('./user')
-  , proxy = require('./proxy')
-  , sslCert = require('./private/ssl_cert')
+var express = require('express'), 
+  passport = require('passport'), 
+  util = require('util'), 
+  http = require('http'), 
+  https = require('https'), 
+  site = require('./site'), 
+  oauth2 = require('./oauth2'), 
+  user = require('./user'), 
+  proxy = require('./proxy'), 
+  auth = require('./auth'), // Passport configuration
+  sslCert = require('./private/ssl_cert')
 
 
 var options = {
@@ -25,12 +26,13 @@ var app = express();
 app.set('view engine', 'ejs');
 app.use(express.logger());
 
-// Configure the proxy before the bodyParser
-// See https://github.com/nodejitsu/node-http-proxy/issues/180
-app.use('/proxy', proxy.route);
 
 app.use(express.cookieParser());
-app.use(express.bodyParser());
+
+app.use('/oauth', express.bodyParser());
+app.use('/dialog', express.bodyParser());
+app.use('/login', express.bodyParser());
+
 app.use(express.session({ secret: 'keyboard cat' }));
 
 /*
@@ -48,28 +50,33 @@ app.use(passport.session());
 app.use(app.router);
 app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 
-// Passport configuration
-require('./auth');
-
 app.use('/protected', function(req, res, next) {
-  passport.authenticate('bearer', 
-                        {session: false, scope: 's1'})(req, res, next); }); 
+  auth.authenticate('s1', req, res, next); }); 
 
 app.get('/', site.index);
 app.get('/login', site.loginForm);
 app.post('/login', site.login);
 app.get('/logout', site.logout);
 app.get('/account', site.account);
-
-app.get('/dialog/authorize', oauth2.authorization);
-app.post('/dialog/authorize/decision', oauth2.decision);
-app.post('/oauth/token', oauth2.token);
-
 app.get('/api/userinfo', user.info);
 
-app.get('/callback', site.callbackPage);
+app.post('/oauth/token', oauth2.token);
+app.get('/oauth/dialog/auth', oauth2.authorization);
+app.post('/oauth/dialog/decision', oauth2.decision);
+app.get('/oauth/dialog/callback', site.callbackPage);
 
-// app.listen(3000);
+// Keep the following mapping so that oautho2rize is happy where the path is hard-coded
+app.get('/dialog/authorize', oauth2.authorization);
+app.post('/dialog/authorize/decision', oauth2.decision);
+
+// Configure the proxy before the bodyParser
+// See https://github.com/nodejitsu/node-http-proxy/issues/180
+app.use('/proxy', proxy.route);
+
+app.get('/protected/secret.html', function(req, res, next) {
+  res.render('secret');
+});
+
 http.createServer(app).listen(9080);
 console.log("http://localhost:9080");
 https.createServer(options, app).listen(9443);

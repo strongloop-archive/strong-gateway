@@ -42,13 +42,22 @@ Please note it will create the dummy user: bob/secret and dummy client: abc123/s
 
 Now the you can start to explore oAuth 2.0 authorization and token endpoints at:
 
-<http://localhost:9080/dialog/authorize>
-<http://localhost:9080/token>
+<http://localhost:9080/oauth/dialog/auth>
+<http://localhost:9080/oauth/token>
 
 or 
-<https://localhost:9443/dialog/authorize>
-<https://localhost:9443/token>
+<https://localhost:9443/oauth/dialog/auth>
+<https://localhost:9443/oauth/token>
 
+Step 1: Get the oAuth 2.0 access token using the following url.
+
+<http://localhost:9080/oauth/dialog/auth?response_type=token&client_id=abc123&client_secret=ssh-secret&scope=s1&redirect_uri=http://localhost:9080/oauth/dialog/callback>
+
+Use "bob/secret" as the login and approve the requet by click "Allow".
+
+Copy the access_token and try to access the protected resouce at:
+
+<http://localhost:9080/protected/secret.html?access_token=...>
 
 Customize the configurations
 ============================
