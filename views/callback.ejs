@@ -1,0 +1,39 @@
+<html>
+<head>
+<title>Default oAuth 2.0 callback page</title>
+<script>
+	function displayGrant() {
+		var query = location.search;
+		var parameters = [];
+
+		if (query != null && query != "") {
+			parameters = query.substring(1).split('&');
+		}
+
+		if (parameters.length == 0) {
+			if (window.location.hash.length != 0) {
+				parameters = location.hash.substring(1).split('&');
+			}
+		}
+		var list = "<ul>";
+		for (i = 0; i < parameters.length; i++) {
+			var nv = parameters[i].split('=');
+			if ("code" == nv[0] || "access_token" == nv[0]) {
+				list += "<li><strong>" + (nv[0] || "") + ": " + (nv[1] || "")
+						+ "</strong></li>";
+			} else {
+				list += "<li>" + (nv[0] || "") + ": " + (nv[1] || "") + "</li>";
+			}
+		}
+		list += "</ul>";
+		document.getElementById("params").innerHTML = list;
+	}
+</script>
+</head>
+<body onload='displayGrant();'>
+	<h2>An oAuth 2.0 grant is received from the redirection URL. You
+		can copy and paste the access_token to access the protected resources.</h2>
+	<div id='params' />
+
+</body>
+</html>
