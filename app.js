@@ -50,7 +50,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 
-stats.instrument.count_success(auth, "authenticate", "node-api-platform.auth.counter");
+if(stats.instrument) {
+    stats.instrument.count_success(auth, "authenticate", "node-api-platform.auth.counter");
+}
 
 // Configure the oAuth access token authentication hook
 app.use('/protected', function(req, res, next) {

@@ -1,6 +1,10 @@
 {
   "name": "node-api-platform",
-  "version": "0.0.0",
+  "version": "0.1.0",
+  "repository" : { 
+    "type" : "git", 
+    "url" : "https://github.com/enjoyjava/node-api-platform"
+  },
   "dependencies": {
     "express": "3.x.x",
     "ejs": "0.8.x",
@@ -13,7 +17,10 @@
     "connect-ensure-login": "0.1.x",
     "mongoose": "3.3.x",
     "http-proxy": "0.8.4",
-    "statsd": "0.5.0",
     "node-statsd-instrument": "0.0.1"
-  }
+  },
+  "optionalDependencies" : {
+    "statsd": "0.5.0"
+  },
+  "scripts": {"start": "node app.js"},
 }
