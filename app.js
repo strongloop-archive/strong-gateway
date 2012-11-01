@@ -79,6 +79,12 @@ app.get('/oauth/dialog/callback', site.callbackPage);
 app.get('/dialog/authorize', oauth2.authorization);
 app.post('/dialog/authorize/decision', oauth2.decision);
 
+app.get('/oauth/dialog/decision', function(req, res) {
+  res.render('dialog', { transactionID: req.oauth2.transactionID, 
+                         user: req.user, 
+                         client: req.oauth2.client });
+});
+
 // Configure the proxy before the bodyParser
 // See https://github.com/nodejitsu/node-http-proxy/issues/180
 app.use('/proxy', proxy.route);

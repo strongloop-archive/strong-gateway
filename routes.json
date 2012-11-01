@@ -1,6 +1,5 @@
 {
     "router": {
-        "localhost/1": "www.google.com",
-        "localhost/2": "nodejs.org"
+        "localhost/rest": "http://localhost:3001/rest"
     }
 }
