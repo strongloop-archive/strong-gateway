@@ -1,0 +1,10 @@
+[
+    {
+        "basePath": "/protected",
+        "resources": [
+            {"path": "/rest",
+             "method": "*",
+             "scopes": ["s1", "s2"]}
+        ]  
+    }
+]

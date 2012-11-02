@@ -6,6 +6,7 @@ var express = require('express'),
   util = require('util'), 
   http = require('http'), 
   https = require('https'), 
+  fs = require('fs'), 
   site = require('./site'), 
   oauth2 = require('./oauth2'), 
   user = require('./user'), 
@@ -54,11 +55,31 @@ if(stats.instrument) {
     stats.instrument.count_success(auth, "authenticate", "node-api-platform.auth.counter");
 }
 
+var protectedResources = JSON.parse(fs.readFileSync('./resources.json'));
+
+for (var i = 0; i < protectedResources.length; i++) { 
+    var protectedResource = protectedResources[i];
+    console.log("Registering protected resource: " + JSON.stringify(protectedResource));
+
 // Configure the oAuth access token authentication hook
-app.use('/protected', function(req, res, next) {
+app.use(protectedResource.basePath, function(req, res, next) {
     console.log("Checking oAuth access token: " + req.path);
-    auth.authenticate('s1', req, res, next); 
+    var scopes = [];
+    for(var j=0; j<protectedResource.resources.length; j++) {
+       var resource = protectedResource.resources[j];
+       if(req.path.indexOf(resource.path) == 0 ) {
+           console.log("Protected resource: " + JSON.stringify(resource));
+           scopes = resource.scopes;
+       }
+    }
+    if(scopes.length != 0) {
+        var options = {session : false, scope: scopes};
+        auth.authenticate(options, req, res, next); 
+    } else {
+        next();
+    }
 }); 
+}
 
 // IMPORTANT: The router has to come after the oAuth2 access token check
 app.use(app.router);
@@ -88,6 +109,7 @@ app.get('/oauth/dialog/decision', function(req, res) {
 // Configure the proxy before the bodyParser
 // See https://github.com/nodejitsu/node-http-proxy/issues/180
 app.use('/proxy', proxy.route);
+app.use('/protected/proxy', proxy.route);
 
 app.get('/protected/secret.html', function(req, res, next) {
   res.render('secret');

@@ -2,6 +2,7 @@
  * Module dependencies.
  */
 var passport = require('passport')
+  , fs = require('fs')
   , LocalStrategy = require('passport-local').Strategy
   , BasicStrategy = require('passport-http').BasicStrategy
   , ClientPasswordStrategy = require('passport-oauth2-client-password').Strategy
@@ -80,7 +81,8 @@ passport.use(new ClientPasswordStrategy(
  * the authorizing user.
  */
 passport.use(new BearerStrategy(
-  function(accessToken, done) {
+  function(accessToken, scope, done) {
+    console.log("Scope required: " + scope);
     db.accessTokens.find(accessToken, function(err, token) {
       if (err) { return done(err); }
       if (!token) { return done(null, false); }
@@ -90,8 +92,16 @@ passport.use(new BearerStrategy(
         if (!user) { return done(null, false); }
         // to keep this example simple, restricted scopes are not implemented,
         // and this is just for illustrative purposes
-        var info = { scope: token.scopes }
-        done(null, user, info);
+        console.log("Scope for the token: " + token.scopes);
+        for(var i=0; i<scope.length; i++) {
+            for(var j=0; j<token.scopes.length; j++) {
+                if(scope[i] == token.scopes[j]) {
+                    var info = { scope: scope[i] }
+                    return done(null, user, info);
+                }
+            }
+        }
+        done("insufficient scopes", user, null);
       });
     });
   }
@@ -100,6 +110,7 @@ passport.use(new BearerStrategy(
 /**
  * Authenticate the request using bearer token
  */
-exports.authenticate = function(scope, req, res, next) {
-  passport.authenticate('bearer', {session: false, scope: scope}) (req, res, next); 
+exports.authenticate = function(options, req, res, next) {
+  options = options || {session: false} 
+  passport.authenticate('bearer', options) (req, res, next); 
 };

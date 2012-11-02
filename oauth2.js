@@ -48,10 +48,10 @@ server.deserializeClient(function(id, done) {
 // the application.  The application issues a code, which is bound to these
 // values, and will be exchanged for an access token.
 
-server.grant(oauth2orize.grant.code(function(client, redirectURI, user, ares, done) {
+server.grant(oauth2orize.grant.code(function(client, redirectURI, user, scope, ares, done) {
   var code = utils.uid(32)
   
-  db.authorizationCodes.save(code, client.id, redirectURI, user.id, function(err) {
+  db.authorizationCodes.save(code, client.id, redirectURI, user.id, scope, function(err) {
     if (err) { return done(err); }
     done(null, code);
   });
@@ -109,9 +109,9 @@ server.exchange(oauth2orize.exchange.refreshToken(function(client, refreshToken,
 }));
 
 
-server.grant(oauth2orize.grant.token(function(client, user, ares, done) {
+server.grant(oauth2orize.grant.token(function(client, user, scope, ares, done) {
   var token = utils.uid(32);
-  db.accessTokens.save(token, client.id, user.id, ares.scope, function(err) {
+  db.accessTokens.save(token, client.id, user.id, scope, function(err) {
     if (err) { return done(err); }
     done(null, token);
   });
