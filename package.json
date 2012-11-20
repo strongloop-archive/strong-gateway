@@ -3,19 +3,18 @@
   "version": "0.1.0",
   "repository" : { 
     "type" : "git", 
-    "url" : "https://github.com/enjoyjava/node-api-platform"
+    "url" : "https://github.com/altsang/node-api-platform"
   },
   "dependencies": {
     "express": "3.x.x",
     "ejs": "0.8.x",
-    "oauth2orize": "git://github.com/enjoyjava/oauth2orize.git",
+    "oauth2orize": "git+ssh://git@github.com/altsang/oauth2orize.git",
     "passport": "~0.1.12",
     "passport-local": "0.1.x",
     "passport-http": "0.2.x",
-    "passport-http-bearer": "git://github.com/enjoyjava/passport-http-bearer.git",
     "passport-oauth2-client-password": "0.1.x",
     "connect-ensure-login": "0.1.x",
-    "mongoose": "3.3.x",
+    "mongoose": "3.4.x",
     "http-proxy": "0.8.4",
     "node-statsd-instrument": "0.0.1"
   },
