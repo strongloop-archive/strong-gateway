@@ -1,0 +1,17 @@
+---
+applications:
+  .:
+    name: node-api-gateway
+    framework:
+      name: node
+      info:
+        mem: 64M
+        description: Node.js based REST api gateway 
+        exec: 
+    infra: aws
+    url: ${name}.${target-base}
+    mem: 64M
+    instances: 1
+    services:
+      enjoyjava:
+        type: mongodb

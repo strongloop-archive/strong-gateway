@@ -4,7 +4,10 @@
         "resources": [
             {"path": "/rest",
              "method": "*",
-             "scopes": ["s1", "s2"]}
+             "scopes": ["s1", "s2", "demo"]},
+            {"path": "/html",
+             "method": "*",
+             "scopes": ["demo"]}
         ]  
     }
 ]
