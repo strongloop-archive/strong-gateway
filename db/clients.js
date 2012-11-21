@@ -1,8 +1,9 @@
 var schema = require('./mongo_schema');
 
 exports.find = function(key, done) {
+    console.log("Key: " + key);
     schema.ClientRegistration.findOne({
-        id : key
+        clientId : key
     }, done);
 };
 
@@ -44,13 +45,13 @@ exports.register = function(clientId, clientSecret, name, email, description, us
             if (done)
                 done(null, client);
         } else {
-            exports.save(name, email, description, null, null, null, "CONFIDENTIAL", userId, function(err, obj) {
+            exports.save(clientId, clientSecret, name, email, description, null, null, null, "CONFIDENTIAL", userId, function(err, obj) {
                 if (err) {
                     console.log(err);
                     if (done)
                         done(err);
                 } else {
-                    console.log("Client created: " + JSON.stringify(user));
+                    console.log("Client created: " + JSON.stringify(obj));
                     if (done)
                         done(null, obj);
                 }

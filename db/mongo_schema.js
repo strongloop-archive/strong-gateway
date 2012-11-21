@@ -1,7 +1,6 @@
 // Setup mongoose and the database
 var mongoose = require('mongoose');
-var config = require('./mongodb_config'); // Local congig file to hide creds
-db = mongoose.connect(config.creds.mongoose_auth), Schema = mongoose.Schema;
+var Schema = mongoose.Schema;
 
 var options = {
     id : false,

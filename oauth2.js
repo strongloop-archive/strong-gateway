@@ -24,10 +24,11 @@ var server = oauth2orize.createServer();
 // the client by ID from the database.
 
 server.serializeClient(function(client, done) {
-  return done(null, client.id);
+  return done(null, client.clientId);
 });
 
 server.deserializeClient(function(id, done) {
+  console.log("Id: " + id);
   db.clients.find(id, function(err, client) {
     if (err) { return done(err); }
     return done(null, client);
