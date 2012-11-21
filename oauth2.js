@@ -71,7 +71,7 @@ server.exchange(oauth2orize.exchange.code(function(client, code, redirectURI, do
     if (redirectURI !== authCode.redirectURI) { return done(null, false); }
     
     var token = utils.uid(32)
-    db.accessTokens.save(token, authCode.clientID, authCode.userID, authCode.scopes, function(err) {
+    db.accessTokens.save(token, authCode.clientId, authCode.resourceOwner, authCode.scopes, function(err) {
 
       if (err) { return done(err); }
       done(null, token);

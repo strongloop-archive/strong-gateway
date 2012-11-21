@@ -1,10 +1,15 @@
 var schema = require('./mongo_schema');
 
 exports.find = function(key, done) {
-    console.log("Key: " + key);
     schema.ClientRegistration.findOne({
         clientId : key
     }, done);
+};
+
+exports.clean = function() {
+    schema.ClientRegistration.remove(function (err, client) {
+      if (err) console.log(err);
+  });
 };
 
 exports.save = function(clientId, clientSecret, name, email, description, url, iconURL, redirectURIs, type, userId,
