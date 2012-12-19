@@ -1,9 +1,9 @@
 {
-  "name": "node-api-platform",
+  "name": "node-api-gateway",
   "version": "0.1.0",
   "repository" : { 
     "type" : "git", 
-    "url" : "https://github.com/altsang/node-api-platform"
+    "url" : "https://github.com/altsang/node-api-gateway"
   },
   "dependencies": {
     "express": "3.x.x",
@@ -14,8 +14,8 @@
     "passport-http": "0.2.x",
     "passport-oauth2-client-password": "0.1.x",
     "connect-ensure-login": "0.1.x",
-    "mongoose": "3.4.x",
-    "http-proxy": "0.8.4",
+    "mongoose": "3.5.x",
+    "http-proxy": "git://github.com/enjoyjava/node-http-proxy.git",
     "node-statsd-instrument": "0.0.1"
   },
   "optionalDependencies" : {
