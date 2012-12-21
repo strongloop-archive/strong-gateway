@@ -11,7 +11,7 @@ A REST API platform for Node.js
 MongoDB backed oAuth 2.0 server
 ==============================
 
-The oAuth 2.0 server is built on top of [oauth2orize](https://github.com/jaredhanson/oauth2orize).
+The oAuth 2.0 server is built on top of [oauth2orize](https://github.com/astang/oauth2orize).
 
 There are a few enhancements:
 
@@ -42,8 +42,8 @@ Please note it will create the dummy user: bob/secret and dummy client: abc123/s
 
 Now the you can start to explore oAuth 2.0 authorization and token endpoints at:
 
-<http://localhost:9080/oauth/dialog/auth>
-<http://localhost:9080/oauth/token>
+<http://localhost:3002/oauth/dialog/auth>
+<http://localhost:3002/oauth/token>
 
 or 
 <https://localhost:9443/oauth/dialog/auth>
@@ -51,7 +51,7 @@ or
 
 Step 1: Get the oAuth 2.0 access token using the following url.
 
-<http://localhost:9080/oauth/dialog/auth?response_type=token&client_id=abc123&client_secret=ssh-secret&scope=s1&redirect_uri=http://localhost:9080/oauth/dialog/callback>
+<http://localhost:3002/oauth/dialog/auth?response_type=token&client_id=abc123&client_secret=ssh-secret&scope=s1&redirect_uri=http://localhost:3002/oauth/dialog/callback>
 
 Use "bob/secret" as the login and approve the requet by click "Allow".
 
