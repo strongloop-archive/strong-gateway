@@ -9,5 +9,13 @@
              "method": "*",
              "scopes": ["demo"]}
         ]  
+    },
+    {
+        "basePath": "/proxy",
+        "resources": [
+            {"path": "/freelunch",
+             "method": "*",
+             "scopes": ["freelunch"]}
+        ]
     }
 ]

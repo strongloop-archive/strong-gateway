@@ -1,6 +1,7 @@
 {
     "router": {
         "node-api-gateway.aws.af.cm/freelunch": "http://node-freelunch.aws.af.cm/rest",
-        "localhost/freelunch": "http://node-freelunch.aws.af.cm/rest"
+        "localhost/freelunch": "http://node-freelunch.aws.af.cm/rest",
+        "localhost/local-freelunch": "http://localhost:3001/rest"
     }
 }

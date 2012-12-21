@@ -1,0 +1,53 @@
+<html>
+<head>
+<title>User Application</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+<script src="oauth2.js"></script>
+<script>
+	$(function() {
+
+		var query = window.location.search;
+		var parameters = [];
+
+		if (query != null && query != "") {
+			parameters = query.substring(1).split('&');
+		}
+
+		if (parameters.length == 0) {
+			if (window.location.hash.length == 0) {
+				implicit(client_id, "freelunch");
+			} else {
+				oAuthToken = getAccessToken();
+				displayMessage("<button onclick='displayUsers(\""
+						+ oAuthToken + "\");'>Get User Info</button>");
+			}
+		} else {
+			// alert(window.location);
+			displayMessage(window.location);
+		}
+	});
+
+	function displayUsers(oauthToken) {
+		resourceUrl = "/proxy/freelunch/User?access_token="+ oauthToken;
+
+		$.getJSON(resourceUrl, function(user) {
+			displayMessage(JSON.stringify(user));
+		});
+	}
+</script>
+</head>
+<body>
+
+	<h1>oAuth 2.0 based user client-side flow</h1>
+	<hr />
+	<p>Message:
+	<div id='msg'></div>
+	</p>
+	<p>
+		<a href='index.html'>Home</a>
+	</p>
+
+
+</body>
+</html>

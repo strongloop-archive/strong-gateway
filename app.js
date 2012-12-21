@@ -38,7 +38,7 @@ var allowCrossDomain = function(req, res, next) {
 };
 
 // Express configuration
-  
+
 var app = express();
 
 app.set('port', process.env.VMC_APP_PORT || config.http.port || 3002);
@@ -46,9 +46,12 @@ app.set('host', process.env.VCAP_APP_HOST || config.http.host || 'localhost');
 
 app.set('view engine', 'ejs');
 app.use(express.logger());
+
+app.use(proxy.bufferRequest); // Buffer the request so that the proxy can capture the related events and data
+
+app.use(express.compress());
 app.use(express.cookieParser());
 app.use(express.favicon());
-app.use(express.logger('dev'));
 app.use(allowCrossDomain);
 
 app.use('/oauth', express.bodyParser());
@@ -82,6 +85,7 @@ app.use(protectedResource.basePath, function(req, res, next) {
        if(req.path.indexOf(resource.path) == 0 ) {
            console.log("Protected resource: " + JSON.stringify(resource));
            scopes = resource.scopes;
+           break;
        }
     }
     if(scopes.length != 0) {
@@ -120,8 +124,9 @@ app.get('/oauth/dialog/decision', function(req, res) {
 
 // Configure the proxy before the bodyParser
 // See https://github.com/nodejitsu/node-http-proxy/issues/180
-app.use('/proxy', proxy.route);
-app.use('/protected/proxy', proxy.route);
+app.use('/proxy', proxy.proxyRequest);
+app.use('/public-proxy', proxy.proxyRequest);
+app.use('/protected/proxy', proxy.proxyRequest);
 
 app.get('/protected/html/secret.html', function(req, res, next) {
   res.render('secret');
