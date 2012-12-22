@@ -6,7 +6,7 @@ var passport = require('passport')
   , LocalStrategy = require('passport-local').Strategy
   , BasicStrategy = require('passport-http').BasicStrategy
   , ClientPasswordStrategy = require('passport-oauth2-client-password').Strategy
-  , BearerStrategy = require('passport-http-bearer').Strategy
+  , BearerStrategy = require('oauth2orize/lib/passport-http-bearer').Strategy
   , db = require('./db')
 
 

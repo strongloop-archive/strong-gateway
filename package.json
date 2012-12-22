@@ -12,7 +12,6 @@
     "passport": "~0.1.12",
     "passport-local": "0.1.x",
     "passport-http": "0.2.x",
-    "passport-http-bearer": "git+ssh://git@github.com/altsang/passport-http-bearer.git",
     "passport-oauth2-client-password": "0.1.x",
     "connect-ensure-login": "0.1.x",
     "mongoose": "3.5.x",
