@@ -20,7 +20,7 @@
 			} else {
 				oAuthToken = getAccessToken();
 				displayMessage("<button onclick='displayUsers(\""
-						+ oAuthToken + "\");'>Get User Info</button>");
+						+ oAuthToken + "\");'>List Users</button>");
 			}
 		} else {
 			// alert(window.location);
@@ -31,8 +31,16 @@
 	function displayUsers(oauthToken) {
 		resourceUrl = "/proxy/freelunch/User?access_token="+ oauthToken;
 
-		$.getJSON(resourceUrl, function(user) {
-			displayMessage(JSON.stringify(user));
+		$.getJSON(resourceUrl, function(users) {
+                        var list = "<ul>";
+                        for(i=0; i<users.payload.length; i++) {
+                            var user = users.payload[i];
+                            var url = "/proxy/freelunch/User/" + user._id+ "?access_token="+ oauthToken;
+
+                            list += "<li>" + "<a href='" + url + "'>" + user.first_name + " " + user.last_name+ ": " + user.email +"</a>";
+                        }
+                        list += "</ul>";
+			displayMessage(list);
 		});
 	}
 </script>
@@ -41,7 +49,7 @@
 
 	<h1>oAuth 2.0 based user client-side flow</h1>
 	<hr />
-	<p>Message:
+	<p>Result:
 	<div id='msg'></div>
 	</p>
 	<p>
