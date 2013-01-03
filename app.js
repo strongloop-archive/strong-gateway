@@ -102,6 +102,8 @@ app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/*', site.index);
+app.get('/', site.home);
+app.get('/home', site.home);
 app.get('/login', site.loginForm);
 app.post('/login', site.login);
 app.get('/logout', site.logout);

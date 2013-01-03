@@ -6,24 +6,38 @@ var passport = require('passport')
 
 
 exports.index = function(req, res, next) {
-  console.log("Path:" + req.path);
   if(req.path !== "/login") {
-    login.ensureLoggedIn()(req, res, next);
+    if(req.path === "/") {
+        login.ensureLoggedIn({redirectTo: '/home'})(req, res, next);
+    } else {
+        login.ensureLoggedIn()(req, res, next);
+    }
   } else {
     next();
   }
 }
 
+exports.home = function(req, res) {
+    var params = {};
+    if(req.user && req.user.name) {
+        params.actionURI = "/account";
+        params.actionName = "My Account -  " + req.user.name;
+    } else {
+        params.actionURI = "/login";
+        params.actionName = "Login";
+    }
+    res.render('home', params);
+};
 
 exports.loginForm = function(req, res) {
   res.render('login');
 };
 
-exports.login = passport.authenticate('local', { successReturnToOrRedirect: '/', failureRedirect: '/login' });
+exports.login = passport.authenticate('local', { successReturnToOrRedirect: '/home', failureRedirect: '/login' });
 
 exports.logout = function(req, res) {
   req.logout();
-  res.redirect('/');
+  res.redirect('/home');
 }
 
 exports.account = [
