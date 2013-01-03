@@ -76,7 +76,7 @@
 
     <div class="container">
 	
-    <form class="form-signin">
+    <form class="form-signin" method="get" action="#login">
       <h2 class="form-signin-heading">Please sign in</h2>
       <input type="text" class="input-block-level" placeholder="User name">
       <input type="password" class="input-block-level" placeholder="Password">
@@ -85,11 +85,68 @@
       </label>
       <button class="btn btn-large btn-primary" type="submit">Sign in</button>
     </form>
+	
+	<div id="result"></div>
 
 
     </div> <!-- /container -->
     <script src="http://twitter.github.com/bootstrap/assets/js/jquery.js"></script>
     <script src="http://twitter.github.com/bootstrap/assets/js/bootstrap.min.js"></script>
+	<script src="http://underscorejs.org/underscore-min.js"></script>
+	<script src="http://backbonejs.org/backbone.js"></script>
+	
+	
+	<script>
+	$(function(){
+		var UserPassword = Backbone.Model.extend({
+
+	  	initialize: function() {console.log("UserPassword model initialized")},
+        defaults: function() {
+			return {
+        	"user": "user",
+			"password": "password"
+            };
+	    }});
+	
+	    var user = new UserPassword();
+	    console.log(JSON.stringify(user));
+		
+		var LoginView = Backbone.View.extend({
+			template: _.template('<h1>User: <%= user %> Password: <%= password %></h1>'),
+			  
+		    //... is a list tag.
+		    tagName:  "div",
+			render: function() {
+				console.log("render()...");
+				// alert("DDDD");
+				
+			    this.$el.html(this.template(this.model.toJSON()));
+				$('#result').append(this.$el);
+			    return this;
+				
+			}
+		});
+		
+		var LoginRouter = Backbone.Router.extend({
+
+		  routes: {
+		    "login":                 "login"    // #login
+		  },
+
+		  login: function() {
+			  console.log("Login is clicked");
+		    alert("Login");
+		  }
+		});
+		
+		var router = new LoginRouter();
+		var view = new LoginView({model: user});
+		view.listenTo(user, 'change', view.render);
+		Backbone.history.start({pushState: true});
+		user.set('user', "123");
+		
+    });
+	</script>
   </body>
 </html>
 

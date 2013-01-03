@@ -64,7 +64,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 
-app.use(express.static(path.join(__dirname, 'public')));
 
 if(stats.instrument) {
     stats.instrument.count_success(auth, "authenticate", "node-api-platform.auth.counter");
@@ -100,7 +99,9 @@ app.use(protectedResource.basePath, function(req, res, next) {
 // IMPORTANT: The router has to come after the oAuth2 access token check
 app.use(app.router);
 
-// app.get('/', site.index);
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/*', site.index);
 app.get('/login', site.loginForm);
 app.post('/login', site.login);
 app.get('/logout', site.logout);

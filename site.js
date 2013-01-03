@@ -5,9 +5,15 @@ var passport = require('passport')
   , login = require('connect-ensure-login')
 
 
-exports.index = function(req, res) {
-  res.send('OAuth 2.0 Server');
-};
+exports.index = function(req, res, next) {
+  console.log("Path:" + req.path);
+  if(req.path !== "/login") {
+    login.ensureLoggedIn()(req, res, next);
+  } else {
+    next();
+  }
+}
+
 
 exports.loginForm = function(req, res) {
   res.render('login');
