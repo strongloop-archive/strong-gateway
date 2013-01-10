@@ -69,31 +69,38 @@ if(stats.instrument) {
     stats.instrument.count_success(auth, "authenticate", "node-api-platform.auth.counter");
 }
 
+function ResourceServer(resource) {
+    this.resource = resource;
+    var self = this;
+    this.check = function(req, res, next) {
+      console.log("Checking oAuth access token: " + req.path);
+      var scopes = [];
+      var r = self.resource;
+      for(var j=0; j<r.resources.length; j++) {
+        var resource = r.resources[j];
+        console.log("Checking against " + resource.path);
+        if(req.path.indexOf(resource.path) == 0 ) {
+           console.log("Protected resource: " + JSON.stringify(resource));
+           scopes = resource.scopes;
+           break;
+        }
+     }
+     if(scopes.length != 0) {
+        var options = {session : false, scope: scopes};
+        auth.authenticate(options, req, res, next);
+     } else {
+        next();
+     }
+  }
+}
 var protectedResources = JSON.parse(fs.readFileSync('./resources.json'));
 
 for (var i = 0; i < protectedResources.length; i++) { 
     var protectedResource = protectedResources[i];
     console.log("Registering protected resource: " + JSON.stringify(protectedResource));
 
-// Configure the oAuth access token authentication hook
-app.use(protectedResource.basePath, function(req, res, next) {
-    console.log("Checking oAuth access token: " + req.path);
-    var scopes = [];
-    for(var j=0; j<protectedResource.resources.length; j++) {
-       var resource = protectedResource.resources[j];
-       if(req.path.indexOf(resource.path) == 0 ) {
-           console.log("Protected resource: " + JSON.stringify(resource));
-           scopes = resource.scopes;
-           break;
-       }
-    }
-    if(scopes.length != 0) {
-        var options = {session : false, scope: scopes};
-        auth.authenticate(options, req, res, next); 
-    } else {
-        next();
-    }
-}); 
+    // Configure the oAuth access token authentication hook
+    app.use(protectedResource.basePath, new ResourceServer(protectedResource).check); 
 }
 
 // IMPORTANT: The router has to come after the oAuth2 access token check
