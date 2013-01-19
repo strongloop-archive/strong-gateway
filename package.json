@@ -15,7 +15,7 @@
     "passport-oauth2-client-password": "0.1.x",
     "connect-ensure-login": "0.1.x",
     "mongoose": "3.5.x",
-    "http-proxy": "git://github.com/strongloop/http-proxy.git",
+    "http-proxy": "git+ssh://git@github.com/strongloop/http-proxy.git",
     "node-statsd-instrument": "0.0.1"
   },
   "optionalDependencies" : {
