@@ -16,10 +16,18 @@
     "connect-ensure-login": "0.1.x",
     "mongoose": "3.5.x",
     "http-proxy": "git+ssh://git@github.com/strongloop/http-proxy.git",
-    "node-statsd-instrument": "0.0.1"
+    "node-statsd-instrument": "0.0.1",
+    "mocha": "~1.8.2",
+    "blanket": "latest"
   },
   "optionalDependencies" : {
     "statsd": "0.5.0"
   },
-  "scripts": {"start": "node app.js"}
+  "scripts": {
+    "start": "node app.js",
+    "blanket": {
+      "pattern": "//^((?!(node_modules|test)).)*$/"
+    },
+    "coverage": "mocha -r blanket -R html-cov > coverage_loopback-api-gateway.html"	
+  }
 }
