@@ -1,9 +1,9 @@
 {
-  "name": "freelunch-api-gateway",
-  "version": "0.1.0",
-  "repository" : { 
-    "type" : "git", 
-    "url" : "https://github.com/strongloop/freelunch-api-gateway"
+  "name": "loopback-api-gateway",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-api-gateway"
   },
   "dependencies": {
     "express": "3.x.x",
@@ -18,9 +18,9 @@
     "http-proxy": "git+ssh://git@github.com/strongloop/http-proxy.git",
     "node-statsd-instrument": "0.0.1",
     "mocha": "~1.8.2",
-    "blanket": "latest"
+    "blanket": "~1.1.5"
   },
-  "optionalDependencies" : {
+  "optionalDependencies": {
     "statsd": "0.5.0"
   },
   "scripts": {
@@ -28,6 +28,7 @@
     "blanket": {
       "pattern": "//^((?!(node_modules|test)).)*$/"
     },
-    "coverage": "mocha -r blanket -R html-cov > coverage_loopback-api-gateway.html"	
-  }
+    "coverage": "mocha -r blanket -R html-cov > coverage_loopback-api-gateway.html"
+  },
+  "license": "StrongLoop"
 }
