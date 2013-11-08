@@ -8,20 +8,22 @@
   "dependencies": {
     "express": "3.x.x",
     "ejs": "0.8.x",
-    "oauth2orize": "git+ssh://git@github.com/strongloop/oauth2orize.git",
-    "passport": "~0.1.12",
+    "loopback-oauth2": "git+ssh://git@github.com/strongloop/loopback-oauth2",
+    "passport": "~0.1.17",
     "passport-local": "0.1.x",
     "passport-http": "0.2.x",
     "passport-oauth2-client-password": "0.1.x",
     "connect-ensure-login": "0.1.x",
-    "mongoose": "3.5.x",
+    "mongoose": "3.8.x",
     "http-proxy": "git+ssh://git@github.com/strongloop/http-proxy.git",
-    "node-statsd-instrument": "0.0.1",
-    "mocha": "~1.8.2",
+    "node-statsd-instrument": "0.0.1"
+  },
+  "devDependencies": {
+    "mocha": "~1.14.0",
     "blanket": "~1.1.5"
   },
   "optionalDependencies": {
-    "statsd": "0.5.0"
+    "statsd": "0.6.0"
   },
   "scripts": {
     "start": "node app.js",
