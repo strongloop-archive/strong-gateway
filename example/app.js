@@ -31,15 +31,16 @@ app.set('port', process.env.PORT || 3002);
 app.set('host', process.env.HOST || 'localhost');
 
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, '../views'));
 
 // app.use(proxy.bufferRequest); // Buffer the request so that the proxy can capture the related events and data
 
-app.use(loopback.rest());
+app.use('/rest', loopback.rest());
 
-app.use(loopback.session({ secret: 'keyboard cat' }));
+// app.use(loopback.session({ secret: 'keyboard cat' }));
 
 app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.session());
 app.use(loopback.errorHandler({ dumpExceptions: true, showStack: true }));
 
 function ResourceServer(resource) {
@@ -79,7 +80,7 @@ for (var i = 0; i < protectedResources.length; i++) {
 // IMPORTANT: The router has to come after the oAuth2 access token check
 app.use(app.router);
 
-app.use(loopback.static(path.join(__dirname, 'public')));
+app.use(loopback.static(path.join(__dirname, '../public')));
 
 app.get('/*', site.index);
 app.get('/', site.home);
