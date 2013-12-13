@@ -20,17 +20,16 @@
   },
   "devDependencies": {
     "mocha": "~1.14.0",
-    "blanket": "~1.1.5"
+    "istanbul": "~0.1.46"
   },
   "optionalDependencies": {
     "statsd": "0.6.0"
   },
   "scripts": {
     "start": "node app.js",
-    "blanket": {
-      "pattern": "//^((?!(node_modules|test)).)*$/"
-    },
-    "coverage": "mocha -r blanket -R html-cov > coverage_loopback-api-gateway.html"
+    "test": "istanbul test -- _mocha",
+    "precoverage": "npm test --coverage",
+    "coverage": "istanbul report"
   },
   "license": "StrongLoop"
 }
