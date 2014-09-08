@@ -3,7 +3,7 @@
 <p>Client application <b><%= client.name %></b> is requesting access to your account.</p>
 <p>Do you approve?</p>
 
-<form action="/dialog/authorize/decision" method="post">
+<form action="/oauth/authorize/decision" method="post">
   <input name="transaction_id" type="hidden" value="<%= transactionID %>">
   <div>
   <input type="submit" value="Allow" id="allow">

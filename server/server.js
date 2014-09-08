@@ -56,9 +56,8 @@ app.post('/login', site.login);
 app.get('/logout', site.logout);
 app.get('/account', site.account);
 
-app.get('/dialog/authorize', oauth2.authorization);
 app.get('/oauth/authorize', oauth2.authorization);
-app.post('/dialog/authorize/decision', oauth2.decision);
+app.post('/oauth/authorize/decision', oauth2.decision);
 app.post('/oauth/token', oauth2.token);
 
 app.get('/userinfo', user.info);
