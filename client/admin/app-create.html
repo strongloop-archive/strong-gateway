@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html ng-app>
+<head>
+    <title>Client Application Sign Up</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet"
+          href="bootstrap/css/bootstrap.min.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.min.js"></script>
+    <script src="js/applications.js"></script>
+</head>
+<body ng-controller="ApplicationsController">
+
+<h1>Register your client application</h1>
+
+<form role="form" data-ng-submit="create()">
+    <div class="form-group">
+        <label class="col-sm-2 control-label" for="name">Name</label>
+
+        <input class="col-sm-10 form-control" type="text" data-ng-model="name"
+               id="name"
+               placeholder="Your client application name" required>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label" for="description">Description</label>
+
+        <input class="col-sm-10 form-control" type="text" data-ng-model="description"
+               id="description"
+               placeholder="Your client application description" required>
+    </div>
+
+    <div class="form-group">
+
+        <label class="col-sm-2 control-label" for="certData">APN Certificate</label>
+        <textarea class="col-sm-10 form-control" data-ng-model="certData"
+                  id="certData" rows="5"
+                  placeholder="Paste your APN certificate here"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label" for="keyData">APN Key</label>
+
+        <textarea class="col-sm-10 form-control" data-ng-model="keyData"
+                  id="keyData"
+                  rows="5" placeholder="Paste your APN key here"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label" for="gcmKey">GCM Server API
+            Key</label>
+
+        <input class="form-control" type="text" data-ng-model="gcmKey"
+               id="gcmKey" placeholder="Paste your GCM server API key here">
+    </div>
+
+
+    <input type="submit" class="btn btn-primary btn-lg">
+
+</form>
+
+<p>{{id}}
+
+<p>{{restApiKey}}
+
+<p>
+    <a class="btn btn-default btn-lg" href="app-list.html">List client applications</a>
+
+</body>
+</html>
