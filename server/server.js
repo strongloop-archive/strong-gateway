@@ -26,7 +26,7 @@ app.use(loopback.compress());
 // boot scripts mount components like REST API
 boot(app, __dirname);
 
-var oauth2 = require('loopback-oauth2').oAuth2Provider(loopback, app.dataSources.db);
+var oauth2 = require('loopback-oauth2').oAuth2Provider(app, {dataSource: app.dataSources.db});
 
 app.set('view engine', 'ejs');
 
@@ -45,7 +45,7 @@ app.use(loopback.session({ saveUninitialized: true, resave: true, secret: 'keybo
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/protected', function (req, res, next) {
+app.use('/protected', function(req, res, next) {
   passport.authenticate('bearer',
     {session: false, scope: 's1'})(req, res, next);
 });
@@ -71,11 +71,11 @@ app.use('/admin', loopback.static(path.join(__dirname, '../client/admin')));
 
 app.models.User.create({username: 'bob',
   password: 'secret',
-  email: 'foo@bar.com'}, function (err, user) {
+  email: 'foo@bar.com'}, function(err, user) {
 
   // Hack to set the app id to a fixed value so that we don't have to change
   // the client settings
-  app.models.Application.beforeSave = function (next) {
+  app.models.Application.beforeSave = function(next) {
     this.id = 123;
     this.restApiKey = 'secret';
     next();
@@ -85,7 +85,7 @@ app.models.User.create({username: 'bob',
     'demo-app',
     {
     },
-    function (err, demo) {
+    function(err, demo) {
       if (err) {
         console.error(err);
       } else {
@@ -104,8 +104,8 @@ app.use(loopback.urlNotFound());
 // The ultimate error handler.
 app.use(loopback.errorHandler());
 
-app.start = function () {
-  https.createServer(httpsOptions, app).listen(app.get('port'), function () {
+app.start = function() {
+  https.createServer(httpsOptions, app).listen(app.get('port'), function() {
     app.emit('started');
     console.log('Web server listening at: %s', app.get('url'));
   });
