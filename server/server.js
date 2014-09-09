@@ -85,38 +85,12 @@ app.use(loopback.static(path.join(__dirname, '../client/public')));
 
 app.use('/admin', loopback.static(path.join(__dirname, '../client/admin')));
 
-// Create a dummy user and client app
-app.models.User.create({username: 'bob',
-  password: 'secret',
-  email: 'foo@bar.com'}, function(err, user) {
-
-  // Hack to set the app id to a fixed value so that we don't have to change
-  // the client settings
-  app.models.Application.beforeSave = function(next) {
-    this.id = 123;
-    this.restApiKey = 'secret';
-    next();
-  };
-  app.models.Application.register(
-    user.id,
-    'demo-app',
-    {
-    },
-    function(err, demo) {
-      if (err) {
-        console.error(err);
-      } else {
-        console.log('Client application %s %s', demo.id, demo.restApiKey);
-      }
-    }
-  );
-
-});
+signupTestUserAndApp();
+var rateLimiting = require('./rate-limiting');
+app.use(rateLimiting({limits: {m1: 100}}));
 
 var proxy = require('./proxy');
-var rateLimiting = require('./rate-limiting');
-app.use(rateLimiting());
-app.use(proxy());
+app.use('/api', proxy({target: 'http://localhost:3002/'}));
 
 // Requests that get this far won't be handled
 // by any middleware. Convert them into a 404 error
@@ -142,4 +116,34 @@ app.start = function() {
 // start the server if `$ node server.js`
 if (require.main === module) {
   app.start();
+}
+
+function signupTestUserAndApp() {
+// Create a dummy user and client app
+  app.models.User.create({username: 'bob',
+    password: 'secret',
+    email: 'foo@bar.com'}, function(err, user) {
+
+    // Hack to set the app id to a fixed value so that we don't have to change
+    // the client settings
+    app.models.Application.beforeSave = function(next) {
+      this.id = 123;
+      this.restApiKey = 'secret';
+      next();
+    };
+    app.models.Application.register(
+      user.id,
+      'demo-app',
+      {
+      },
+      function(err, demo) {
+        if (err) {
+          console.error(err);
+        } else {
+          console.log('Client application %s %s', demo.id, demo.restApiKey);
+        }
+      }
+    );
+
+  });
 }

@@ -1,7 +1,7 @@
 function UsersController($scope, $http) {
 
   $scope.load = function () {
-    $http.get('/api/users').success(function (data) {
+    $http.get('/_internal/users').success(function (data) {
       console.log(data);
       $scope.users = data;
       $scope.orderProp = 'id';
@@ -9,7 +9,7 @@ function UsersController($scope, $http) {
   };
 
   $scope.create = function () {
-    $http.post('/api/users',
+    $http.post('/_internal/users',
       {
         username: $scope.name,
         email: $scope.email,
@@ -22,7 +22,7 @@ function UsersController($scope, $http) {
   };
 
   $scope.delete = function (index, id) {
-    $http.delete('/api/users/' + encodeURIComponent(id)).success(function (data, status, headers) {
+    $http.delete('/_internal/users/' + encodeURIComponent(id)).success(function (data, status, headers) {
       $scope.users.splice(index, 1);
       $scope.status = 'User deleted: ' + id + ' status: ' + status;
     });
