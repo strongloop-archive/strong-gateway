@@ -1,7 +1,8 @@
 var loopback = require('loopback');
 var boot = require('loopback-boot');
 
-var https = require('https')
+var http = require('http')
+  , https = require('https')
   , passport = require('passport')
   , path = require('path')
   , site = require('./site')
@@ -14,6 +15,16 @@ var httpsOptions = {
 };
 
 var app = module.exports = loopback();
+
+app.use(function(req, res, next) {
+  if (!req.secure) {
+    var parts = req.headers.host.split(':');
+    var host = parts[0] || '127.0.0.1';
+    var port = Number(parts[1] || 80) + 1;
+    return res.redirect('https://' + host + ':' + port + req.url);
+  }
+  next();
+});
 
 // Set up the /favicon.ico
 app.use(loopback.favicon());
@@ -50,6 +61,11 @@ app.use('/protected', function(req, res, next) {
     {session: false, scope: 's1'})(req, res, next);
 });
 
+app.use('/api', function(req, res, next) {
+  passport.authenticate('bearer',
+    {session: false, scope: 's1'})(req, res, next);
+});
+
 // app.get('/', site.index);
 app.get('/login', site.loginForm);
 app.post('/login', site.login);
@@ -69,6 +85,7 @@ app.use(loopback.static(path.join(__dirname, '../client/public')));
 
 app.use('/admin', loopback.static(path.join(__dirname, '../client/admin')));
 
+// Create a dummy user and client app
 app.models.User.create({username: 'bob',
   password: 'secret',
   email: 'foo@bar.com'}, function(err, user) {
@@ -89,12 +106,17 @@ app.models.User.create({username: 'bob',
       if (err) {
         console.error(err);
       } else {
-        console.log(demo.id, demo.restApiKey);
+        console.log('Client application %s %s', demo.id, demo.restApiKey);
       }
     }
   );
 
 });
+
+var proxy = require('./proxy');
+var rateLimiting = require('./rate-limiting');
+app.use(rateLimiting());
+app.use(proxy());
 
 // Requests that get this far won't be handled
 // by any middleware. Convert them into a 404 error
@@ -105,10 +127,16 @@ app.use(loopback.urlNotFound());
 app.use(loopback.errorHandler());
 
 app.start = function() {
-  https.createServer(httpsOptions, app).listen(app.get('port'), function() {
-    app.emit('started');
-    console.log('Web server listening at: %s', app.get('url'));
+  var port = app.get('port');
+
+  http.createServer(app).listen(port, function() {
+    console.log('Web server listening at: %s', 'http://localhost:3000/');
+    https.createServer(httpsOptions, app).listen(port + 1, function() {
+      app.emit('started');
+      console.log('Web server listening at: %s', app.get('url'));
+    });
   });
+
 };
 
 // start the server if `$ node server.js`
