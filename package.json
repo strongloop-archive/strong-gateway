@@ -1,5 +1,5 @@
 {
-  "name": "loopback-example-oauth2",
+  "name": "loopback-example-gateway",
   "version": "1.0.0",
   "main": "server/server.js",
   "scripts": {
@@ -16,7 +16,7 @@
     "loopback": "^2.0.0",
     "loopback-boot": "^2.0.0",
     "loopback-datasource-juggler": "^2.0.0",
-    "loopback-oauth2": "git@github.com:strongloop/loopback-oauth2.git",
+    "loopback-oauth2": "git+ssh://git@github.com:strongloop/loopback-oauth2.git",
     "metrics": "~0.1.8",
     "passport": "~0.2.1",
     "serve-favicon": "^2.0.1"
