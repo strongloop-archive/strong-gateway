@@ -19,9 +19,12 @@
                     implicit(client_id);
                 } else {
                     var oAuthToken = getAccessToken();
-                    var resourceUrl = "<a href='/protected/protected-apis.html?access_token="
+                    var resourceUrl = "<p><a href='/protected/protected-apis.html?access_token="
                             + oAuthToken
                             + "'>Access oAuth 2.0 protected resources</a>"
+                    resourceUrl += "<p><a href='/api/notes?access_token="
+                            + oAuthToken
+                            + "'>Calling /api/notes</a>";
 
                     displayMessage(resourceUrl);
                 }

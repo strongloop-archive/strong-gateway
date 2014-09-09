@@ -29,9 +29,13 @@
 	});
 
 	function processToken(data) {
-		resourceUrl = "<a href='/protected/protected-apis.html?access_token="
+		resourceUrl = "<p><a href='/protected/protected-apis.html?access_token="
 				+ data.access_token
 				+ "'>Access oAuth 2.0 protected resources</a>"
+        resourceUrl += "<p><a href='/api/notes?access_token="
+                + data.access_token
+                + "'>Calling /api/notes</a>";
+
 		displayMessage(resourceUrl);
 	}
 </script>

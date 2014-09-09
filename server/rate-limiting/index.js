@@ -101,7 +101,6 @@ module.exports = function(options) {
  * @returns {string} The rate limiting key
  */
 function getKey(req) {
-  console.log(req.authInfo);
   var clientId = '';
   var clientApp = req.authInfo && req.authInfo.app;
   if(!clientApp) {
