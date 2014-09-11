@@ -90,7 +90,8 @@ var rateLimiting = require('./rate-limiting');
 app.use(rateLimiting({limits: {m1: 100}}));
 
 var proxy = require('./proxy');
-app.use('/api', proxy({target: 'http://localhost:3002/'}));
+var proxyOptions = require('./proxy/proxy-config.json');
+app.use(proxy(proxyOptions));
 
 // Requests that get this far won't be handled
 // by any middleware. Convert them into a 404 error
