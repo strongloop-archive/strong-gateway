@@ -1,15 +1,39 @@
 var debug = require('debug')('loopback:gateway:proxy');
 var httpProxy = require('http-proxy');
 
+function setupHeaders(proxyReq, req) {
+  if(!req.authInfo) {
+    return;
+  }
+  var clientApp = req.authInfo.app;
+  var clientId = clientApp && clientApp.id;
+  var user = req.authInfo.user || req.user;
+  var userId = user && user.id;
+  if(clientId) {
+    debug('X-Client-ID: %s', clientId);
+    proxyReq.setHeader('X-Client-ID', clientId);
+  }
+  if(userId) {
+    debug('X-User-ID: %s', userId);
+    proxyReq.setHeader('X-User-ID', userId);
+  }
+}
+
 function createProxy(options) {
+  options = options || {};
   var proxy = httpProxy.createProxyServer(options);
 
   proxy.on('proxyReq', function(proxyReq, req, res, options) {
-    debug(proxyReq);
+    setupHeaders(proxyReq, req);
+    if(typeof options.beforeRequest === 'function') {
+      options.beforeRequest(proxyReq, req, res, options);
+    }
   });
 
   proxy.on('proxyRes', function(proxyRes, req, res) {
-    debug(proxyRes);
+    if(typeof options.afterResponse === 'function') {
+      options.afterResponse(proxyRes, req, res);
+    }
   });
 
   proxy.on('error', function(err, req, res) {

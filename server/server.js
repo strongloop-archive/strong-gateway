@@ -86,11 +86,12 @@ app.use(loopback.static(path.join(__dirname, '../client/public')));
 app.use('/admin', loopback.static(path.join(__dirname, '../client/admin')));
 
 signupTestUserAndApp();
+
 var rateLimiting = require('./rate-limiting');
-app.use(rateLimiting({limits: {m1: 100}}));
+app.use(rateLimiting({limit: 100, interval: 60000}));
 
 var proxy = require('./proxy');
-var proxyOptions = require('./proxy/proxy-config.json');
+var proxyOptions = require('./proxy/config.json');
 app.use(proxy(proxyOptions));
 
 // Requests that get this far won't be handled
@@ -136,6 +137,7 @@ function signupTestUserAndApp() {
       user.id,
       'demo-app',
       {
+        publicKey: sslCert.certificate
       },
       function(err, demo) {
         if (err) {

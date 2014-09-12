@@ -1,8 +1,7 @@
 // https://github.com/jhurliman/node-rate-limiter
 // https://github.com/apigee-127/volos/tree/master/quota/
 var debug = require('debug')('loopback:gateway:rate-limiting');
-var limiter = require('limiter');
-var RateLimiter = limiter.RateLimiter;
+var RateLimiter = require('limiter').RateLimiter;
 
 module.exports = function(options) {
   options = options || {};
@@ -14,19 +13,21 @@ module.exports = function(options) {
 
   return function(req, res, next) {
 
-    var timer;
+    var limiter;
     var key = (options.getKey || getKey)(req);
     debug('Key: %s', key);
     if (key) {
-      timer = limiters[key];
-      if (!timer) {
-        timer = new RateLimiter(limit, interval);
-        limiters[key] = timer;
+      limiter = limiters[key];
+      if (!limiter) {
+        debug('Creating rate limiter: %d %d', limit, interval);
+        limiter = new RateLimiter(limit, interval);
+        limiters[key] = limiter;
       }
 
-      var ok = timer.tryRemoveTokens(1);
-      var remaining = timer.getTokensRemaining();
-      var reset = Math.max(interval - (Date.now() - timer.curIntervalStart), 0);
+      var ok = limiter.tryRemoveTokens(1);
+      debug('Bucket: ', limiter.tokenBucket);
+      var remaining = limiter.getTokensRemaining();
+      var reset = Math.max(interval - (Date.now() - limiter.curIntervalStart), 0);
 
       debug('Limit: %d Remaining: %d Reset: %d', limit, remaining, reset);
       res.setHeader('X-RateLimit-Limit', limit);
@@ -53,5 +54,5 @@ function getKey(req) {
   if (clientApp) {
     clientId = clientApp.id;
   }
-  return clientId;
+  return 'client:' + clientId;
 }
