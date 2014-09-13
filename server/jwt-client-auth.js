@@ -1,12 +1,22 @@
-var jwt = require('jwt-simple');
+var jwt = require('jws');
 var sslCerts = require('./private/ssl_cert');
 
 var payload = {
   iss: '123',
+  sub: '123', // client id
+  aud: '/oauth/token',
+  exp: Date.now() + 10000,
+  iat: Date.now(),
   scope: ['demo']
 };
 
-var assertion = jwt.encode(payload, sslCerts.privateKey, 'RS256');
+var body = {
+  header: { alg: 'RS256' },
+  privateKey: sslCerts.privateKey,
+  payload: payload
+}
+
+var assertion = jwt.sign(body);
 
 console.log(assertion);
 
