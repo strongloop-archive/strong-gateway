@@ -16,9 +16,10 @@ var httpsOptions = {
 
 var app = module.exports = loopback();
 
+// Redirect http requests to https
 app.use(function(req, res, next) {
   if (!req.secure) {
-    var parts = req.headers.host.split(':');
+    var parts = req.get('host').split(':');
     var host = parts[0] || '127.0.0.1';
     var port = Number(parts[1] || 80) + 1;
     return res.redirect('https://' + host + ':' + port + req.url);
@@ -67,10 +68,12 @@ app.use('/api', function(req, res, next) {
     {session: false, scope: 's1'})(req, res, next);
 });
 
+// Set up the oAuth 2.0 protocol endpoints
 app.get('/oauth/authorize', oauth2.authorization);
 app.post('/oauth/authorize/decision', oauth2.decision);
 app.post('/oauth/token', oauth2.token);
 
+// Set up login/logout forms
 app.get('/login', site.loginForm);
 app.post('/login', site.login);
 app.get('/logout', site.logout);
