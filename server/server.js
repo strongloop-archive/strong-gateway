@@ -37,7 +37,8 @@ app.use(loopback.compress());
 // boot scripts mount components like REST API
 boot(app, __dirname);
 
-var oauth2 = require('loopback-oauth2').oAuth2Provider(app, {dataSource: app.dataSources.db});
+var oauth2 = require('loopback-component-oauth2').oAuth2Provider(
+  app, {dataSource: app.dataSources.db});
 
 app.set('view engine', 'ejs');
 
