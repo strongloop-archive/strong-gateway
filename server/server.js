@@ -66,18 +66,16 @@ app.use('/api', function(req, res, next) {
     {session: false, scope: 's1'})(req, res, next);
 });
 
-// app.get('/', site.index);
+app.get('/oauth/authorize', oauth2.authorization);
+app.post('/oauth/authorize/decision', oauth2.decision);
+app.post('/oauth/token', oauth2.token);
+
 app.get('/login', site.loginForm);
 app.post('/login', site.login);
 app.get('/logout', site.logout);
 app.get('/account', site.account);
 
-app.get('/oauth/authorize', oauth2.authorization);
-app.post('/oauth/authorize/decision', oauth2.decision);
-app.post('/oauth/token', oauth2.token);
-
 app.get('/userinfo', user.info);
-
 app.get('/callback', site.callbackPage);
 
 app.set('views', path.join(__dirname, 'views'));
