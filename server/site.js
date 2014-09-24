@@ -1,9 +1,7 @@
 /**
  * Module dependencies.
  */
-var passport = require('passport')
-  , login = require('connect-ensure-login');
-
+var login = require('connect-ensure-login');
 
 exports.index = function(req, res) {
   res.send('OAuth 2.0 Server');
@@ -12,9 +10,6 @@ exports.index = function(req, res) {
 exports.loginForm = function(req, res) {
   res.render('login');
 };
-
-exports.login = passport.authenticate('local',
-  { successReturnToOrRedirect: '/', failureRedirect: '/login' });
 
 exports.logout = function(req, res) {
   req.logout();

@@ -3,10 +3,8 @@ var boot = require('loopback-boot');
 
 var http = require('http')
   , https = require('https')
-  , passport = require('passport')
   , path = require('path')
   , site = require('./site')
-  , user = require('./user')
   , sslCert = require('./private/ssl_cert');
 
 var httpsOptions = {
@@ -33,21 +31,26 @@ app.use(loopback.favicon());
 // request pre-processing middleware
 app.use(loopback.compress());
 
+app.use(loopback.session({ saveUninitialized: true, resave: true, secret: 'keyboard cat' }));
+
 // -- Add your pre-processing middleware here --
 
 // boot scripts mount components like REST API
 boot(app, __dirname);
 
 var oauth2 = require('loopback-component-oauth2').oAuth2Provider(
-  app, {dataSource: app.dataSources.db});
+  app, {
+    dataSource: app.dataSources.db, // Data source for oAuth2 metadata persistence
+    loginPage: '/login', // The login page url
+    loginPath: '/login' // The login processing url
+  });
 
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
-app.use(loopback.cookieParser(app.get('cookieSecret')));
-app.use(loopback.json());
-app.use(loopback.urlencoded({extended: false}));
-
-app.use(loopback.session({ saveUninitialized: true, resave: true, secret: 'keyboard cat' }));
+// app.use(loopback.cookieParser(app.get('cookieSecret')));
+// app.use(loopback.json());
+// app.use(loopback.urlencoded({extended: false}));
 
 // -- Mount static files here--
 // All static middleware should be registered at the end, as all requests
@@ -55,34 +58,25 @@ app.use(loopback.session({ saveUninitialized: true, resave: true, secret: 'keybo
 // Example:
 //   app.use(loopback.static(path.resolve(__dirname', '../client')));
 
-app.use(passport.initialize());
-app.use(passport.session());
-
-app.use('/protected', function(req, res, next) {
-  passport.authenticate('bearer',
-    {session: false, scope: 's1'})(req, res, next);
-});
-
-app.use('/api', function(req, res, next) {
-  passport.authenticate('bearer',
-    {session: false, scope: 's1'})(req, res, next);
-});
-
-// Set up the oAuth 2.0 protocol endpoints
-app.get('/oauth/authorize', oauth2.authorization);
-app.post('/oauth/authorize/decision', oauth2.decision);
-app.post('/oauth/token', oauth2.token);
+oauth2.authenticate(['/protected', '/api', '/me'], {session: false, scope: 's1'});
 
 // Set up login/logout forms
 app.get('/login', site.loginForm);
-app.post('/login', site.login);
+
 app.get('/logout', site.logout);
 app.get('/account', site.account);
 
-app.get('/userinfo', user.info);
+app.get('/me', function(req, res, next) {
+  // req.authInfo is set using the `info` argument supplied by
+  // `BearerStrategy`.  It is typically used to indicate scope of the token,
+  // and used in access control checks.  For illustrative purposes, this
+  // example simply returns the scope in the response.
+  res.json({ user_id: req.user.id, name: req.user.username,
+    accessToken: req.authInfo.accessToken });
+});
+
 app.get('/callback', site.callbackPage);
 
-app.set('views', path.join(__dirname, 'views'));
 app.use(loopback.static(path.join(__dirname, '../client/public')));
 
 app.use('/admin', loopback.static(path.join(__dirname, '../client/admin')));
@@ -128,6 +122,11 @@ function signupTestUserAndApp() {
     password: 'secret',
     email: 'foo@bar.com'}, function(err, user) {
 
+    if (!err) {
+      console.log('User registered: username=%s password=%s',
+        user.username, 'secret');
+    }
+
     // Hack to set the app id to a fixed value so that we don't have to change
     // the client settings
     app.models.Application.beforeSave = function(next) {
@@ -145,7 +144,8 @@ function signupTestUserAndApp() {
         if (err) {
           console.error(err);
         } else {
-          console.log('Client application %s %s', demo.id, demo.restApiKey);
+          console.log('Client application registered: id=%s key=%s',
+            demo.id, demo.restApiKey);
         }
       }
     );
