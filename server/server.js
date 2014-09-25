@@ -14,6 +14,9 @@ var httpsOptions = {
 
 var app = module.exports = loopback();
 
+// Set up the /favicon.ico
+app.use(loopback.favicon());
+
 // Redirect http requests to https
 app.use(function(req, res, next) {
   if (!req.secure) {
@@ -25,13 +28,11 @@ app.use(function(req, res, next) {
   next();
 });
 
-// Set up the /favicon.ico
-app.use(loopback.favicon());
-
 // request pre-processing middleware
 app.use(loopback.compress());
 
-app.use(loopback.session({ saveUninitialized: true, resave: true, secret: 'keyboard cat' }));
+app.use(loopback.session({ saveUninitialized: true,
+  resave: true, secret: 'keyboard cat' }));
 
 // -- Add your pre-processing middleware here --
 
@@ -47,10 +48,6 @@ var oauth2 = require('loopback-component-oauth2').oAuth2Provider(
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-
-// app.use(loopback.cookieParser(app.get('cookieSecret')));
-// app.use(loopback.json());
-// app.use(loopback.urlencoded({extended: false}));
 
 // -- Mount static files here--
 // All static middleware should be registered at the end, as all requests
