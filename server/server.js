@@ -4,6 +4,7 @@ var boot = require('loopback-boot');
 var http = require('http')
   , https = require('https')
   , path = require('path')
+  , httpsRedirect = require('./middleware/https-redirect')
   , site = require('./site')
   , sslCert = require('./private/ssl_cert');
 
@@ -17,17 +18,6 @@ var app = module.exports = loopback();
 // Set up the /favicon.ico
 app.use(loopback.favicon());
 
-// Redirect http requests to https
-app.use(function(req, res, next) {
-  if (!req.secure) {
-    var parts = req.get('host').split(':');
-    var host = parts[0] || '127.0.0.1';
-    var port = Number(parts[1] || 80) + 1;
-    return res.redirect('https://' + host + ':' + port + req.url);
-  }
-  next();
-});
-
 // request pre-processing middleware
 app.use(loopback.compress());
 
@@ -38,6 +28,9 @@ app.use(loopback.session({ saveUninitialized: true,
 
 // boot scripts mount components like REST API
 boot(app, __dirname);
+
+// Redirect http requests to https
+app.use(httpsRedirect({httpsPort: app.get('https-port')}));
 
 var oauth2 = require('loopback-component-oauth2').oAuth2Provider(
   app, {
@@ -80,11 +73,11 @@ app.use('/admin', loopback.static(path.join(__dirname, '../client/admin')));
 
 signupTestUserAndApp();
 
-var rateLimiting = require('./rate-limiting');
+var rateLimiting = require('./middleware/rate-limiting');
 app.use(rateLimiting({limit: 100, interval: 60000}));
 
-var proxy = require('./proxy');
-var proxyOptions = require('./proxy/config.json');
+var proxy = require('./middleware/proxy');
+var proxyOptions = require('./middleware/proxy/config.json');
 app.use(proxy(proxyOptions));
 
 // Requests that get this far won't be handled
