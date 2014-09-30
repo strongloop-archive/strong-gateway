@@ -45,10 +45,10 @@
 	<p>
 		Message: <b id='msg'></b>
 	<p>
-	<form id="server" action="#">
+
 		Client Secret: <input type="password" id="client_secret"
 			value="" /><br>
-		<button onclick="clientCredentials();">Client Credentials</button>
+		<button onclick="return clientCredentials();">Client Credentials</button>
 
 		<p />
 		User Name: <input type="text" id="username"
@@ -56,9 +56,9 @@
 		<p />
 		Password: <input type="password" id="password" value="secret" /><br>
 		<p />
-		<button onclick="resourceOwnerPasswordCredentials();">Resource
+		<button onclick="return resourceOwnerPasswordCredentials();">Resource
 			Owner Password Credentials</button>
-	</form>
+	<p>
 	<a href='/index.html'>Home</a>
 
 </body>
