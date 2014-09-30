@@ -30,7 +30,8 @@ app.use(loopback.session({ saveUninitialized: true,
 boot(app, __dirname);
 
 // Redirect http requests to https
-app.use(httpsRedirect({httpsPort: app.get('https-port')}));
+var httpsPort = app.get('https-port');
+app.use(httpsRedirect({httpsPort: httpsPort}));
 
 var oauth2 = require('loopback-component-oauth2').oAuth2Provider(
   app, {
@@ -48,7 +49,7 @@ app.set('views', path.join(__dirname, 'views'));
 // Example:
 //   app.use(loopback.static(path.resolve(__dirname', '../client')));
 
-oauth2.authenticate(['/protected', '/api', '/me'], {session: false, scope: 's1'});
+oauth2.authenticate(['/protected', '/api', '/me'], {session: false, scope: 'demo'});
 
 // Set up login/logout forms
 app.get('/login', site.loginForm);
@@ -93,7 +94,7 @@ app.start = function() {
 
   http.createServer(app).listen(port, function() {
     console.log('Web server listening at: %s', 'http://localhost:3000/');
-    https.createServer(httpsOptions, app).listen(port + 1, function() {
+    https.createServer(httpsOptions, app).listen(httpsPort, function() {
       app.emit('started');
       console.log('Web server listening at: %s', app.get('url'));
     });
