@@ -9,15 +9,38 @@ https://docs.google.com/document/d/1HnoUy8E1OVvk8mGD9cbpCNGbF1TuXINXcweXA15n8BA/
 
 ## The basic features
 
+In this tutorial, we'll build a simplified version of API gateway using LoopBack.
+The gateway supports the following basic features:
+
 - oAuth 2.0 based authentication & authorization
 - Rate limiting
 - Reverse proxy
 
+The test scenario consists of three components:
+ 
+- A client application that invokes REST APIs
+- A loopback application (api gateway) that bridges the client application and 
+the backend api 
+- A loopback application (api server) serving the REST APIs 
+ 
+The architecture is illustrated in the diagram below.
+
+![loopback-api-gateway](loopback-api-gateway.png)
+
+
+
 ### oAuth 2.0
+
+#### Set up authorization server
+#### Set up resource server
 
 ### Rate Limiting
 
+#### Token bucket
+
 ### Proxy
+
+#### Routing
 
 ## Run the app
 
