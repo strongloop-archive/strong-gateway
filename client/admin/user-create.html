@@ -18,38 +18,44 @@
 
 <h1>Sign up a user</h1>
 
-<form role="form" data-ng-submit="create()">
+<form class="form-horizontal" role="form" data-ng-submit="create()">
     <div class="form-group">
-        <label class="col-sm-2 control-label" for="username">User Name</label>
+        <label class="col-xs-2 control-label" for="username">User Name</label>
 
-        <input class="col-sm-10 form-control" type="text" data-ng-model="username"
+        <input class="col-xs-10" type="text"
+               data-ng-model="username"
                id="username"
                placeholder="Your user name" required>
     </div>
 
     <div class="form-group">
-        <label class="col-sm-2 control-label" for="email">Email</label>
+        <label class="col-xs-2 control-label" for="email">Email</label>
 
-        <input class="col-sm-10 form-control" type="text" data-ng-model="email"
+        <input class="col-xs-10" type="text" data-ng-model="email"
                id="email"
                placeholder="Your email address" required>
     </div>
 
     <div class="form-group">
-        <label class="col-sm-2 control-label" for="password">Password</label>
+        <label class="col-xs-2 control-label" for="password">Password</label>
 
-        <input class="col-sm-10 form-control" type="password" data-ng-model="password"
+        <input class="col-xs-10" type="password"
+               data-ng-model="password"
                id="password"
                required>
     </div>
 
-    <input type="submit" class="btn btn-primary btn-lg"/>
+    <div class="form-group">
+        <div class="col-xs-offset-2 col-xs-10">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </div>
 
 </form>
 
-<p>{{id}}
+<p>{{id}}<p>
 
-<a class="btn btn-primary btn-lg" href="index.html">Home</a>
+    <a class="btn btn-primary" href="index.html">Home</a>
 
 </body>
 </html>
