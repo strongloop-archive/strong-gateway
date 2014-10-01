@@ -1,7 +1,7 @@
 // See https://tools.ietf.org/html/draft-ietf-oauth-jwt-bearer-10
 
 var jwt = require('jws');
-var sslCerts = require('./private/ssl_cert');
+var sslCerts = require('./../private/ssl_cert');
 
 var payload = {
   iss: '123',

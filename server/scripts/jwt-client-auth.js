@@ -4,7 +4,7 @@ var jwt = require('jws');
 
 // Reuse the SSL cert for https. Ideally, we should use a separate key/cert pair
 // for JWT
-var sslCerts = require('./private/ssl_cert');
+var sslCerts = require('./../private/ssl_cert');
 
 var payload = {
   iss: '123', // issuer - client id
