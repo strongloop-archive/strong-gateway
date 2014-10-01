@@ -26,7 +26,7 @@ module.exports = function(options) {
 
       var ok = limiter.tryRemoveTokens(1);
       debug('Bucket: ', limiter.tokenBucket);
-      var remaining = limiter.getTokensRemaining();
+      var remaining = Math.floor(limiter.getTokensRemaining());
       var reset = Math.max(interval - (Date.now() - limiter.curIntervalStart), 0);
 
       debug('Limit: %d Remaining: %d Reset: %d', limit, remaining, reset);
