@@ -18,7 +18,7 @@
     "loopback": "^2.0.0",
     "loopback-boot": "^2.0.0",
     "loopback-datasource-juggler": "^2.0.0",
-    "loopback-component-oauth2": "git+ssh://git@github.com:strongloop/loopback-component-oauth2.git",
+    "loopback-component-oauth2": "^1.0.0",
     "metrics": "~0.1.8",
     "passport": "~0.2.1",
     "request": "~2.42.0",
