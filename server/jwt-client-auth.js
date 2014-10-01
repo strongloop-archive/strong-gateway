@@ -1,13 +1,18 @@
+// See https://tools.ietf.org/html/draft-ietf-oauth-jwt-bearer-10
+
 var jwt = require('jws');
+
+// Reuse the SSL cert for https. Ideally, we should use a separate key/cert pair
+// for JWT
 var sslCerts = require('./private/ssl_cert');
 
 var payload = {
-  iss: '123',
-  sub: '123', // client id
-  aud: '/oauth/token',
-  exp: Date.now() + 10000,
-  iat: Date.now(),
-  scope: ['demo']
+  iss: '123', // issuer - client id
+  sub: '123', // subject
+  aud: '/oauth/token', // audience
+  exp: Date.now() + 10000, // expiration time
+  iat: Date.now(), // issued at time
+  scope: ['demo'] // a list of oAuth 2.0 scopes
 };
 
 var body = {
@@ -16,6 +21,7 @@ var body = {
   payload: payload
 }
 
+// Create a JWT assertion
 var assertion = jwt.sign(body);
 
 console.log(assertion);
