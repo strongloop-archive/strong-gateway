@@ -111,6 +111,10 @@ app.use(rateLimiting({limit: 100, interval: 60000}));
 
 ### Proxy
 
+The proxy middleware allows incoming requests to be forwarded/dispatched to 
+other servers. In this tutorial, we'll route /api/ to http://localhost:3002/api/.
+The implementation is based on [node-http-proxy](https://github.com/nodejitsu/node-http-proxy).
+
 ```js
 var proxy = require('./middleware/proxy');
 var proxyOptions = require('./middleware/proxy/config.json');
@@ -173,6 +177,8 @@ function signupTestUserAndApp() {
 
 ## Run the demo
 
+There are a few steps to run the demo application.
+
 ### Create the api server
 
 ```sh
@@ -205,6 +211,9 @@ Enter an empty property name when done.
 PORT=3002 node .
 ```
 
+Open a browser and point to http://localhost:3002/explorer. Locate the 'POST notes'
+section and add a few notes.
+
 ### Run the gateway
 
 ```sh
@@ -218,21 +227,55 @@ be redirected to https://localhost:3001. Please note your browser might complain
 about the SSL certificate as it is self-signed. It's safe to ignore the warning 
 and proceed.
 
-#### Test out oAuth 2.0
+#### Test out oAuth 2.0 and proxy
 
-
+The home page shows multiple options to try out the oAuth 2.0 grant types. Let's
+start with the [explicit flow](http://tools.ietf.org/html/rfc6749#section-4.2).
 
 ![home](home.png)
 
+Now you need to log in as the resource owner.
+
 ![login](login.png)
+
+The following dialog requests permission from the resource owner (user) to approve
+the access by the client application.
 
 ![decision](decision.png)
 
+Click `allow`. The browser will be redirected to the callback page.
+
+![callback](callback.png)
+
+The callback page builds the links with the access token. Click on 'Calling /api/notes'.
+
 ![notes](notes.png)
 
-#### Test out proxy
 
 #### Test out rate limiting
 
+To test rate limiting, please run the following script which sends 150 requests
+to the server. The script prints out the rate limit and remaining. 
+```sh
+node server/scripts/rate-limiting-client.js
+```
+
 #### Test out JWT
+
+We support JSON Web Token (JWT) as client authentication and authorization grant
+for oAuth 2.0. See https://tools.ietf.org/html/draft-ietf-oauth-jwt-bearer-10 
+for more details.
+
+The first command requests an access token with a JWT token signed by the private
+key.
+
+```sh
+node server/scripts/jwt-client-auth.js
+```
+The second command requests an access token using a JWT token as the assertion
+type.
+
+```sh
+node server/scripts/jwt-client-auth.js <authorization code>
+```
 
