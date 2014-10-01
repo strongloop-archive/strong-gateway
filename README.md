@@ -127,6 +127,11 @@ app.use(proxy(proxyOptions));
 
 ### Sign up client applications and users 
 
+oAuth 2.0 requires client applications to be registered. In this tutorial, we
+can simply create a new instance with the LoopBack built-in application model. 
+The client id is `123` and the client secret is `secret`. The resource owner is
+basically a user. We create a user named `bob` with password `secret` for testing.
+
 ```js
 function signupTestUserAndApp() {
 // Create a dummy user and client app
@@ -165,7 +170,8 @@ function signupTestUserAndApp() {
   });
 }
 ```
-## Run the app
+
+## Run the demo
 
 ### Create the api server
 
@@ -207,9 +213,14 @@ node .
 
 #### Test out https
 
+Open a browser and point to http://localhost:3000. You will see the browser to
+be redirected to https://localhost:3001. Please note your browser might complain
+about the SSL certificate as it is self-signed. It's safe to ignore the warning 
+and proceed.
+
 #### Test out oAuth 2.0
 
-Open a browser and point it to https://localhost:3001/index.html
+
 
 ![home](home.png)
 
