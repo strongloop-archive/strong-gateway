@@ -1,9 +1,16 @@
-# loopback-example-gateway
+# loopback-gateway
 
-`loopback-example-gateway` is an example application to demonstrate how to build
+`loopback-gateway` is an example application to demonstrate how to build
 an API gateway using LoopBack.
 
 ## What is an API gateway
+
+The API gateway is a component within systems architecture to externalize, 
+secure and manage APIs.  The API gateway sits as an intermediary between the 
+many consumers of APIs - API clients  and the many producers of the APIs on the
+backend - API servers. 
+
+You can see more information at:
 
 https://docs.google.com/document/d/1HnoUy8E1OVvk8mGD9cbpCNGbF1TuXINXcweXA15n8BA/edit?usp=sharing
 

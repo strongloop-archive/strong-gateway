@@ -1,7 +1,18 @@
 {
-  "name": "loopback-example-gateway",
+  "name": "loopback-gateway",
   "version": "1.0.0",
   "main": "server/server.js",
+  "keywords": [
+    "StrongLoop",
+    "LoopBack",
+    "oAuth 2.0",
+    "gateway",
+    "authentication",
+    "authorization",
+    "rate limiting",
+    "reverse proxy",
+    "api"
+  ],
   "scripts": {
     "pretest": "jshint ."
   },
@@ -26,5 +37,16 @@
   },
   "optionalDependencies": {
     "loopback-explorer": "^1.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/strongloop/loopback-gateway.git"
+  },
+  "bugs": {
+    "url": "http://github.com/strongloop/loopback-gateway/issues"
+  },
+  "license": {
+    "name": "Dual Artistic-2.0/StrongLoop",
+    "url": "https://github.com/strongloop/loopback-gateway/blob/master/LICENSE"
   }
 }
