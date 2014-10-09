@@ -12,7 +12,7 @@ backend - API servers.
 
 You can see more information at:
 
-https://docs.google.com/document/d/1HnoUy8E1OVvk8mGD9cbpCNGbF1TuXINXcweXA15n8BA/edit?usp=sharing
+http://strongloop.com/strongblog/open-source-node-js-api-gateway/
 
 ## The basic features
 
