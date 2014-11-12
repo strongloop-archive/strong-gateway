@@ -43,6 +43,14 @@ var oauth2 = require('loopback-component-oauth2')(
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+// Set up login/logout forms
+app.get('/login', site.loginForm);
+
+app.get('/logout', site.logout);
+app.get('/account', site.account);
+app.get('/callback', site.callbackPage);
+
+
 // -- Mount static files here--
 // All static middleware should be registered at the end, as all requests
 // passing the static middleware are hitting the file system
@@ -50,12 +58,6 @@ app.set('views', path.join(__dirname, 'views'));
 //   app.use(loopback.static(path.resolve(__dirname', '../client')));
 
 oauth2.authenticate(['/protected', '/api', '/me'], {session: false, scope: 'demo'});
-
-// Set up login/logout forms
-app.get('/login', site.loginForm);
-
-app.get('/logout', site.logout);
-app.get('/account', site.account);
 
 app.get('/me', function(req, res, next) {
   // req.authInfo is set using the `info` argument supplied by
@@ -66,12 +68,6 @@ app.get('/me', function(req, res, next) {
     accessToken: req.authInfo.accessToken });
 });
 
-app.get('/callback', site.callbackPage);
-
-app.use(loopback.static(path.join(__dirname, '../client/public')));
-
-app.use('/admin', loopback.static(path.join(__dirname, '../client/admin')));
-
 signupTestUserAndApp();
 
 var rateLimiting = require('./middleware/rate-limiting');
@@ -80,6 +76,9 @@ app.use('routes:after', rateLimiting({limit: 100, interval: 60000}));
 var proxy = require('./middleware/proxy');
 var proxyOptions = require('./middleware/proxy/config.json');
 app.use('routes:after', proxy(proxyOptions));
+
+app.use(loopback.static(path.join(__dirname, '../client/public')));
+app.use('/admin', loopback.static(path.join(__dirname, '../client/admin')));
 
 // Requests that get this far won't be handled
 // by any middleware. Convert them into a 404 error

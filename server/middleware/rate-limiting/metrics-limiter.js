@@ -13,7 +13,7 @@ module.exports = function(options) {
   var timers = {};
   var report = new metrics.Report();
 
-  return function(req, res, next) {
+  return function metricsBasedRateLimiting(req, res, next) {
     // Handle settings via /rate-limiting (DEMO only as it is not protected)
     if (req.path === (options.path || '/rate-limiting')) {
       if (typeof req.query.limits === 'string') {

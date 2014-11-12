@@ -11,7 +11,7 @@ module.exports = function(options) {
 
   var limiters = {};
 
-  return function(req, res, next) {
+  return function tokenBucketBasedRateLimiting(req, res, next) {
 
     var limiter;
     var key = (options.getKey || getKey)(req);

@@ -86,7 +86,7 @@ function urlRewrite(rules) {
 // Parse the rules to get flags, replace and match pattern
   rules = _parse(rules);
 
-  return function(req, res, next) {
+  return function reverseProxy(req, res, next) {
     var callNext = true;
 
     rules.some(function(rule) {
