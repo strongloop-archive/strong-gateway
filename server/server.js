@@ -16,12 +16,12 @@ var httpsOptions = {
 var app = module.exports = loopback();
 
 // Set up the /favicon.ico
-app.use(loopback.favicon());
+app.middleware('initial', loopback.favicon());
 
 // request pre-processing middleware
-app.use(loopback.compress());
+app.middleware('initial', loopback.compress());
 
-app.use(loopback.session({ saveUninitialized: true,
+app.middleware('session', loopback.session({ saveUninitialized: true,
   resave: true, secret: 'keyboard cat' }));
 
 // -- Add your pre-processing middleware here --
@@ -31,9 +31,9 @@ boot(app, __dirname);
 
 // Redirect http requests to https
 var httpsPort = app.get('https-port');
-app.use(httpsRedirect({httpsPort: httpsPort}));
+app.use('routes', httpsRedirect({httpsPort: httpsPort}));
 
-var oauth2 = require('loopback-component-oauth2').oAuth2Provider(
+var oauth2 = require('loopback-component-oauth2')(
   app, {
     dataSource: app.dataSources.db, // Data source for oAuth2 metadata persistence
     loginPage: '/login', // The login page url
@@ -75,19 +75,19 @@ app.use('/admin', loopback.static(path.join(__dirname, '../client/admin')));
 signupTestUserAndApp();
 
 var rateLimiting = require('./middleware/rate-limiting');
-app.use(rateLimiting({limit: 100, interval: 60000}));
+app.use('routes:after', rateLimiting({limit: 100, interval: 60000}));
 
 var proxy = require('./middleware/proxy');
 var proxyOptions = require('./middleware/proxy/config.json');
-app.use(proxy(proxyOptions));
+app.use('routes:after', proxy(proxyOptions));
 
 // Requests that get this far won't be handled
 // by any middleware. Convert them into a 404 error
 // that will be handled later down the chain.
-app.use(loopback.urlNotFound());
+app.use('final', loopback.urlNotFound());
 
 // The ultimate error handler.
-app.use(loopback.errorHandler());
+app.use('final', loopback.errorHandler());
 
 app.start = function() {
   var port = app.get('port');
