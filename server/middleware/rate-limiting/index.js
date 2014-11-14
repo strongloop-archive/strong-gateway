@@ -8,4 +8,4 @@ module.exports = function(options) {
   } else {
     return tokenBucketLimiter(options);
   }
-}
+};

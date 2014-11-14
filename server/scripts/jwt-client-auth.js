@@ -1,5 +1,5 @@
 // See https://tools.ietf.org/html/draft-ietf-oauth-jwt-bearer-10
-
+/* jshint camelcase: false */
 var jwt = require('jws');
 
 // Reuse the SSL cert for https. Ideally, we should use a separate key/cert pair
@@ -19,7 +19,7 @@ var body = {
   header: { alg: 'RS256' },
   privateKey: sslCerts.privateKey,
   payload: payload
-}
+};
 
 // Create a JWT assertion
 var assertion = jwt.sign(body);
@@ -29,7 +29,7 @@ console.log(assertion);
 var form = {
   grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
   assertion: assertion
-}
+};
 
 var request = require('request');
 request.post({

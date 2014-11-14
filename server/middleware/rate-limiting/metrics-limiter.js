@@ -3,12 +3,13 @@ var metrics = require('metrics');
 module.exports = function(options) {
   options = options || {};
 
-  // TODO: [rfeng] options.limits can be a function that retrieve limits based on
-  // the key and interval
+  // TODO: [rfeng] options.limits can be a function that retrieve limits
+  // based on the key and interval
   var limits = options.limits || {};
   var m1Max = limits.m1; // 1 minute
   var m5Max = m1Max ? null : limits.m5; // 5 minute if 1 minute limit is not set
-  var m15Max = (m1Max || m5Max) ? null : limits.m15; // 15 minutes if neither 1 minute nor 5 minute is set
+  // 15 minutes if neither 1 minute nor 5 minute is set
+  var m15Max = (m1Max || m5Max) ? null : limits.m15;
 
   var timers = {};
   var report = new metrics.Report();
@@ -24,8 +25,10 @@ module.exports = function(options) {
         }
         if (typeof limits === 'object') {
           m1Max = limits.m1; // 1 minute
-          m5Max = m1Max ? null : limits.m5; // 5 minute if 1 minute limit is not set
-          m15Max = (m1Max || m5Max) ? null : limits.m15; // 15 minutes if neither 1 minute nor 5 minute is set
+          // 5 minute if 1 minute limit is not set
+          m5Max = m1Max ? null : limits.m5;
+          // 15 minutes if neither 1 minute nor 5 minute is set
+          m15Max = (m1Max || m5Max) ? null : limits.m15;
         } else if (typeof limits === 'string') {
           m1Max = limits;
           m5Max = undefined;
@@ -93,7 +96,7 @@ module.exports = function(options) {
     }
     next();
   };
-}
+};
 
 /**
  * Build the key for rate limiting from the request

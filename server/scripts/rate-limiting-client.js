@@ -1,9 +1,17 @@
+/* jshint camelcase: false */
 var request = require('request');
 
 // Build the token request using client_credentials grant type
 var form = {
   grant_type: 'client_credentials'
 };
+
+function printRateLimitHeaders(err, res) {
+  console.log('Limit %d Remaining: %d Reset: %d',
+    res.headers['x-ratelimit-limit'],
+    res.headers['x-ratelimit-remaining'],
+    res.headers['x-ratelimit-reset']);
+}
 
 // Request the access token
 request.post({
@@ -26,14 +34,10 @@ request.post({
 
   // Request a protected resources in a loop
   for (var i = 0; i < 150; i++) {
-    request.get('https://localhost:3001/api/notes?access_token=' + obj.access_token,
+    request.get('https://localhost:3001/api/notes?access_token=' +
+        obj.access_token,
       {strictSSL: false},
-      function(err, res) {
-        console.log('Limit %d Remaining: %d Reset: %d',
-          res.headers['x-ratelimit-limit'],
-          res.headers['x-ratelimit-remaining'],
-          res.headers['x-ratelimit-reset']);
-      });
+      printRateLimitHeaders);
   }
 });
 

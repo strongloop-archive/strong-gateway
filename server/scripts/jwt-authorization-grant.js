@@ -1,5 +1,5 @@
 // See https://tools.ietf.org/html/draft-ietf-oauth-jwt-bearer-10
-
+/* jshint camelcase: false */
 var jwt = require('jws');
 var sslCerts = require('./../private/ssl_cert');
 
@@ -16,7 +16,7 @@ var body = {
   header: { alg: 'RS256' },
   privateKey: sslCerts.privateKey,
   payload: payload
-}
+};
 
 var assertion = jwt.sign(body);
 
@@ -28,9 +28,10 @@ console.log('code: ', code);
 var form = {
   grant_type: 'authorization_code',
   code: code || 'invalid_code_123',
-  client_assertion_type: 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
+  client_assertion_type:
+    'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
   client_assertion: assertion
-}
+};
 
 var request = require('request');
 request.post({

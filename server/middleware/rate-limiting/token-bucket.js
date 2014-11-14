@@ -27,7 +27,8 @@ module.exports = function(options) {
       var ok = limiter.tryRemoveTokens(1);
       debug('Bucket: ', limiter.tokenBucket);
       var remaining = Math.floor(limiter.getTokensRemaining());
-      var reset = Math.max(interval - (Date.now() - limiter.curIntervalStart), 0);
+      var reset = Math.max(interval - (Date.now() - limiter.curIntervalStart),
+        0);
 
       debug('Limit: %d Remaining: %d Reset: %d', limit, remaining, reset);
       res.setHeader('X-RateLimit-Limit', limit);
@@ -41,7 +42,7 @@ module.exports = function(options) {
     }
     next();
   };
-}
+};
 
 /**
  * Build the key for rate limiting from the request

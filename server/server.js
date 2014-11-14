@@ -1,12 +1,12 @@
 var loopback = require('loopback');
 var boot = require('loopback-boot');
 
-var http = require('http')
-  , https = require('https')
-  , path = require('path')
-  , httpsRedirect = require('./middleware/https-redirect')
-  , site = require('./site')
-  , sslCert = require('./private/ssl_cert');
+var http = require('http');
+var https = require('https');
+var path = require('path');
+var httpsRedirect = require('./middleware/https-redirect');
+var site = require('./site');
+var sslCert = require('./private/ssl_cert');
 
 var httpsOptions = {
   key: sslCert.privateKey,
@@ -35,7 +35,7 @@ app.use('routes', httpsRedirect({httpsPort: httpsPort}));
 
 var oauth2 = require('loopback-component-oauth2')(
   app, {
-    dataSource: app.dataSources.db, // Data source for oAuth2 metadata persistence
+    dataSource: app.dataSources.db, // Data source for oAuth2 metadata
     loginPage: '/login', // The login page url
     loginPath: '/login' // The login processing url
   });
@@ -57,14 +57,16 @@ app.get('/callback', site.callbackPage);
 // Example:
 //   app.use(loopback.static(path.resolve(__dirname', '../client')));
 
-oauth2.authenticate(['/protected', '/api', '/me'], {session: false, scope: 'demo'});
+oauth2.authenticate(['/protected', '/api', '/me'],
+  {session: false, scope: 'demo'});
 
+/* jshint unused: vars */
 app.get('/me', function(req, res, next) {
   // req.authInfo is set using the `info` argument supplied by
   // `BearerStrategy`.  It is typically used to indicate scope of the token,
   // and used in access control checks.  For illustrative purposes, this
   // example simply returns the scope in the response.
-  res.json({ user_id: req.user.id, name: req.user.username,
+  res.json({ 'user_id': req.user.id, name: req.user.username,
     accessToken: req.authInfo.accessToken });
 });
 

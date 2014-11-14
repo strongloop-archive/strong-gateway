@@ -14,14 +14,14 @@ exports.loginForm = function(req, res) {
 exports.logout = function(req, res) {
   req.logout();
   res.redirect('/');
-}
+};
 
 exports.account = [
   login.ensureLoggedIn(),
   function(req, res) {
     res.render('account', { user: req.user });
   }
-]
+];
 
 exports.callbackPage = function(req, res) {
   res.render('callback');
