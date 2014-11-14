@@ -1,0 +1,52 @@
+{
+  "name": "loopback-gateway",
+  "version": "1.0.0",
+  "main": "server/server.js",
+  "keywords": [
+    "StrongLoop",
+    "LoopBack",
+    "oAuth 2.0",
+    "gateway",
+    "authentication",
+    "authorization",
+    "rate limiting",
+    "reverse proxy",
+    "api"
+  ],
+  "scripts": {
+    "pretest": "jshint ."
+  },
+  "dependencies": {
+    "compression": "^1.0.3",
+    "connect-ensure-login": "~0.1.1",
+    "cookie-parser": "~1.3.2",
+    "debug": "~2.0.0",
+    "errorhandler": "^1.1.1",
+    "express-session": "~1.7.6",
+    "http-proxy": "~1.3.0",
+    "jws": "~0.2.6",
+    "limiter": "~1.0.5",
+    "loopback": "^2.0.0",
+    "loopback-boot": "^2.0.0",
+    "loopback-datasource-juggler": "^2.0.0",
+    "loopback-component-oauth2": "^1.0.0",
+    "metrics": "~0.1.8",
+    "passport": "~0.2.1",
+    "request": "~2.42.0",
+    "serve-favicon": "^2.0.1"
+  },
+  "optionalDependencies": {
+    "loopback-explorer": "^1.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/strongloop/loopback-gateway.git"
+  },
+  "bugs": {
+    "url": "http://github.com/strongloop/loopback-gateway/issues"
+  },
+  "license": {
+    "name": "Dual Artistic-2.0/StrongLoop",
+    "url": "https://github.com/strongloop/loopback-gateway/blob/master/LICENSE"
+  }
+}

@@ -1,0 +1,65 @@
+<html>
+<head>
+<title>Server-side Privileged/Trusted Application</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+<script src="oauth2.js"></script>
+<script>
+	function clientCredentials() {
+		tokenByClientCredentials(client_id, $('#client_secret').val(), "demo", processToken1, processError);
+	}
+
+	function resourceOwnerPasswordCredentials() {
+		tokenByResourceOwnerPasswordCredentials(client_id, $('#client_secret')
+				.val(), $('#username').val(), $('#password').val(), "demo", processToken2, processError);
+	}
+
+	function processToken1(data) {
+		resourceUrl = "<a href='/protected/protected-apis.html?access_token="
+				+ data.access_token
+				+ "'>Access oAuth 2.0 protected resources (based on client credentials)</a>"
+		displayMessage(resourceUrl);
+	}
+
+	function processToken2(data) {
+		resourceUrl = "<a href='/protected/protected-apis.html?access_token="
+				+ data.access_token
+				+ "'>Access oAuth 2.0 protected resources (based on resource owner password credentials)</a>"
+		displayMessage(resourceUrl);
+	}
+
+	function processError(error) {
+		displayMessage(JSON.stringify(error));
+	}
+	
+    $(document).ready(function() {
+        $('#client_secret').val(client_secret);
+    }); 	
+</script>
+</head>
+<body>
+
+
+	<h1>oAuth 2.0 Server-side client credentials flow</h1>
+	<hr>
+	<p>
+		Message: <b id='msg'></b>
+	<p>
+
+		Client Secret: <input type="password" id="client_secret"
+			value="" /><br>
+		<button onclick="return clientCredentials();">Client Credentials</button>
+
+		<p />
+		User Name: <input type="text" id="username"
+			value="bob" />
+		<p />
+		Password: <input type="password" id="password" value="secret" /><br>
+		<p />
+		<button onclick="return resourceOwnerPasswordCredentials();">Resource
+			Owner Password Credentials</button>
+	<p>
+	<a href='/index.html'>Home</a>
+
+</body>
+</html>

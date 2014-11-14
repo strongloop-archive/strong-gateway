@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html ng-app>
+<head>
+    <title>Client Applications</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet"
+          href="bootstrap/css/bootstrap.min.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.min.js"></script>
+    <script src="js/applications.js"></script>
+</head>
+<body ng-controller="ApplicationsController" data-ng-init="load()">
+
+<div class="container-fluid">
+    <h1>Client Applications</h1>
+
+    <div class="row-fluid span12">
+        <table class="table table-striped" style="table-layout: fixed">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <!--
+                <th>Description</th>
+                -->
+                <th>REST API Key</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="app in apps">
+                <td>{{app.id}}</td>
+                <td>{{app.name}}</td>
+                <!--
+                <td>{{app.description}}</td>
+                -->
+                <td>{{app.restApiKey}}</td>
+                <td>
+                    <button type="button" class="btn btn-default btn-sm"
+                            ng-click="delete($index, app.id)"
+                            title="Remove the client application"
+                            >
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td>{{status}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <a class="btn btn-primary btn-lg" href="app-create.html">Sign up a new client application</a>
+    <a class="btn btn-primary btn-lg" href="index.html">Home</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<html>
+<head>
+<title>Server-side Application</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+<script src="oauth2.js"></script>
+<script>
+	$(function() {
+
+		var query = window.location.search;
+		var parameters = [];
+
+		if (query != null && query != "") {
+			parameters = query.substring(1).split('&');
+		}
+
+		if (parameters.length == 0) {
+			if (window.location.hash.length == 0) {
+				authorizationCode(client_id);
+			} else {
+				// alert(window.location);
+				displayMessage(window.location);
+			}
+		} else {
+			oAuthCode = getCode();
+			tokenByCode(client_id, client_secret, oAuthCode, processToken);
+		}
+
+	});
+
+	function processToken(data) {
+		resourceUrl = "<p><a href='/protected/protected-apis.html?access_token="
+				+ data.access_token
+				+ "'>Access oAuth 2.0 protected resources</a>"
+        resourceUrl += "<p><a href='/api/notes?access_token="
+                + data.access_token
+                + "'>Calling /api/notes</a>";
+
+		displayMessage(resourceUrl);
+	}
+</script>
+
+</head>
+<body>
+
+
+	<h1>oAuth 2.0 Server-side flow</h1>
+	<hr>
+	<p>
+		Message: <b id='msg'></b>
+	<p>
+		<a href='/index.html'>Home</a>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html ng-app>
+<head>
+    <title>User Sign Up</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet"
+          href="bootstrap/css/bootstrap.min.css">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.min.js"></script>
+    <script src="js/users.js"></script>
+</head>
+<body ng-controller="UsersController">
+
+<h1>Sign up a user</h1>
+
+<form class="form-horizontal" role="form" data-ng-submit="create()">
+    <div class="form-group">
+        <label class="col-xs-2 control-label" for="username">User Name</label>
+
+        <input class="col-xs-10" type="text"
+               data-ng-model="username"
+               id="username"
+               placeholder="Your user name" required>
+    </div>
+
+    <div class="form-group">
+        <label class="col-xs-2 control-label" for="email">Email</label>
+
+        <input class="col-xs-10" type="text" data-ng-model="email"
+               id="email"
+               placeholder="Your email address" required>
+    </div>
+
+    <div class="form-group">
+        <label class="col-xs-2 control-label" for="password">Password</label>
+
+        <input class="col-xs-10" type="password"
+               data-ng-model="password"
+               id="password"
+               required>
+    </div>
+
+    <div class="form-group">
+        <div class="col-xs-offset-2 col-xs-10">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </div>
+
+</form>
+
+<p>{{id}}<p>
+
+    <a class="btn btn-primary" href="index.html">Home</a>
+
+</body>
+</html>
