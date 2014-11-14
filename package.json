@@ -1,6 +1,6 @@
 {
-  "name": "loopback-gateway",
-  "version": "1.0.0",
+  "name": "strong-gateway",
+  "version": "0.1.0",
   "main": "server/server.js",
   "keywords": [
     "StrongLoop",
@@ -40,13 +40,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/strongloop/loopback-gateway.git"
+    "url": "git://github.com/strongloop/strong-gateway.git"
   },
   "bugs": {
-    "url": "http://github.com/strongloop/loopback-gateway/issues"
+    "url": "http://github.com/strongloop/strong-gateway/issues"
   },
   "license": {
-    "name": "Dual Artistic-2.0/StrongLoop",
-    "url": "https://github.com/strongloop/loopback-gateway/blob/master/LICENSE"
+    "name": "StrongLoop",
+    "url": "https://github.com/strongloop/strong-gateway/blob/master/LICENSE"
   }
 }
