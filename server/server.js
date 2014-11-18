@@ -4,7 +4,6 @@ var boot = require('loopback-boot');
 var http = require('http');
 var https = require('https');
 var path = require('path');
-var httpsRedirect = require('./middleware/https-redirect');
 var site = require('./site');
 var sslCert = require('./private/ssl_cert');
 
@@ -15,23 +14,11 @@ var httpsOptions = {
 
 var app = module.exports = loopback();
 
-// Set up the /favicon.ico
-app.middleware('initial', loopback.favicon());
-
-// request pre-processing middleware
-app.middleware('initial', loopback.compress());
-
-app.middleware('session', loopback.session({ saveUninitialized: true,
-  resave: true, secret: 'keyboard cat' }));
-
 // -- Add your pre-processing middleware here --
 
 // boot scripts mount components like REST API
 boot(app, __dirname);
 
-// Redirect http requests to https
-var httpsPort = app.get('https-port');
-app.use('routes', httpsRedirect({httpsPort: httpsPort}));
 
 var oauth2 = require('loopback-component-oauth2')(
   app, {
@@ -50,15 +37,8 @@ app.get('/logout', site.logout);
 app.get('/account', site.account);
 app.get('/callback', site.callbackPage);
 
-
-// -- Mount static files here--
-// All static middleware should be registered at the end, as all requests
-// passing the static middleware are hitting the file system
-// Example:
-//   app.use(loopback.static(path.resolve(__dirname', '../client')));
-
-oauth2.authenticate(['/protected', '/api', '/me'],
-  {session: false, scope: 'demo'});
+var auth = oauth2.authenticate({session: false, scope: 'demo'});
+app.use(['/protected', '/api', '/me'], auth);
 
 /* jshint unused: vars */
 app.get('/me', function(req, res, next) {
@@ -72,26 +52,9 @@ app.get('/me', function(req, res, next) {
 
 signupTestUserAndApp();
 
-var rateLimiting = require('./middleware/rate-limiting');
-app.use('routes:after', rateLimiting({limit: 100, interval: 60000}));
-
-var proxy = require('./middleware/proxy');
-var proxyOptions = require('./middleware/proxy/config.json');
-app.use('routes:after', proxy(proxyOptions));
-
-app.use(loopback.static(path.join(__dirname, '../client/public')));
-app.use('/admin', loopback.static(path.join(__dirname, '../client/admin')));
-
-// Requests that get this far won't be handled
-// by any middleware. Convert them into a 404 error
-// that will be handled later down the chain.
-app.use('final', loopback.urlNotFound());
-
-// The ultimate error handler.
-app.use('final', loopback.errorHandler());
-
 app.start = function() {
   var port = app.get('port');
+  var httpsPort = app.get('https-port');
 
   http.createServer(app).listen(port, function() {
     console.log('Web server listening at: %s', 'http://localhost:3000/');

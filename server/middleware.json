@@ -1,0 +1,58 @@
+{
+  "initial": {
+    "loopback/server/middleware/favicon": {
+    },
+    "compression": {
+      "params": {
+        "threshold": "4kb"
+      }
+    }
+  },
+  "session": {
+    "express-session": {
+      "params": {
+        "saveUninitialized": true,
+        "resave": true,
+        "secret": "keyboard cat"
+      }
+    }
+  },
+  "routes": {
+    "./middleware/https-redirect": {
+      "params": {
+        "httpsPort": 3001
+      }
+    }
+  },
+  "routes:after": {
+    "./middleware/rate-limiting": {
+      "params": {
+        "limit": 100,
+        "interval": 60000
+      }
+    },
+    "./middleware/proxy": {
+      "params": {
+        "rules": [
+          "^/api/(.*)$ http://localhost:3002/api/$1 [P]"
+        ]
+      }
+    }
+  },
+  "files": {
+    "loopback/server/middleware/static": [
+      {
+        "params": "../client/public",
+        "paths": ["/"]
+      },
+      {
+        "params": "../client/admin",
+        "paths": ["/admin"]
+      }
+    ]
+  },
+  "final": {
+    "loopback/server/middleware/url-not-found": {},
+    "loopback/server/middleware/error-handler": {}
+  }
+}
