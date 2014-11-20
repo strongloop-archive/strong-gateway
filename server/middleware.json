@@ -1,6 +1,6 @@
 {
   "initial": {
-    "loopback/server/middleware/favicon": {
+    "loopback#favicon": {
     },
     "compression": {
       "params": {
@@ -40,19 +40,19 @@
     }
   },
   "files": {
-    "loopback/server/middleware/static": [
+    "loopback#static": [
       {
-        "params": "../client/public",
+        "params": "./client/public",
         "paths": ["/"]
       },
       {
-        "params": "../client/admin",
+        "params": "./client/admin",
         "paths": ["/admin"]
       }
     ]
   },
   "final": {
-    "loopback/server/middleware/url-not-found": {},
-    "loopback/server/middleware/error-handler": {}
+    "loopback#url-not-found": {},
+    "errorHandler": {}
   }
 }
