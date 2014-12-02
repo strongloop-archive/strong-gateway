@@ -19,7 +19,6 @@ var app = module.exports = loopback();
 // boot scripts mount components like REST API
 boot(app, __dirname);
 
-
 var oauth2 = require('loopback-component-oauth2')(
   app, {
     dataSource: app.dataSources.db, // Data source for oAuth2 metadata

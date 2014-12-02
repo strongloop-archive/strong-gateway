@@ -1,7 +1,9 @@
 {
-  "initial": {
+  "initial:before": {
     "loopback#favicon": {
-    },
+    }
+  },
+  "initial": {
     "compression": {
       "params": {
         "threshold": "4kb"
@@ -52,7 +54,9 @@
     ]
   },
   "final": {
-    "loopback#url-not-found": {},
-    "errorHandler": {}
+    "loopback#url-not-found": {}
+  },
+  "final:after": {
+    "errorhandler": {}
   }
 }
