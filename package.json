@@ -27,6 +27,7 @@
     "jws": "^0.2.6",
     "limiter": "^1.0.5",
     "loopback": "^2.8.2",
+    "loopback-boot": "^2.5.0",
     "loopback-component-oauth2": "^1.0.0",
     "metrics": "^0.1.8",
     "passport": "^0.2.1",
