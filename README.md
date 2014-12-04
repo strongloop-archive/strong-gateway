@@ -1,6 +1,6 @@
-# loopback-gateway
+# strong-gateway
 
-`loopback-gateway` is an example application to demonstrate how to build
+`strong-gateway` is an example application to demonstrate how to build
 an API gateway using LoopBack.
 
 ## What is an API gateway
@@ -57,12 +57,15 @@ See https://github.com/strongloop/loopback-example-ssl for more details.
 
 2. Redirect incoming http requests to the https urls
 
-```js
-var httpsRedirect = require('./middleware/https-redirect');
-...
-// Redirect http requests to https
-var httpsPort = app.get('https-port');
-app.use(httpsRedirect({httpsPort: httpsPort}));
+Declare and configure the middleware in server/middleware.json.
+```json
+ "routes": {
+    "./middleware/https-redirect": {
+      "params": {
+        "httpsPort": 3001
+      }
+    }
+  },
 ```
 
 ### Configure oAuth 2.0
@@ -80,9 +83,9 @@ applications. It also creates the token endpoint to issue access tokens to clien
 applications with valid grants. 
 
 ```js
-var oauth2 = require('loopback-component-oauth2').oAuth2Provider(
+var oauth2 = require('loopback-component-oauth2')(
   app, {
-    dataSource: app.dataSources.db, // Data source for oAuth2 metadata persistence
+    dataSource: app.dataSources.db, // Data source for oAuth2 metadata
     loginPage: '/login', // The login page url
     loginPath: '/login' // The login processing url
   });
@@ -95,7 +98,8 @@ requests for an access token and validate it with the information persisted on
 the server when the token is issued.
 
 ```js
-oauth2.authenticate(['/protected', '/api', '/me'], {session: false, scope: 'demo'});
+var auth = oauth2.authenticate({session: false, scope: 'demo'});
+app.use(['/protected', '/api', '/me'], auth);
 ```
 
 ### Rate Limiting
@@ -111,9 +115,16 @@ id, the user id, the client ip address, or a combination of more than one identi
 The sample uses a [token bucket](http://en.wikipedia.org/wiki/Token_bucket) based
 algorithm to enforce the rate limits based on authenticated client application ids.
  
-```js
-var rateLimiting = require('./middleware/rate-limiting');
-app.use(rateLimiting({limit: 100, interval: 60000}));
+```json
+  "routes:after": {
+    "./middleware/rate-limiting": {
+      "params": {
+        "limit": 100,
+        "interval": 60000
+      }
+    },
+    ...
+  },
 ```
 
 ### Proxy
@@ -122,18 +133,17 @@ The proxy middleware allows incoming requests to be forwarded/dispatched to
 other servers. In this tutorial, we'll route /api/ to http://localhost:3002/api/.
 The implementation is based on [node-http-proxy](https://github.com/nodejitsu/node-http-proxy).
 
-```js
-var proxy = require('./middleware/proxy');
-var proxyOptions = require('./middleware/proxy/config.json');
-app.use(proxy(proxyOptions));
-```
-
 ```json
-{
-  "rules": [
-    "^/api/(.*)$ http://localhost:3002/api/$1 [P]"
-  ]
-}
+  "routes:after": {
+    ...
+    "./middleware/proxy": {
+      "params": {
+        "rules": [
+          "^/api/(.*)$ http://localhost:3002/api/$1 [P]"
+        ]
+      }
+    }
+  },
 ```
 
 ### Sign up client applications and users 
