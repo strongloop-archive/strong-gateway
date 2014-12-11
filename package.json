@@ -14,28 +14,30 @@
     "api"
   ],
   "scripts": {
-    "pretest": "jshint ."
+    "pretest": "jshint .",
+    "test": "mocha"
   },
   "dependencies": {
-    "compression": "^1.2.1",
+    "async": "^0.9.0",
+    "compression": "^1.2.2",
     "connect-ensure-login": "^0.1.1",
     "cookie-parser": "^1.3.3",
     "debug": "^2.1.0",
     "errorhandler": "^1.3.0",
-    "express-session": "^1.9.2",
-    "http-proxy": "^1.7.0",
-    "jws": "^0.2.6",
+    "express-session": "^1.9.3",
+    "http-proxy": "^1.8.0",
+    "jws": "^1.0.0",
     "limiter": "^1.0.5",
-    "loopback": "^2.8.2",
-    "loopback-boot": "^2.5.0",
-    "loopback-component-oauth2": "^1.0.0",
+    "loopback": "^2.8.6",
+    "loopback-boot": "^2.5.1",
+    "loopback-component-oauth2": "^2.0.0-beta1",
     "metrics": "^0.1.8",
     "passport": "^0.2.1",
-    "request": "^2.49.0",
+    "request": "^2.51.0",
     "serve-favicon": "^2.1.7"
   },
   "optionalDependencies": {
-    "loopback-explorer": "^1.6.0"
+    "loopback-explorer": "^1.6.2"
   },
   "repository": {
     "type": "git",
@@ -47,5 +49,10 @@
   "license": {
     "name": "StrongLoop",
     "url": "https://github.com/strongloop/strong-gateway/blob/master/LICENSE"
+  },
+  "devDependencies": {
+    "chai": "^1.10.0",
+    "mocha": "^2.0.1",
+    "supertest": "^0.15.0"
   }
 }

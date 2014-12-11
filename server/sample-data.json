@@ -1,0 +1,22 @@
+{
+  "users": [
+    {
+      "username": "bob",
+      "password": "secret",
+      "email": "foo@bar.com"
+    }
+  ],
+  "applications": [
+    {
+      "id": 123,
+      "restApiKey": "secret",
+      "name": "demo-app",
+      "callbackUrls": ["https://localhost:3001"]
+    },
+    {
+      "id": 456,
+      "restApiKey": "secret",
+      "name": "demo-app-2"
+    }
+  ]
+}

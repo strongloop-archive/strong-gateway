@@ -19,7 +19,7 @@
       }
     }
   },
-  "routes": {
+  "routes:before": {
     "./middleware/https-redirect": {
       "params": {
         "httpsPort": 3001
@@ -57,6 +57,6 @@
     "loopback#url-not-found": {}
   },
   "final:after": {
-    "errorhandler": {}
+    "errorhandler": {"params": {"log": false}}
   }
 }
