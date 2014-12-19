@@ -1,0 +1,14 @@
+{
+  "name": "MetricEvent",
+  "base": "PersistedModel",
+  "properties": {
+    "id": { "type": "any", "id": "true" },
+    "timestamp": { "type": "date", "required": true },
+    "endpoint": { "type": "string", "required": true },
+    "status": { "type": "number", "required": true },
+    "appId": "object",
+    "appName": "string",
+    "userId": "object",
+    "userEmail": "string"
+  }
+}
