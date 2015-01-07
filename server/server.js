@@ -25,13 +25,6 @@ boot(app, __dirname, function(err) {
     throw err;
   }
 
-  var oauth2 = require('loopback-component-oauth2')(
-    app, {
-      dataSource: app.dataSources.db, // Data source for oAuth2 metadata
-      loginPage: '/login', // The login page url
-      loginPath: '/login' // The login processing url
-    });
-
   app.set('view engine', 'ejs');
   app.set('views', path.join(__dirname, 'views'));
 
@@ -42,9 +35,7 @@ boot(app, __dirname, function(err) {
   app.get('/account', site.account);
   app.get('/callback', site.callbackPage);
 
-  app.oauth2 = oauth2; // For testing
-  var auth = oauth2.authenticate({session: false, scope: 'demo'});
-  app.use(['/protected', '/api', '/me'], auth);
+  app.oauth2 = app._oauth2Handlers; // For testing
 
   /* jshint unused: vars */
   app.get('/me', function(req, res, next) {
