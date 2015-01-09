@@ -5,10 +5,10 @@ an API gateway using LoopBack.
 
 ## What is an API gateway
 
-The API gateway is a component within systems architecture to externalize, 
-secure and manage APIs.  The API gateway sits as an intermediary between the 
+The API gateway is a component within systems architecture to externalize,
+secure and manage APIs.  The API gateway sits as an intermediary between the
 many consumers of APIs - API clients  and the many producers of the APIs on the
-backend - API servers. 
+backend - API servers.
 
 You can see more information at:
 
@@ -20,32 +20,32 @@ In this tutorial, we'll build a simplified version of API gateway using LoopBack
 The gateway supports basic features listed below:
 
 - HTTPS: make sure all communication will be done with https
-- oAuth 2.0 based authentication & authorization: authenticate client 
+- oAuth 2.0 based authentication & authorization: authenticate client
 applications and authorize them to access protected endpoints with approval from
 resource owners
-- Rate limiting: controls how many requests can be made within a given time 
-period for identified api consumers 
+- Rate limiting: controls how many requests can be made within a given time
+period for identified api consumers
 - Reverse proxy: forward the requests to the server that hosts the api endpoint
 
 The test scenario consists of three components:
- 
+
 - A client application that invokes REST APIs
-- A loopback application (api gateway) that bridges the client application and 
-the backend api 
-- A loopback application (api server) serving the REST APIs 
- 
+- A loopback application (api gateway) that bridges the client application and
+the backend api
+- A loopback application (api server) serving the REST APIs
+
 The architecture is illustrated in the diagram below.
 
 ![loopback-api-gateway](loopback-api-gateway.png)
 
 ## Build the gateway application
 
-The application is initially scaffolded using `slc loopback` command. We 
+The application is initially scaffolded using `slc loopback` command. We
 customize server/server.js to add specific features for the gateway.
 
 ### Configure and ensure HTTPS
 
-[oAuth 2.0](http://tools.ietf.org/html/rfc6749#section-10.9) states that the 
+[oAuth 2.0](http://tools.ietf.org/html/rfc6749#section-10.9) states that the
 authorization server MUST require the use of TLS with server authentication for
 any request sent to the authorization and token endpoints.
 
@@ -72,39 +72,60 @@ Declare and configure the middleware in server/middleware.json.
 
 The oAuth 2.0 integration is done using [loopback-component-oauth2](https://github.com/strongloop/loopback-component-oauth2).
 
-In our case, we configure the API gateway as both an authorization server and 
+In our case, we configure the API gateway as both an authorization server and
 resource server.
 
 #### Set up authorization server
 
-The oAuth authorization server exposes the authorization endpoint to allow 
-resource owners (users) to grant permissions to authenticated client 
+The oAuth authorization server exposes the authorization endpoint to allow
+resource owners (users) to grant permissions to authenticated client
 applications. It also creates the token endpoint to issue access tokens to client
-applications with valid grants. 
+applications with valid grants.
+
+See `server/component-config.json`:
 
 ```js
-var oauth2 = require('loopback-component-oauth2')(
-  app, {
-    dataSource: app.dataSources.db, // Data source for oAuth2 metadata
-    loginPage: '/login', // The login page url
-    loginPath: '/login' // The login processing url
-  });
+{
+  "loopback-component-oauth2": {
+    // Name of the data source for oAuth2 metadata
+    "dataSource": "db",
+    // The login page url
+    "loginPage": "/login",
+    // The login processing url
+    "loginPath": "/login"
+  }
+}
 ```
 
 #### Set up resource server
 
-To protect endpoints with oAuth 2.0, we set up middleware that checks incoming 
+To protect endpoints with oAuth 2.0, we set up middleware that checks incoming
 requests for an access token and validate it with the information persisted on
 the server when the token is issued.
 
-```js
-var auth = oauth2.authenticate({session: false, scope: 'demo'});
-app.use(['/protected', '/api', '/me'], auth);
+The middleware is configured in "auth" phase of `server/middleware.json`:
+
+```json
+{
+  "auth": {
+    "loopback-component-oauth2#authenticate": {
+      "paths": [
+        "/protected",
+        "/api",
+        "/me"
+      ],
+      "params": {
+        "session": false,
+        "scope": "demo"
+      }
+    }
+  }
+}
 ```
 
 ### Rate Limiting
 
-Rate limiting controls how many API calls can be made from client applications 
+Rate limiting controls how many API calls can be made from client applications
 within a certain period of time.
 
 - keys: identify who is making the api call. The keys can be the client application
@@ -114,7 +135,7 @@ id, the user id, the client ip address, or a combination of more than one identi
 
 The sample uses a [token bucket](http://en.wikipedia.org/wiki/Token_bucket) based
 algorithm to enforce the rate limits based on authenticated client application ids.
- 
+
 ```json
   "routes:after": {
     "./middleware/rate-limiting": {
@@ -129,7 +150,7 @@ algorithm to enforce the rate limits based on authenticated client application i
 
 ### Proxy
 
-The proxy middleware allows incoming requests to be forwarded/dispatched to 
+The proxy middleware allows incoming requests to be forwarded/dispatched to
 other servers. In this tutorial, we'll route /api/ to http://localhost:3002/api/.
 The implementation is based on [node-http-proxy](https://github.com/nodejitsu/node-http-proxy).
 
@@ -146,10 +167,10 @@ The implementation is based on [node-http-proxy](https://github.com/nodejitsu/no
   },
 ```
 
-### Sign up client applications and users 
+### Sign up client applications and users
 
 oAuth 2.0 requires client applications to be registered. In this tutorial, we
-can simply create a new instance with the LoopBack built-in application model. 
+can simply create a new instance with the LoopBack built-in application model.
 The client id is `123` and the client secret is `secret`. The resource owner is
 basically a user. We create a user named `bob` with password `secret` for testing.
 
@@ -205,7 +226,7 @@ $ slc loopback:model note
 [?] Enter the model name: note
 [?] Select the data-source to attach note to: db (memory)
 [?] Expose note via the REST API? Yes
-[?] Custom plural form (used to build REST URL): 
+[?] Custom plural form (used to build REST URL):
 Let's add some note properties now.
 
 Enter an empty property name when done.
@@ -241,7 +262,7 @@ node .
 
 Open a browser and point to http://localhost:3000. You will see the browser to
 be redirected to https://localhost:3001. Please note your browser might complain
-about the SSL certificate as it is self-signed. It's safe to ignore the warning 
+about the SSL certificate as it is self-signed. It's safe to ignore the warning
 and proceed.
 
 #### Test out oAuth 2.0 and proxy
@@ -272,7 +293,7 @@ The callback page builds the links with the access token. Click on 'Calling /api
 #### Test out rate limiting
 
 To test rate limiting, please run the following script which sends 150 requests
-to the server. The script prints out the rate limit and remaining. 
+to the server. The script prints out the rate limit and remaining.
 ```sh
 node server/scripts/rate-limiting-client.js
 ```
@@ -280,7 +301,7 @@ node server/scripts/rate-limiting-client.js
 #### Test out JWT
 
 We support JSON Web Token (JWT) as client authentication and authorization grant
-for oAuth 2.0. See https://tools.ietf.org/html/draft-ietf-oauth-jwt-bearer-10 
+for oAuth 2.0. See https://tools.ietf.org/html/draft-ietf-oauth-jwt-bearer-10
 for more details.
 
 The first command requests an access token with a JWT token signed by the private
