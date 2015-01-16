@@ -2,8 +2,7 @@
   "_meta": {
     "sources": [
       "../common/models",
-      "./models",
-      "../strong-metrics/models"
+      "./models"
     ]
   },
   "User": {
@@ -27,9 +26,5 @@
   "Role": {
     "dataSource": "db",
     "public": false
-  },
-  "MetricEvent": {
-    "dataSource": "db",
-    "public": true
   }
 }
