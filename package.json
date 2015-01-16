@@ -32,6 +32,7 @@
     "loopback-boot": "^2.6.0",
     "loopback-component-oauth2": "^2.0.0-beta3",
     "metrics": "^0.1.8",
+    "on-finished": "^2.1.1",
     "passport": "^0.2.1",
     "request": "^2.51.0",
     "serve-favicon": "^2.2.0"
