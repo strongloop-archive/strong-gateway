@@ -24,6 +24,7 @@
   "auth": {
     "loopback-component-oauth2#authenticate": {
       "paths": [
+        "/_internal",
         "/protected",
         "/api",
         "/me"
