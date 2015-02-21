@@ -46,7 +46,7 @@
     }
   },
   "routes:after": {
-    "./middleware/rate-limiting": {
+    "./middleware/rate-limiting-policy": {
       "params": {
         "limit": 100,
         "interval": 60000
