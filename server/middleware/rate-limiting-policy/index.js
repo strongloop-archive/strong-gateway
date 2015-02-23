@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 var RateLimiter = require('./memory');
 var pf = require('loopback-policy');
 var Policy = pf.Policy;
@@ -67,14 +67,15 @@ module.exports = function(options) {
     };
   }
 
-  var ruleForAppAndUser = new Rule("Limit requests based on application and user",
+  var ruleForAppAndUser = new Rule(
+    'Limit requests based on application and user',
     [
       [models.Context, 'c', function(facts) {
         var ctx = facts.c;
         return ctx.proceed === undefined;
       }],
       [models.Application, 'a'],
-      [models.User, 'u', "u.username == 'bob'"]
+      [models.User, 'u', 'u.username == "bob"']
     ],
     function(facts, session, next) {
       debug('Action fired - Limit by app/user: %j %j', facts.a, facts.u);
@@ -82,33 +83,35 @@ module.exports = function(options) {
       rateLimiter.enforce(key, getHandler(this, key, next));
     });
 
-  var ruleForIp = new Rule("Limit requests based on remote ip",
+  var ruleForIp = new Rule(
+    'Limit requests based on remote ip',
     [
       [models.Context, 'c', function(facts) {
         var ctx = facts.c;
         return ctx.proceed === undefined;
       }],
-      [String, 'ip', "ip == '127.0.0.1' || ip == '::1'", "from c.req.ip"]
+      [String, 'ip', 'ip == "127.0.0.1" || ip == "::1"', 'from c.req.ip']
     ], function(facts, session, next) {
       debug('Action fired - Limit by ip: %s', facts.ip);
       var key = 'IP-' + facts.ip;
       rateLimiter.enforce(key, getHandler(session, key, next));
     });
 
-  var ruleForUrl = new Rule("Limit requests based on url",
+  var ruleForUrl = new Rule(
+    'Limit requests based on url',
     [
       [models.Context, 'c', function(facts) {
         var ctx = facts.c;
         return ctx.proceed === undefined;
       }],
-      [String, 'url', "from c.req.url"]
+      [String, 'url', 'from c.req.url']
     ], function(facts, session, next) {
       debug('Action fired - Limit by url: %s', facts.url);
       var key = 'URL-' + facts.url.split('/')[1];
       rateLimiter.enforce(key, getHandler(session, key, next));
     });
 
-  var policy = new Policy("Rate Limiting",
+  var policy = new Policy('Rate Limiting',
     [ruleForAppAndUser, ruleForIp, ruleForUrl]);
 
   function buildFacts(ctx, cb) {

@@ -1,5 +1,6 @@
 var onFinished = require('on-finished');
 
+/* jshint unused:vars */
 module.exports = function(options) {
   var MetricEvent;
   var _lastSaveError;

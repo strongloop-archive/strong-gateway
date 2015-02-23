@@ -1,5 +1,6 @@
 var metrics = require('metrics');
 
+/* jshint unused:vars */
 module.exports = function(options) {
   options = options || {};
 

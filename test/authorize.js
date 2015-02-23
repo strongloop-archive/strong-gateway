@@ -16,6 +16,8 @@ describe('Authorize', function() {
   before(function(done) {
     app.once('started', function() {
       var auth = app.oauth2.authenticate({session: false, scope: 'demo'});
+      app.use(app.loopback.bodyParser.urlencoded({extended: false}));
+      app.use(app.loopback.bodyParser.json({strict: false}));
       app.use(['/test'], auth, function(req, res, next) {
         if (req.accessToken) {
           req.accessToken.user(function(err, user) {

@@ -42,7 +42,8 @@ RateLimiter.prototype.enforce = function(key, options, cb) {
     var ok = inst.tryRemoveTokens(weight);
     debug('Bucket: ', inst.tokenBucket);
     var remaining = Math.floor(inst.getTokensRemaining());
-    var reset = Math.max(this.interval - (Date.now() - inst.curIntervalStart), 0);
+    var reset =
+      Math.max(this.interval - (Date.now() - inst.curIntervalStart), 0);
 
     debug('Limit: %d Remaining: %d Reset: %d', limit, remaining, reset);
 
