@@ -1,4 +1,5 @@
 'use strict';
+var _ = require('lodash');
 var RateLimiter = require('./memory');
 var pf = require('loopback-policy');
 var Policy = pf.Policy;
@@ -46,6 +47,25 @@ module.exports = function(options) {
     interval: options.interval || 1000,
     limit: options.limit || 10});
 
+  var keyDefs = {};
+  if (options.keys) {
+    for (var k in options.keys) {
+      var key = options.keys[k];
+      if (typeof key === 'number') {
+        keyDefs[k] = {
+          limit: key,
+          template: _.template(k + '-${' + k + '}')
+        };
+      } else {
+        keyDefs[k] = {
+          limit: key.limit,
+          template: key.template && _.template(key.template)
+        };
+      }
+    }
+  }
+  debug('Keys: %j', keyDefs);
+
   function getHandler(session, key, next) {
     var ctx = session.getFacts(models.Context)[0];
     return function(err, result) {
@@ -67,6 +87,39 @@ module.exports = function(options) {
     };
   }
 
+  function limitRate(keyName, session, facts, next) {
+    debug('Action fired - Limit by %s', keyName);
+    var key = keyDefs[keyName].template(facts);
+    rateLimiter.enforce(key, {limit: keyDefs[keyName].limit},
+      getHandler(session, key, next));
+  }
+
+  var ruleForApp = new Rule(
+    'Limit requests based on application id',
+    [
+      [models.Context, 'c', function(facts) {
+        var ctx = facts.c;
+        return ctx.proceed === undefined;
+      }],
+      [models.Application, 'app']
+    ],
+    function(facts, session, next) {
+      limitRate('app', session, facts, next);
+    });
+
+  var ruleForUser = new Rule(
+    'Limit requests based on user id',
+    [
+      [models.Context, 'c', function(facts) {
+        var ctx = facts.c;
+        return ctx.proceed === undefined;
+      }],
+      [models.User, 'user']
+    ],
+    function(facts, session, next) {
+      limitRate('user', session, facts, next);
+    });
+
   var ruleForAppAndUser = new Rule(
     'Limit requests based on application and user',
     [
@@ -74,13 +127,11 @@ module.exports = function(options) {
         var ctx = facts.c;
         return ctx.proceed === undefined;
       }],
-      [models.Application, 'a'],
-      [models.User, 'u', 'u.username == "bob"']
+      [models.Application, 'app'],
+      [models.User, 'user']
     ],
     function(facts, session, next) {
-      debug('Action fired - Limit by app/user: %j %j', facts.a, facts.u);
-      var key = 'App-' + facts.a.id + '-User-' + facts.u.id;
-      rateLimiter.enforce(key, getHandler(this, key, next));
+      limitRate('app,user', session, facts, next);
     });
 
   var ruleForIp = new Rule(
@@ -90,11 +141,9 @@ module.exports = function(options) {
         var ctx = facts.c;
         return ctx.proceed === undefined;
       }],
-      [String, 'ip', 'ip == "127.0.0.1" || ip == "::1"', 'from c.req.ip']
+      [String, 'ip', 'from c.req.ip']
     ], function(facts, session, next) {
-      debug('Action fired - Limit by ip: %s', facts.ip);
-      var key = 'IP-' + facts.ip;
-      rateLimiter.enforce(key, getHandler(session, key, next));
+      limitRate('ip', session, facts, next);
     });
 
   var ruleForUrl = new Rule(
@@ -106,13 +155,12 @@ module.exports = function(options) {
       }],
       [String, 'url', 'from c.req.url']
     ], function(facts, session, next) {
-      debug('Action fired - Limit by url: %s', facts.url);
-      var key = 'URL-' + facts.url.split('/')[1];
-      rateLimiter.enforce(key, getHandler(session, key, next));
+      facts.url = facts.url.split('/')[1];
+      limitRate('url', session, facts, next);
     });
 
   var policy = new Policy('Rate Limiting',
-    [ruleForAppAndUser, ruleForIp, ruleForUrl]);
+    [ruleForApp, ruleForUser, ruleForAppAndUser, ruleForIp, ruleForUrl]);
 
   function buildFacts(ctx, cb) {
     var facts = [];
@@ -150,7 +198,7 @@ module.exports = function(options) {
         // session.print();
         var ctx = session.getFacts(models.Context)[0];
         if (ctx.limits) {
-          debug(ctx.limits);
+          debug('Limits: %j', ctx.limits);
         }
         if (ctx.proceed) {
           next();
