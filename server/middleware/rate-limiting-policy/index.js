@@ -110,10 +110,6 @@ module.exports = function(options) {
   var ruleForUser = new Rule(
     'Limit requests based on user id',
     [
-      [models.Context, 'c', function(facts) {
-        var ctx = facts.c;
-        return ctx.proceed === undefined;
-      }],
       [models.User, 'user']
     ],
     function(facts, session, next) {
@@ -123,10 +119,6 @@ module.exports = function(options) {
   var ruleForAppAndUser = new Rule(
     'Limit requests based on application and user',
     [
-      [models.Context, 'c', function(facts) {
-        var ctx = facts.c;
-        return ctx.proceed === undefined;
-      }],
       [models.Application, 'app'],
       [models.User, 'user']
     ],
@@ -137,10 +129,7 @@ module.exports = function(options) {
   var ruleForIp = new Rule(
     'Limit requests based on remote ip',
     [
-      [models.Context, 'c', function(facts) {
-        var ctx = facts.c;
-        return ctx.proceed === undefined;
-      }],
+      [models.Context, 'c'],
       [String, 'ip', 'from c.req.ip']
     ], function(facts, session, next) {
       limitRate('ip', session, facts, next);
@@ -149,13 +138,10 @@ module.exports = function(options) {
   var ruleForUrl = new Rule(
     'Limit requests based on url',
     [
-      [models.Context, 'c', function(facts) {
-        var ctx = facts.c;
-        return ctx.proceed === undefined;
-      }],
-      [String, 'url', 'from c.req.url']
+      [models.Context, 'c'],
+      [String, 'url', 'from c.req.originalUrl']
     ], function(facts, session, next) {
-      facts.url = facts.url.split('/')[1];
+      facts.urlPaths = facts.url.split(/\/|\?/).filter(Boolean);
       limitRate('url', session, facts, next);
     });
 

@@ -47,6 +47,7 @@
   },
   "routes:after": {
     "./middleware/rate-limiting-policy": {
+      "paths": ["/api", "/protected"],
       "params": {
         "limit": 100,
         "interval": 60000,
@@ -56,7 +57,10 @@
             "limit": 1000
           },
           "ip": 500,
-          "url": 1000,
+          "url": {
+            "template": "url-${urlPaths[0]}/${urlPaths[1]}",
+            "limit": 1000
+          },
           "user": {
             "template": "user-${user.id}",
             "limit": 1000
