@@ -26,6 +26,11 @@ describe('AuthCodeGrant', function() {
     app.close(done);
   });
 
+  beforeEach(function(done) {
+    // Clean up permissions so that the decision dialog will show up
+    app.loopback.getModel('OAuthPermission').destroyAll(done);
+  });
+
   it('should detect no response type', function(done) {
     request
       .get(AUTHORIZATION_ENDPOINT)
