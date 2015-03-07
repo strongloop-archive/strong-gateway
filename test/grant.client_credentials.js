@@ -10,6 +10,7 @@ var request = require('supertest')('https://localhost:3001');
 
 var TOKEN_ENDPOINT = '/oauth/token';
 var CLIENT_ID = '123';
+var CLIENT_ID_3 = '789';
 var CLIENT_SECRET = 'secret';
 
 describe('Granting with client_credentials grant type', function() {
@@ -91,6 +92,20 @@ describe('Granting with client_credentials grant type', function() {
       })
       .auth(CLIENT_ID, CLIENT_SECRET)
       .expect(403, /Invalid subject/i, done);
+  });
+
+  it('should report error with if the grant type is not authorized',
+    function(done) {
+    request
+      .post(TOKEN_ENDPOINT)
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .send({
+        grant_type: 'client_credentials',
+        scope: 'basic',
+        sub: 'bob'
+      })
+      .auth(CLIENT_ID_3, CLIENT_SECRET)
+      .expect(403, /Unauthorized grant type/i, done);
   });
 
   it('should report error with if the scope is not authorized', function(done) {

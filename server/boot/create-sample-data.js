@@ -7,9 +7,10 @@ module.exports = function(app, cb) {
 };
 
 function signupTestUserAndApp(app, cb) {
+  var appModel = app.loopback.getModelByType(app.models.Application);
   // Hack to set the app id to a fixed value so that we don't have to change
   // the client settings
-  app.models.Application.beforeSave = function(next) {
+  appModel.beforeSave = function(next) {
     for (var i = 0, n = data.applications.length; i < n; i++) {
       if (data.applications[i].name === this.name) {
         this.id = data.applications[i].id;
@@ -35,7 +36,7 @@ function signupTestUserAndApp(app, cb) {
   function createApplications(done) {
     async.each(data.applications,
       function createApplication(application, done) {
-        app.models.Application.create(application, function(err, application) {
+        appModel.create(application, function(err, application) {
           if (!err) {
             console.log(
               'Client application registered: id=%s name=%s key=%s',
