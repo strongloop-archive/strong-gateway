@@ -28,18 +28,19 @@
     "http-proxy": "^1.8.1",
     "jws": "^2.0.0",
     "limiter": "^1.0.5",
-    "loopback": "^2.12.1",
+    "lodash": "^3.3.1",
+    "loopback": "^2.13.0",
     "loopback-boot": "^2.6.5",
     "loopback-component-oauth2": "^2.0.0-beta4",
-    "loopback-policy": "git+ssh://git@github.com:strongloop/loopback-policy.git",
-    "metrics": "^0.1.8",
+    "loopback-policy": "^1.0.0-beta1",
+    "metrics": "^0.1.9",
     "on-finished": "^2.2.0",
     "passport": "^0.2.1",
     "request": "^2.53.0",
     "serve-favicon": "^2.2.0"
   },
   "optionalDependencies": {
-    "loopback-explorer": "^1.7.0"
+    "loopback-explorer": "^1.7.1"
   },
   "repository": {
     "type": "git",
@@ -53,7 +54,7 @@
     "url": "https://github.com/strongloop/strong-gateway/blob/master/LICENSE"
   },
   "devDependencies": {
-    "chai": "^2.0.0",
+    "chai": "^2.1.0",
     "mocha": "^2.1.0",
     "supertest": "^0.15.0"
   }
