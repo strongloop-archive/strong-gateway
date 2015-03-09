@@ -6,7 +6,9 @@
 <script src="oauth2.js"></script>
 <script>
 	function clientCredentials() {
-		tokenByClientCredentials(client_id, $('#client_secret').val(), "demo", processToken1, processError);
+		tokenByClientCredentials(client_id, $('#client_secret').val(),
+                $('#claimedUserName').val(),
+                "demo", processToken1, processError);
 	}
 
 	function resourceOwnerPasswordCredentials() {
@@ -48,6 +50,9 @@
 
 		Client Secret: <input type="password" id="client_secret"
 			value="" /><br>
+        Claimed User Name: <input type="text" id="claimedUserName"
+                          value="" />
+        <p />
 		<button onclick="return clientCredentials();">Client Credentials</button>
 
 		<p />

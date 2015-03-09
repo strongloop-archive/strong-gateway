@@ -122,12 +122,16 @@ module.exports = function(options) {
         if (err) {
           return cb(err);
         }
-        facts.push(new models.User(u.id, u.username, u.email));
+        if (u) {
+          facts.push(new models.User(u.id, u.username, u.email));
+        }
         req.accessToken.application(function(err, a) {
           if (err) {
             return cb(err);
           }
-          facts.push(new models.Application(a.id, a.name));
+          if (a) {
+            facts.push(new models.Application(a.id, a.name));
+          }
           cb(null, facts);
         });
       });
