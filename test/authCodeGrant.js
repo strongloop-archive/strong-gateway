@@ -12,6 +12,8 @@ var INVALID_REDIRECT_URI = 'https://wrong.com';
 var AUTHORIZATION_ENDPOINT = '/oauth/authorize';
 var CLIENT_ID = '123';
 var CLIENT_ID_2 = '456';
+var CLIENT_ID_3 = '789';
+
 var CODE = 'code';
 var TOKEN = 'token';
 
@@ -24,6 +26,11 @@ describe('AuthCodeGrant', function() {
 
   after(function(done) {
     app.close(done);
+  });
+
+  beforeEach(function(done) {
+    // Clean up permissions so that the decision dialog will show up
+    app.loopback.getModel('OAuthPermission').destroyAll(done);
   });
 
   it('should detect no response type', function(done) {
@@ -74,6 +81,29 @@ describe('AuthCodeGrant', function() {
       .expect(401, done);
   });
 
+  it('should detect unauthorized response type', function(done) {
+    request
+      .get(AUTHORIZATION_ENDPOINT)
+      .query({
+        response_type: TOKEN,
+        client_id: CLIENT_ID_3,
+        redirect_uri: REDIRECT_URI
+      })
+      .expect(403, /Unauthorized response type/i, done);
+  });
+
+  it('should detect unauthorized scope', function(done) {
+    request
+      .get(AUTHORIZATION_ENDPOINT)
+      .query({
+        response_type: CODE,
+        client_id: CLIENT_ID_3,
+        redirect_uri: REDIRECT_URI,
+        scope: 'demo'
+      })
+      .expect(403, /Unauthorized scope/i, done);
+  });
+
   it('should detect mismatching redirect_uri with a string', function(done) {
     request
       .get(AUTHORIZATION_ENDPOINT)
@@ -82,7 +112,7 @@ describe('AuthCodeGrant', function() {
         client_id: CLIENT_ID,
         redirect_uri: INVALID_REDIRECT_URI
       })
-      .expect(400, done);
+      .expect(403, done);
   });
 
   it('should accept a valid redirect_uri with a string', function(done) {

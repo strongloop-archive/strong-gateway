@@ -10,10 +10,14 @@ function getRedirectURI() {
   return encodeURIComponent(baseURL + location.pathname);
 }
 
-function tokenByClientCredentials(clientId, clientSecret, scope, tokenCallback, errorCallback) {
+function tokenByClientCredentials(clientId, clientSecret, username, scope, tokenCallback, errorCallback) {
   scope = scope || "demo";
   var data = "grant_type=client_credentials&client_id=" + clientId
     + "&client_secret=" + clientSecret + "&scope=" + scope;
+
+  if (username) {
+    data += '&username=' + username;
+  }
 
   $.post(tokenEndpoint, data, tokenCallback)
     .error(errorCallback);

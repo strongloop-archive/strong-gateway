@@ -17,6 +17,14 @@
       "id": 456,
       "restApiKey": "secret",
       "name": "demo-app-2"
+    },
+    {
+      "id": 789,
+      "restApiKey": "secret",
+      "name": "demo-app-3",
+      "responseTypes": ["code"],
+      "grantTypes": ["authorization_code", "password"],
+      "scopes": ["basic"]
     }
   ]
 }
