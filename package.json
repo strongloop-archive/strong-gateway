@@ -30,7 +30,7 @@
     "limiter": "^1.0.5",
     "loopback": "^2.12.1",
     "loopback-boot": "^2.6.5",
-    "loopback-component-oauth2": "^2.0.0-beta4",
+    "loopback-component-oauth2": "^2.0.0-beta5",
     "loopback-policy": "git+ssh://git@github.com:strongloop/loopback-policy.git",
     "metrics": "^0.1.8",
     "on-finished": "^2.2.0",
