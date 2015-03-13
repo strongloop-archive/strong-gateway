@@ -11,6 +11,8 @@ var request = require('supertest')('https://localhost:3001');
 var TOKEN_ENDPOINT = '/oauth/token';
 var CLIENT_ID = '123';
 var CLIENT_ID_3 = '789';
+var CLIENT_ID_4 = '500';
+var CLIENT_ID_5 = '600';
 var CLIENT_SECRET = 'secret';
 
 describe('Granting with client_credentials grant type', function() {
@@ -132,4 +134,51 @@ describe('Granting with client_credentials grant type', function() {
       .expect(401, done);
 
   });
+
+  it('should generate jwt token',
+    function(done) {
+      request
+        .post(TOKEN_ENDPOINT)
+        .set('Content-Type', 'application/x-www-form-urlencoded')
+        .send({
+          grant_type: 'client_credentials',
+          scope: 'basic'
+        })
+        .auth(CLIENT_ID_4, CLIENT_SECRET)
+        .expect(200, /"access_token":/i, function(err, res) {
+          if (err) {
+            return done(err);
+          }
+          res.body.access_token.should.be.a('string');
+          res.body.access_token.should.have.length(219);
+          res.body.token_type.should.equal('Bearer');
+          res.body.expires_in.should.equal(1209600);
+          done();
+        });
+    });
+
+  it('should generate mac token',
+    function(done) {
+      request
+        .post(TOKEN_ENDPOINT)
+        .set('Content-Type', 'application/x-www-form-urlencoded')
+        .send({
+          grant_type: 'client_credentials',
+          scope: 'basic'
+        })
+        .auth(CLIENT_ID_5, CLIENT_SECRET)
+        .expect(200, /"access_token":/i, function(err, res) {
+          if (err) {
+            return done(err);
+          }
+          res.body.access_token.should.be.a('string');
+          res.body.access_token.should.have.length(277);
+          res.body.token_type.should.equal('mac');
+          res.body.should.have.property('kid');
+          res.body.should.have.property('mac_key');
+          res.body.should.have.property('mac_algorithm');
+          res.body.expires_in.should.equal(1209600);
+          done();
+        });
+    });
 });

@@ -14,8 +14,10 @@ function signupTestUserAndApp(app, cb) {
     for (var i = 0, n = data.applications.length; i < n; i++) {
       if (data.applications[i].name === this.name) {
         this.id = data.applications[i].id;
-        this.restApiKey = data.applications[i].restApiKey;
-        this.publicKey = sslCert.certificate;
+        this.restApiKey = this.clientSecret =
+          data.applications[i].clientSecret ||
+          data.applications[i].restApiKey;
+        this.jwks = data.applications[i].jwks || sslCert.certificate;
       }
     }
     next();
@@ -40,7 +42,7 @@ function signupTestUserAndApp(app, cb) {
           if (!err) {
             console.log(
               'Client application registered: id=%s name=%s key=%s',
-              application.id, application.name, application.restApiKey);
+              application.id, application.name, application.clientSecret);
           }
           done(err);
         });

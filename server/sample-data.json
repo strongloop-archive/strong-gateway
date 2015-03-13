@@ -25,6 +25,20 @@
       "responseTypes": ["code"],
       "grantTypes": ["authorization_code", "password"],
       "scopes": ["basic"]
+    },
+    {
+      "id": 500,
+      "clientSecret": "secret",
+      "name": "demo-app-4",
+      "tokenType": "jwt",
+      "scopes": ["basic"]
+    },
+    {
+      "id": 600,
+      "clientSecret": "secret",
+      "name": "demo-app-5",
+      "tokenType": "mac",
+      "scopes": ["basic"]
     }
   ]
 }

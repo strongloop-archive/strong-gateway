@@ -209,8 +209,8 @@ describe('AuthCodeGrant', function() {
                             str =
                               REDIRECT_URI +
                               '\\/\\' +
-                              '#access_token=[^&]+&token_type=Bearer' +
-                              '&state=some_state';
+                              '#access_token=[^&]+&expires_in=1209600' +
+                                '&token_type=Bearer&state=some_state';
                           }
                         }
                         var regex = new RegExp(str);
