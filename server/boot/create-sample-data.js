@@ -10,18 +10,19 @@ function signupTestUserAndApp(app, cb) {
   var appModel = app.loopback.getModelByType(app.models.Application);
   // Hack to set the app id to a fixed value so that we don't have to change
   // the client settings
-  appModel.beforeSave = function(next) {
+  appModel.observe('before save', function(ctx, next) {
+    var inst = ctx.instance;
     for (var i = 0, n = data.applications.length; i < n; i++) {
-      if (data.applications[i].name === this.name) {
-        this.id = data.applications[i].id;
-        this.restApiKey = this.clientSecret =
+      if (data.applications[i].name === inst.name) {
+        inst.id = data.applications[i].id;
+        inst.restApiKey = inst.clientSecret =
           data.applications[i].clientSecret ||
           data.applications[i].restApiKey;
-        this.jwks = data.applications[i].jwks || sslCert.certificate;
+        inst.jwks = data.applications[i].jwks || sslCert.certificate;
       }
     }
     next();
-  };
+  });
 
   function createUsers(done) {
     async.each(data.users, function createUser(user, done) {
