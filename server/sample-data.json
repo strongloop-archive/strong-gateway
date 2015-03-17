@@ -11,7 +11,8 @@
       "id": 123,
       "restApiKey": "secret",
       "name": "demo-app",
-      "callbackUrls": ["https://localhost:3001"]
+      "callbackUrls": ["https://localhost:3001"],
+      "scopes": ["basic", "demo", "note"]
     },
     {
       "id": 456,

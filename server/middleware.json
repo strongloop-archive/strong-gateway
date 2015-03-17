@@ -31,7 +31,17 @@
       ],
       "params": {
         "session": false,
-        "scope": "demo"
+        "scopes": {
+          "demo": [
+            "/me", "/protected", "/_internal", "/api/notes"
+          ],
+          "note": [
+            {
+              "methods": "all",
+              "path": "/api/notes"
+            }
+          ]
+        }
       }
     }
   },

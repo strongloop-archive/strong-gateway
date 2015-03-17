@@ -120,7 +120,7 @@ describe('Granting with client_credentials grant type', function() {
         sub: 'bob'
       })
       .auth(CLIENT_ID, CLIENT_SECRET)
-      .expect(403, /Permission denied/i, done);
+      .expect(403, /"Unauthorized scope: demo,abc"/i, done);
   });
 
   it('should detect invalid client', function(done) {
