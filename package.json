@@ -1,6 +1,6 @@
 {
   "name": "strong-gateway",
-  "version": "1.0.0-beta1",
+  "version": "1.0.0-beta2",
   "main": "server/server.js",
   "keywords": [
     "StrongLoop",
