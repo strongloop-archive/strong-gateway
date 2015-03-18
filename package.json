@@ -37,7 +37,8 @@
     "on-finished": "^2.2.0",
     "passport": "^0.2.1",
     "request": "^2.53.0",
-    "serve-favicon": "^2.2.0"
+    "serve-favicon": "^2.2.0",
+    "strongloop-license": "^1.0.2"
   },
   "optionalDependencies": {
     "loopback-explorer": "^1.7.1"
