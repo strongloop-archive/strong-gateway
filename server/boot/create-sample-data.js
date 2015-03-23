@@ -26,27 +26,29 @@ function signupTestUserAndApp(app, cb) {
 
   function createUsers(done) {
     async.each(data.users, function createUser(user, done) {
-      app.models.User.create(user, function(err, user) {
-        if (!err) {
-          console.log('User registered: id=%s username=%s password=%s',
-            user.id, user.username, 'secret');
-        }
-        done(err);
-      });
+      app.models.User.findOrCreate({username: user.username}, user,
+        function(err, user) {
+          if (!err) {
+            console.log('User registered: id=%s username=%s password=%s',
+              user.id, user.username, 'secret');
+          }
+          done(err);
+        });
     }, done);
   }
 
   function createApplications(done) {
     async.each(data.applications,
       function createApplication(application, done) {
-        appModel.create(application, function(err, application) {
-          if (!err) {
-            console.log(
-              'Client application registered: id=%s name=%s key=%s',
-              application.id, application.name, application.clientSecret);
-          }
-          done(err);
-        });
+        appModel.findOrCreate({id: application.id}, application,
+          function(err, application) {
+            if (!err) {
+              console.log(
+                'Client application registered: id=%s name=%s key=%s',
+                application.id, application.name, application.clientSecret);
+            }
+            done(err);
+          });
       }, done);
   }
 
