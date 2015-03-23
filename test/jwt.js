@@ -26,7 +26,7 @@ describe('JTW client authentication', function() {
   before(function(done) {
     var model = loopback.getModel('OAuthAuthorizationCode');
     model.create({
-      id: 'abc123',
+      id: 'abc5',
       scopes: ['demo'],
       userId: 1,
       appId: '123',
@@ -100,7 +100,7 @@ describe('JTW client authentication', function() {
   it('should grant access token from authorization code', function(done) {
     var form = {
       grant_type: 'authorization_code',
-      code: 'abc123',
+      code: 'abc5',
       client_assertion_type:
         'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
       client_assertion: createAssertion('123')

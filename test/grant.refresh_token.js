@@ -65,7 +65,7 @@ describe('Granting with refresh_token grant type', function() {
         grant_type: REFRESH_TOKEN,
         client_id: CLIENT_ID,
         client_secret: CLIENT_SECRET,
-        refresh_token: 'abc123'
+        refresh_token: 'refresh_token_1'
       })
       .expect(403, /invalid_grant/i, done);
 
@@ -79,7 +79,7 @@ describe('Granting with refresh_token grant type', function() {
         grant_type: REFRESH_TOKEN,
         client_id: 'wrong',
         client_secret: CLIENT_SECRET,
-        refresh_token: 'abc123'
+        refresh_token: 'refresh_token_1'
       })
       .expect(401, done);
 

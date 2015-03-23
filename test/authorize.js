@@ -135,7 +135,7 @@ describe('Authorize', function() {
     var loopback = require('loopback');
     var model = loopback.getModel('OAuthAccessToken');
     model.create({
-      id: 'abc123',
+      id: 'abc1',
       scopes: ['demo'],
       userId: 1,
       appId: '123',

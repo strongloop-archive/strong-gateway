@@ -24,7 +24,7 @@ describe('Granting with authorization_code grant type', function () {
   before(function(done) {
     var model = loopback.getModel('OAuthAuthorizationCode');
     model.create({
-      id: 'abc123',
+      id: 'abc2',
       scopes: ['demo'],
       userId: 1,
       appId: '123',
@@ -72,7 +72,7 @@ describe('Granting with authorization_code grant type', function () {
         grant_type: 'authorization_code',
         client_id: '999',
         client_secret: CLIENT_SECRET,
-        code: 'abc123'
+        code: 'abc2'
       })
       .expect(401, done);
   });
@@ -85,7 +85,7 @@ describe('Granting with authorization_code grant type', function () {
         grant_type: 'authorization_code',
         client_id: CLIENT_ID,
         client_secret: CLIENT_SECRET,
-        code: 'abc123'
+        code: 'abc2'
       })
       .expect(200, /"access_token":"(.*)"/i, done);
   });
@@ -99,7 +99,7 @@ describe('Granting with authorization_code grant type', function () {
           grant_type: 'authorization_code',
           client_id: CLIENT_ID,
           client_secret: CLIENT_SECRET,
-          code: 'abc123'
+          code: 'abc2'
         })
         .expect(403, /invalid_grant/i, done);
     }, 1000);
