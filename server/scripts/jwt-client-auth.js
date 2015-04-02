@@ -8,7 +8,7 @@ var sslCerts = require('./../private/ssl_cert');
 
 var payload = {
   iss: '123', // issuer - client id
-  sub: '123', // subject
+  sub: 'bob', // subject
   aud: '/oauth/token', // audience
   exp: Date.now() + 10000, // expiration time
   iat: Date.now(), // issued at time
