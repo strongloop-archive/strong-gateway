@@ -1,4 +1,4 @@
-require('strongloop-license')('gateway');
+require('strongloop-license')('gateway:oauth2');
 var loopback = require('loopback');
 var boot = require('loopback-boot');
 
