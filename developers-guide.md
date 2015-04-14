@@ -203,6 +203,8 @@ See https://tools.ietf.org/html/rfc6749#section-4.2.2.1
 
 #### Resource Owner Password Credentials
 
+![oauth2-resource-owner-password-credentials](oauth2-resource-owner-password-credentials.png)
+
 The user provides the client with its username and password. The client requests 
 an access token from the authorization server's token endpoint by including the 
 credentials received from the resource owner.  When making the request, the 
@@ -256,6 +258,8 @@ Pragma: no-cache
 
 #### Client Credentials
 
+![oauth2-client-credentials](oauth2-client-credentials.png)
+
 The client authenticates with the authorization server and requests an access 
 token from the token endpoint.
 
@@ -302,6 +306,8 @@ Please note the client credentials grant doesn't involve a user. As a result,
 the access token is not associated with a resource owner.
 
 #### Refresh token
+
+![oauth2-refresh-token](oauth2-refresh-token.png)
 
 If the authorization server issued a refresh token to the client, the client 
 can make a refresh request to the token endpoint as follows:
