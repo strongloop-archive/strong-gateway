@@ -44,18 +44,18 @@ https://tools.ietf.org/html/rfc6749
 
 #### Resource Owner
 
-“An entity capable of granting access to a protected resource. When the 
-resource owner is a person, it is referred to as an end-user.”
+"An entity capable of granting access to a protected resource. When the 
+resource owner is a person, it is referred to as an end-user."
 
 In LoopBack, we also refer to ‘Resource Owner’ as ‘User’. It’s backed by the 
 User model or a sub-model of User.
 
 #### Client
 
-“An application making protected resource requests on behalf of the resource 
+"An application making protected resource requests on behalf of the resource 
 owner and with its authorization.  The term "client" does not imply any 
 particular implementation characteristics (e.g., whether the application 
-executes on a server, a desktop, or other devices).”
+executes on a server, a desktop, or other devices)."
 
 In LoopBack, we also refer to ‘Client’ as ‘Application’. It’s backed by the 
 Application model or a sub-model of Application.
@@ -156,7 +156,7 @@ server/component-config.json
   "loopback-component-oauth2": {
     "dataSource": "db",
     "loginPage": "/login",
-    "loginPath": "/login”,
+    "loginPath": "/login",
     "authorizationServer": true,
     "resourceServer": true
   }
@@ -203,11 +203,11 @@ server/middleware.json
       "params": {
         "limit": 100,  "interval": 60000,
         "keys": {
-          "app": {"template": "app-${app.id}”, "limit": 1000},
+          "app": {"template": "app-${app.id}", "limit": 1000},
           "ip": 500,
-          "url": {"template": "url-${urlPaths[0]}/${urlPaths[1]}”, "limit": 1000},
-          "user": {"template": "user-${user.id}”, "limit": 1000},
-          "app,user": {"template": "app-${app.id}-user-${user.id}”, "limit": 1000}
+          "url": {"template": "url-${urlPaths[0]}/${urlPaths[1]}", "limit": 1000},
+          "user": {"template": "user-${user.id}", "limit": 1000},
+          "app,user": {"template": "app-${app.id}-user-${user.id}", "limit": 1000}
         }}},
 ```
 
@@ -239,7 +239,7 @@ server/middleware.json
 ```
 
 #### Configuration
-The “rules” is an array of rewrite rules. Each rewrite rule is a string with 
+The "rules" is an array of rewrite rules. Each rewrite rule is a string with 
 the syntax: `MATCHING_PATHS REPLACE_WITH [FLAGS]`. `MATCHING_PATHS` should be 
 defined using a regex string. `REPLACE_WITH` is the replacement string for 
 matching paths. Flags is optional and is defined using hard brackets. 
