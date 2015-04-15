@@ -3,6 +3,7 @@
 StrongLoop API Gateway is a LoopBack application that provides the necessary 
 infrastructure to serve your APIs to client applications over the Internet. 
 It includes the following key building blocks:
+
 - oAuth 2.0 provider for authentication and authorization
 - API rate limiting
 - API metrics and analytics
