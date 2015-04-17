@@ -1,6 +1,8 @@
 {
   "initial:before": {
     "loopback#favicon": {
+    },
+    "strong-express-metrics": {
     }
   },
   "initial": {
