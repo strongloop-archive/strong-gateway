@@ -228,14 +228,37 @@ https://tools.ietf.org/html/draft-ietf-oauth-v2-http-mac-05
 
 #### Scopes
 
-Access token scope represents a collection of protected resources to be accessed. 
+oAuth 2.0 scopes are strings that enable access to particular protected 
+resources, such as user data. Client applications include one or more scopes 
+in certain authorization requests, which then displays appropriate permissions 
+text in a consent dialog that is presented to a user. Once the user consents 
+to the permissions, StrongLoop API Gateway sends back authorization code or 
+access token, which identify the specific authorization grant. Each access token
+is associated with some scopes (can be empty) which determine what user data 
+the user gives the client application permission to access.
 
 #### Redirect URIs
 
+Redirect URIs are endpoints provided by client applications to receive 
+authorization code or access token from the oAuth provider. It's critical 
+to make sure redirect URIs are really controlled by the requesting client 
+application. For authorization code and implicit grant types, the redirect URIs
+should be pre-configured with the client registration. The oAuth provider will
+validate the redirect_uri sent from the client.
+
+When the client application exchanges the authorization code for an access 
+token, it must pass in the same redirect_uri as what's used in the original 
+request to receive the authorization code.
 
 ### Pre-authorized permissions
 
-(userId, appId, scopes)
+When a user grants permissions (represented as scopes) to client applications,
+StrongLoop API Gateway can remember the decisions and store them in the 
+`OAuthPermission` model. 
+ 
+For client credentials or JWT client authentication grant types, pre-authorized
+permissions must be established before a client application can send a request 
+with a claim to represent a user to get access tokens.
 
 
 ## Provision oAuth 2.0 servers
