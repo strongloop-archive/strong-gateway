@@ -50,7 +50,7 @@ the client.
 
 The Authorization Code grant involves three steps from a developer's perspective:
 
-![oauth2-authorization-code](https://github.com/strongloop/strong-gateway/blob/master/docs/oauth2-authorization-code.png)
+![oauth2-authorization-code](https://github.com/strongloop/strong-gateway/raw/master/docs/oauth2-authorization-code.png)
 
 1. Obtain the authorization from the user
 
@@ -260,7 +260,7 @@ Pragma: no-cache
 
 #### Client Credentials
 
-![oauth2-client-credentials](https://github.com/strongloop/strong-gateway/blob/master/docs/oauth2-client-credentials.png)
+![oauth2-client-credentials](https://github.com/strongloop/strong-gateway/raw/master/docs/oauth2-client-credentials.png)
 
 The client authenticates with the authorization server and requests an access 
 token from the token endpoint.
