@@ -492,8 +492,99 @@ setting:
 
 #### Support for MAC token
 
-https://tools.ietf.org/html/draft-ietf-oauth-v2-http-mac-05
+Client applications can choose to use [MAC tokens](https://tools.ietf.org/html/draft-ietf-oauth-v2-http-mac-05)
+by setting the `tokenType` property to `MAC` during registration.
 
+Response from the authorization server for a MAC token will look like:
+
+```
+HTTP/1.1 200 OK
+     Content-Type: application/json
+     Cache-Control: no-store
+
+     {
+       "access_token":
+   "eyJhbGciOiJSU0ExXzUiLCJlbmMiOiJBMTI4Q0JDK0hTMjU2In0.
+   pwaFh7yJPivLjjPkzC-GeAyHuy7AinGcS51AZ7TXnwkC80Ow1aW47kcT_UV54ubo
+   nONbeArwOVuR7shveXnwPmucwrk_3OCcHrCbE1HR-Jfme2mF_WR3zUMcwqmU0RlH
+   kwx9txo_sKRasjlXc8RYP-evLCmT1XRXKjtY5l44Gnh0A84hGvVfMxMfCWXh38hi
+   2h8JMjQHGQ3mivVui5lbf-zzb3qXXxNO1ZYoWgs5tP1-T54QYc9Bi9wodFPWNPKB
+   kY-BgewG-Vmc59JqFeprk1O08qhKQeOGCWc0WPC_n_LIpGWH6spRm7KGuYdgDMkQ
+   bd4uuB0uPPLx_euVCdrVrA.
+   AxY8DCtDaGlsbGljb3RoZQ.
+   7MI2lRCaoyYx1HclVXkr8DhmDoikTmOp3IdEmm4qgBThFkqFqOs3ivXLJTku4M0f
+   laMAbGG_X6K8_B-0E-7ak-Olm_-_V03oBUUGTAc-F0A.
+   OwWNxnC-BMEie-GkFHzVWiNiaV3zUHf6fCOGTwbRckU",
+       "token_type":"mac",
+       "expires_in":3600,
+       "refresh_token":"8xLOxBtZp8",
+       "kid":"22BIjxU93h/IgwEb4zCRu5WF37s=",
+       "mac_key":"adijq39jdlaska9asud",
+       "mac_algorithm":"hmac-sha-256"
+     }
+```
+
+To access protected resources using MAC, the client need to sign the request as
+follows:
+
+```js
+/* Assume the token object is:
+{
+   access_token: 'eyJhbGciOiJSU0ExXzUiLCJlbmMiOiJBMTI4Q0JDK0hTMjU2In0.
+                     pwaFh7yJPivLjjPkzC-GeAyHuy7AinGcS51AZ7TXnwkC80Ow1aW47kcT_UV54ubo
+                     nONbeArwOVuR7shveXnwPmucwrk_3OCcHrCbE1HR-Jfme2mF_WR3zUMcwqmU0RlH
+                     kwx9txo_sKRasjlXc8RYP-evLCmT1XRXKjtY5l44Gnh0A84hGvVfMxMfCWXh38hi
+                     2h8JMjQHGQ3mivVui5lbf-zzb3qXXxNO1ZYoWgs5tP1-T54QYc9Bi9wodFPWNPKB
+                     kY-BgewG-Vmc59JqFeprk1O08qhKQeOGCWc0WPC_n_LIpGWH6spRm7KGuYdgDMkQ
+                     bd4uuB0uPPLx_euVCdrVrA.
+                     AxY8DCtDaGlsbGljb3RoZQ.
+                     7MI2lRCaoyYx1HclVXkr8DhmDoikTmOp3IdEmm4qgBThFkqFqOs3ivXLJTku4M0f
+                     laMAbGG_X6K8_B-0E-7ak-Olm_-_V03oBUUGTAc-F0A.
+                     OwWNxnC-BMEie-GkFHzVWiNiaV3zUHf6fCOGTwbRckU',
+   kid: '22BIjxU93h/IgwEb4zCRu5WF37s=',
+   ts: 1429561690760, // timestamp,
+   mac_algorithm: 'hmac-sha-256',
+   mac_key: 'adijq39jdlaska9asud'
+}
+*/
+var crypto = require('crypto');
+var algorithms = {
+  'hmac-sha-1': 'sha1',
+  'hmac-sha-256': 'sha256'
+};
+
+function setupMacAuth(token, verb, host, path) {
+  var params = {
+    access_token: token.access_token,
+    kid: token.kid,
+    ts: ts || Date.now(),
+    h: 'host'
+  };
+
+  var req = verb.toUpperCase() + ' ' + path + ' HTTP/1.1';
+  var host = host || 'localhost:3001';
+  var text = [req, params.ts, host].join('\n');
+
+  var mac = crypto.createHmac(algorithms[token.mac_algorithm], token.mac_key)
+    .update(text).digest('base64');
+
+  params.mac = mac;
+  var fields = [];
+  for (var p in params) {
+    fields.push(p + '="' + params[p] + '"');
+  }
+
+  var authorizationHeader = 'MAC ' + fields.join(',');
+  return authorizationHeader;
+}  
+
+var auth = setupMacAuth(token, 'GET', 'localhost:3001', '/test');
+// Send the http request with the authorization header
+request({url: 'https://localhost:3001/test', headers: {authorization: auth}},
+  function(err, res, body) {
+   // Handle the HTTP res
+  });
+```
 
 ### Use an access token
 
