@@ -23,7 +23,7 @@ The oAuth 2.0 protocol defines a number of [roles](https://tools.ietf.org/html/r
 as the actors that participate in the authentication and authorization process. 
 Please note we use `user` and `resource owner` interchangeably in this document.   
 
-![oauth2-overview](oauth2-overview.png)
+![oauth2-overview](https://github.com/strongloop/strong-gateway/raw/master/docs/oauth2-overview.png)
 
 As illustrated in the diagram above, the client applications interact with the 
 oAuth 2.0 provider using access tokens. Application developers are responsible 
@@ -50,7 +50,7 @@ the client.
 
 The Authorization Code grant involves three steps from a developer's perspective:
 
-![oauth2-authorization-code](oauth2-authorization-code.png)
+![oauth2-authorization-code](https://github.com/strongloop/strong-gateway/blob/master/docs/oauth2-authorization-code.png)
 
 1. Obtain the authorization from the user
 
@@ -144,7 +144,7 @@ Pragma: no-cache
 
 #### Implicit
 
-![oauth2-implicit](oauth2-implicit.png)
+![oauth2-implicit](https://github.com/strongloop/strong-gateway/raw/master/docs/oauth2-implicit.png)
 
 1. Obtain the user authorization
 
@@ -204,7 +204,8 @@ See https://tools.ietf.org/html/rfc6749#section-4.2.2.1
 
 #### Resource Owner Password Credentials
 
-![oauth2-resource-owner-password-credentials](oauth2-resource-owner-password-credentials.png)
+![oauth2-resource-owner-password-credentials](https://github.com/strongloop/strong-gateway/raw/master/docs/oauth2-resource-owner-password-credentials.png)
+
 
 The user provides the client with its username and password. The client requests 
 an access token from the authorization server's token endpoint by including the 
@@ -259,7 +260,7 @@ Pragma: no-cache
 
 #### Client Credentials
 
-![oauth2-client-credentials](oauth2-client-credentials.png)
+![oauth2-client-credentials](https://github.com/strongloop/strong-gateway/blob/master/docs/oauth2-client-credentials.png)
 
 The client authenticates with the authorization server and requests an access 
 token from the token endpoint.
@@ -308,7 +309,7 @@ the access token is not associated with a resource owner.
 
 #### Refresh token
 
-![oauth2-refresh-token](oauth2-refresh-token.png)
+![oauth2-refresh-token](https://github.com/strongloop/strong-gateway/raw/master/docs/oauth2-refresh-token.png)
 
 If the authorization server issued a refresh token to the client, the client 
 can make a refresh request to the token endpoint as follows:
@@ -358,7 +359,7 @@ Pragma: no-cache
 
 #### Client authentication with JWT
 
-![oauth2-jwt-client-authentication](oauth2-jwt-client-authentication.png)
+![oauth2-jwt-client-authentication](https://github.com/strongloop/strong-gateway/raw/master/docs/oauth2-jwt-client-authentication.png)
 
 https://tools.ietf.org/html/draft-ietf-oauth-jwt-bearer-12
 
@@ -430,7 +431,7 @@ Error:
 
 #### Authorization code grant with JWT 
 
-![oauth2-jwt-authorization-grant](oauth2-jwt-authorization-grant.png)
+![oauth2-jwt-authorization-grant](https://github.com/strongloop/strong-gateway/raw/master/docs/oauth2-jwt-authorization-grant.png)
 
 1. Sign the JWT assertion
 
