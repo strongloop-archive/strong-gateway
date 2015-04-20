@@ -308,7 +308,7 @@ server/middleware.json
   },
 ```  
 
-### Enforece Rate Limiting
+### Enforce Rate Limiting
 
 server/middleware.json
 
