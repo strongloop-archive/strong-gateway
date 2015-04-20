@@ -34,10 +34,10 @@
     "loopback-component-oauth2": "^2.0.0-beta9",
     "loopback-policy": "^1.0.0-beta1",
     "metrics": "^0.1.9",
-    "on-finished": "^2.2.0",
     "passport": "^0.2.1",
     "request": "^2.55.0",
     "serve-favicon": "^2.2.0",
+    "strong-express-metrics": "^1.1.0",
     "strongloop-license": "^1.0.4"
   },
   "optionalDependencies": {
@@ -56,6 +56,7 @@
   },
   "devDependencies": {
     "chai": "^2.2.0",
+    "jshint": "^2.7.0",
     "mocha": "^2.2.4",
     "supertest": "^0.15.0"
   }

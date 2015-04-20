@@ -1,6 +1,8 @@
 {
   "initial:before": {
     "loopback#favicon": {
+    },
+    "strong-express-metrics": {
     }
   },
   "initial": {
@@ -8,8 +10,6 @@
       "params": {
         "threshold": "4kb"
       }
-    },
-    "../strong-metrics/middleware/report-metrics": {
     }
   },
   "session": {
@@ -50,9 +50,6 @@
       "params": {
         "httpsPort": 3001
       }
-    },
-    "loopback#rest": {
-      "paths": ["/admin/api"]
     }
   },
   "routes:after": {
