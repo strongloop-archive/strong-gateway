@@ -3,14 +3,17 @@ var request = require('request');
 
 // Build the token request using client_credentials grant type
 var form = {
-  grant_type: 'client_credentials'
+  grant_type: 'password',
+  username: 'bob',
+  password: 'secret',
+  scope: 'demo'
 };
 
 function printRateLimitHeaders(err, res) {
   console.log('Limit %d Remaining: %d Reset: %d',
-    res.headers['x-ratelimit-limit'],
-    res.headers['x-ratelimit-remaining'],
-    res.headers['x-ratelimit-reset']);
+    res.headers['x-ratelimit-limit'] || null,
+    res.headers['x-ratelimit-remaining'] || null,
+    res.headers['x-ratelimit-reset'] || null);
 }
 
 // Request the access token
