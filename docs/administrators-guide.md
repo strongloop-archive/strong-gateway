@@ -283,6 +283,37 @@ server/component-config.json
 - resource server
 
 
+### Set up the persistence for oAuth 2.0 metadata
+
+#### Configure the default data source
+
+server/datasources.json
+```json
+{
+  "db": {
+    "name": "db",
+    "connector": "mongodb"
+    "host": "localhost",
+    "port": 27017
+  }
+}
+```
+
+#### Install the connector
+
+If you choose to use a different connector, please make sure the dependency
+is installed for `strong-gateway`, for example,
+
+```sh
+npm install loopback-connector-mongodb --save
+```
+
+#### Set up the database
+
+We provide a sample script to help you set up the database.
+
+Run `node server/scripts/setup-db.js`
+
 ## Enforcing HTTPS
 
 server/middleware.json
