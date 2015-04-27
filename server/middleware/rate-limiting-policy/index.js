@@ -1,6 +1,6 @@
 'use strict';
 
-require('strongloop-license')('gateway:rate-limiting');
+// require('strongloop-license')('gateway');
 var _ = require('lodash');
 var RateLimiter = require('./memory');
 var pf = require('loopback-policy');

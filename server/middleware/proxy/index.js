@@ -1,4 +1,4 @@
-require('strongloop-license')('gateway:proxy');
+// require('strongloop-license')('gateway');
 var debug = require('debug')('loopback:gateway:proxy');
 var httpProxy = require('http-proxy');
 

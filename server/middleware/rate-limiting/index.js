@@ -1,4 +1,4 @@
-require('strongloop-license')('gateway:rate-limiting');
+// require('strongloop-license')('gateway');
 
 var metricsLimiter = require('./metrics-limiter');
 var tokenBucketLimiter = require('./token-bucket');
