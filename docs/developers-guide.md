@@ -1,5 +1,7 @@
 # Developers Guide for StrongLoop API Gateway
 
+> NOTE: The API Gateway has been moved to http://docs.strongloop.com/display/LGW/Developer%27s+Guide.  Please edit that document, NOT this one!
+
 StrongLoop API Gateway is a LoopBack application that provides the necessary 
 infrastructure to serve your APIs to client applications over the Internet. 
 It includes the following key building blocks:
