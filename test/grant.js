@@ -21,10 +21,7 @@ var validBody = {
 
 describe('Grant', function() {
 
-  before(function(done) {
-    app.once('started', done);
-    app.start();
-  });
+  before(require('./start-server'));
 
   after(function(done) {
     app.close(done);

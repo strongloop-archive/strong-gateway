@@ -67,6 +67,7 @@ boot(app, __dirname, function(err) {
           }
           app.close = function(cb) {
             app.removeAllListeners('started');
+            app.removeAllListeners('loaded');
             httpServer.close(function() {
               httpsServer.close(cb);
             });
@@ -79,6 +80,8 @@ boot(app, __dirname, function(err) {
   if (isMain) {
     app.start();
   }
+  app.loaded = true;
+  app.emit('loaded');
 });
 
 

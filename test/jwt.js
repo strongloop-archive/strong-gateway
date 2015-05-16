@@ -17,10 +17,7 @@ var sslCerts = require('../server/private/ssl_cert');
 
 describe('JTW client authentication', function() {
 
-  before(function(done) {
-    app.once('started', done);
-    app.start();
-  });
+  before(require('./start-server'));
 
   // Hacky way to create an authorization code
   before(function(done) {

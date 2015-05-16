@@ -31,7 +31,7 @@
     "lodash": "^3.6.0",
     "loopback": "^2.15.0",
     "loopback-boot": "^2.6.5",
-    "loopback-component-oauth2": "^2.0.0-beta9",
+    "loopback-component-oauth2": "^2.0.0-rc1",
     "loopback-policy": "^1.0.0-beta1",
     "metrics": "^0.1.9",
     "passport": "^0.2.1",

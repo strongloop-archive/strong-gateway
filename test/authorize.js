@@ -13,36 +13,34 @@ var CLIENT_ID_5 = '600';
 var CLIENT_SECRET = 'secret';
 
 describe('Authorize', function() {
+  before(require('./start-server'));
 
   before(function(done) {
-    app.once('started', function() {
-      var auth = app.oauth2.authenticate({session: false, scope: 'demo basic'});
-      app.use(app.loopback.bodyParser.urlencoded({extended: false}));
-      app.use(app.loopback.bodyParser.json({strict: false}));
-      app.use(['/test'], auth, function(req, res, next) {
-        if (req.accessToken) {
-          req.accessToken.user(function(err, user) {
-            if (err) {
-              return next(err);
-            }
-            res.json(user);
-          });
-        }
-      });
-      var auth2 = app.oauth2.authenticate({session: false, scope: 'email'});
-      app.use(['/email'], auth2, function(req, res, next) {
-        if (req.accessToken) {
-          req.accessToken.user(function(err, user) {
-            if (err) {
-              return next(err);
-            }
-            res.json(user);
-          });
-        }
-      });
-      done();
+    var auth = app.oauth2.authenticate({session: false, scope: 'demo basic'});
+    app.use(app.loopback.bodyParser.urlencoded({extended: false}));
+    app.use(app.loopback.bodyParser.json({strict: false}));
+    app.use(['/test'], auth, function(req, res, next) {
+      if (req.accessToken) {
+        req.accessToken.user(function(err, user) {
+          if (err) {
+            return next(err);
+          }
+          res.json(user);
+        });
+      }
     });
-    app.start();
+    var auth2 = app.oauth2.authenticate({session: false, scope: 'email'});
+    app.use(['/email'], auth2, function(req, res, next) {
+      if (req.accessToken) {
+        req.accessToken.user(function(err, user) {
+          if (err) {
+            return next(err);
+          }
+          res.json(user);
+        });
+      }
+    });
+    done();
   });
 
   after(function(done) {

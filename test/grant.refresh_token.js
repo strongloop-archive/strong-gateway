@@ -15,10 +15,7 @@ var CLIENT_SECRET = 'secret';
 
 describe('Granting with refresh_token grant type', function() {
 
-  before(function(done) {
-    app.once('started', done);
-    app.start();
-  });
+  before(require('./start-server'));
 
   after(function(done) {
     app.close(done);
@@ -96,5 +93,18 @@ describe('Granting with refresh_token grant type', function() {
         refresh_token: refreshToken
       })
       .expect(200, /"access_token":"(.*)",(.*)"refresh_token":"(.*)"/i, done);
+  });
+
+  it('should revoke refresh token', function(done) {
+    request
+      .post('/oauth/revoke')
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .auth(CLIENT_ID, CLIENT_SECRET)
+      .send({
+        token: REFRESH_TOKEN,
+        token_type_hint: 'refresh_token'
+      })
+      .expect(200, done);
+
   });
 });

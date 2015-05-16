@@ -13,10 +13,7 @@ var CLIENT_SECRET = 'secret';
 
 describe('Granting with password grant type', function () {
 
-  before(function(done) {
-    app.once('started', done);
-    app.start();
-  });
+  before(require('./start-server'));
 
   after(function(done) {
     app.close(done);

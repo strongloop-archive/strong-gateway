@@ -17,10 +17,7 @@ var CLIENT_SECRET = 'secret';
 
 describe('Granting with client_credentials grant type', function() {
 
-  before(function(done) {
-    app.once('started', done);
-    app.start();
-  });
+  before(require('./start-server'));
 
   // Create a permission
   before(function(done) {
