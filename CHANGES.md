@@ -1,5 +1,61 @@
-2015-03-17, Version 1.0.0-beta2
+2015-05-16, Version 1.0.0-beta3
 ===============================
+
+ * Fix tests and add revoke (Raymond Feng)
+
+ * Update developers-guide.md (Rand McKinney)
+
+ * Use 'gateway' as the product (Raymond Feng)
+
+ * Add info for configuring persistence (Raymond Feng)
+
+ * Move setup-db (Raymond Feng)
+
+ * Update the rate-limiting test script (Raymond Feng)
+
+ * Typo (Rand McKinney)
+
+ * Add more info for mac token (Raymond Feng)
+
+ * Fix image URLs (Rand McKinney)
+
+ * Add more descriptions to scopes/redirect-uris etc (Raymond Feng)
+
+ * Add missing devDependency: jshint (Miroslav Bajtoš)
+
+ * Add strong-express-metrics (Miroslav Bajtoš)
+
+ * Revert "Spike: strong-metrics" (Miroslav Bajtoš)
+
+ * Refine the docs (Raymond Feng)
+
+ * Fix double quotes (Raymond Feng)
+
+ * Refactor the guides and diagrams (Raymond Feng)
+
+ * Add more diagrams (Raymond Feng)
+
+ * Add more license checks (Raymond Feng)
+
+ * Disable legacy explorer (Raymond Feng)
+
+ * Add developers guide (Raymond Feng)
+
+ * Update deps (Raymond Feng)
+
+ * Fix the script (Raymond Feng)
+
+ * Make sure unique keys are used during test (Raymond Feng)
+
+ * Use findOrCreate to populate the sample data (Raymond Feng)
+
+ * Add strongloop license checking (Raymond Feng)
+
+
+2015-03-16, Version 1.0.0-beta2
+===============================
+
+ * 1.0.0-beta2 (Raymond Feng)
 
  * Tidy up the scope definition (Raymond Feng)
 
