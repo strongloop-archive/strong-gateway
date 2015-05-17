@@ -1,5 +1,13 @@
+2015-05-17, Version 1.0.0-beta4
+===============================
+
+ * Add more tests for revoke (Raymond Feng)
+
+
 2015-05-16, Version 1.0.0-beta3
 ===============================
+
+ * 1.0.0-beta3 (Raymond Feng)
 
  * Fix tests and add revoke (Raymond Feng)
 
