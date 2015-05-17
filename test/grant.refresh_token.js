@@ -95,16 +95,61 @@ describe('Granting with refresh_token grant type', function() {
       .expect(200, /"access_token":"(.*)",(.*)"refresh_token":"(.*)"/i, done);
   });
 
+  var loopback = require('loopback');
+  var model = loopback.getModel('OAuthAccessToken');
+
   it('should revoke refresh token', function(done) {
     request
       .post('/oauth/revoke')
       .set('Content-Type', 'application/x-www-form-urlencoded')
       .auth(CLIENT_ID, CLIENT_SECRET)
       .send({
-        token: REFRESH_TOKEN,
+        token: refreshToken,
+        token_type_hint: 'refresh_token'
+      })
+      .expect(200, function(err) {
+        if (err) return done(err);
+        model.find({where: {refreshToken: refreshToken}},
+          function(err, tokens) {
+            if (err) return done(err);
+            tokens.length.should.be.eql(0);
+            done();
+          });
+      });
+  });
+
+  it('should report missing token', function(done) {
+    request
+      .post('/oauth/revoke')
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .auth(CLIENT_ID, CLIENT_SECRET)
+      .send({
+        token_type_hint: 'refresh_token'
+      })
+      .expect(400, /invalid_request/, done);
+  });
+
+  it('should ignore invalid token', function(done) {
+    request
+      .post('/oauth/revoke')
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .auth(CLIENT_ID, CLIENT_SECRET)
+      .send({
+        token: 'invalid_token',
         token_type_hint: 'refresh_token'
       })
       .expect(200, done);
+  });
 
+  it('should report invalid token type', function(done) {
+    request
+      .post('/oauth/revoke')
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .auth(CLIENT_ID, CLIENT_SECRET)
+      .send({
+        token: refreshToken,
+        token_type_hint: 'invalid_token_type'
+      })
+      .expect(400, /unsupported_token_type/, done);
   });
 });

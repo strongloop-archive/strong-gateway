@@ -128,10 +128,71 @@ describe('Authorize', function() {
         .expect(400, done);
     });
 
+  it('should detect insufficient_scope', function(done) {
+    request
+      .get('/email?access_token=' + token)
+      .expect(403, /insufficient_scope/i, done);
+  });
+
+  var loopback = require('loopback');
+  var model = loopback.getModel('OAuthAccessToken');
+
+  it('should revoke access token', function(done) {
+    request
+      .post('/oauth/revoke')
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .auth(CLIENT_ID, CLIENT_SECRET)
+      .send({
+        token: token,
+        token_type_hint: 'access_token'
+      })
+      .expect(200, function(err) {
+        model.find({where: {id: token}},
+          function(err, tokens) {
+            if (err) return done(err);
+            tokens.length.should.be.eql(0);
+            done();
+          });
+      });
+  });
+
+  it('should report missing token for revoke', function(done) {
+    request
+      .post('/oauth/revoke')
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .auth(CLIENT_ID, CLIENT_SECRET)
+      .send({
+        token_type_hint: 'access_token'
+      })
+      .expect(400, /invalid_request/, done);
+  });
+
+  it('should ignore invalid token for revoke', function(done) {
+    request
+      .post('/oauth/revoke')
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .auth(CLIENT_ID, CLIENT_SECRET)
+      .send({
+        token: 'invalid_token',
+        token_type_hint: 'access_token'
+      })
+      .expect(200, done);
+  });
+
+  it('should report invalid token type for revoke', function(done) {
+    request
+      .post('/oauth/revoke')
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .auth(CLIENT_ID, CLIENT_SECRET)
+      .send({
+        token: token,
+        token_type_hint: 'invalid_token_type'
+      })
+      .expect(400, /unsupported_token_type/, done);
+  });
+
   it('should detect expired token', function(done) {
     // Mock up an access token to be expired in 1 ms
-    var loopback = require('loopback');
-    var model = loopback.getModel('OAuthAccessToken');
     model.create({
       id: 'abc1',
       scopes: ['demo'],
@@ -149,12 +210,6 @@ describe('Authorize', function() {
           .expect(401, done);
       }, 5);
     });
-  });
-
-  it('should detect insufficient_scope', function(done) {
-    request
-      .get('/email?access_token=' + token)
-      .expect(403, /insufficient_scope/i, done);
   });
 
   describe('mac token', function() {
