@@ -1,5 +1,17 @@
-2015-05-17, Version 1.0.0-beta4
+2015-05-26, Version 1.0.0-rc1
+=============================
+
+ * Remove the client app to favor strong-gateway-demo (Raymond Feng)
+
+ * Add cors, refactor sample data creation (Raymond Feng)
+
+ * Update deps (Raymond Feng)
+
+
+2015-05-16, Version 1.0.0-beta4
 ===============================
+
+ * 1.0.0-beta4 (Raymond Feng)
 
  * Add more tests for revoke (Raymond Feng)
 
