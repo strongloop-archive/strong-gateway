@@ -1,6 +1,6 @@
 // https://github.com/jhurliman/node-rate-limiter
 // https://github.com/apigee-127/volos/tree/master/quota/
-var debug = require('debug')('loopback:gateway:rate-limiting');
+var debug = require('debug')('strongloop:gateway:rate-limiting');
 var RateLimiter = require('limiter').RateLimiter;
 
 module.exports = function(options) {

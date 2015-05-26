@@ -1,5 +1,5 @@
 // require('strongloop-license')('gateway');
-var debug = require('debug')('loopback:gateway:proxy');
+var debug = require('debug')('strongloop:gateway:proxy');
 var httpProxy = require('http-proxy');
 
 function setupHeaders(proxyReq, req) {
