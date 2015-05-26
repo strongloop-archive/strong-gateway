@@ -32,21 +32,8 @@ boot(app, __dirname, function(err) {
 // Set up login/logout forms
   app.get('/login', site.loginForm);
 
-  app.get('/logout', site.logout);
-  app.get('/account', site.account);
-  app.get('/callback', site.callbackPage);
-
   app.oauth2 = app._oauth2Handlers; // For testing
 
-  /* jshint unused: vars */
-  app.get('/me', function(req, res, next) {
-    // req.authInfo is set using the `info` argument supplied by
-    // `BearerStrategy`.  It is typically used to indicate scope of the token,
-    // and used in access control checks.  For illustrative purposes, this
-    // example simply returns the scope in the response.
-    res.json({ 'user_id': req.user.id, name: req.user.username,
-      accessToken: req.authInfo.accessToken });
-  });
 
   var isMain = require.main === module;
   app.start = function() {
