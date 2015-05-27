@@ -36,7 +36,7 @@ the backend api
 
 The architecture is illustrated in the diagram below.
 
-![loopback-api-gateway](loopback-api-gateway.png)
+![loopback-api-gateway](docs/loopback-api-gateway.png)
 
 ## Build the gateway application
 
@@ -270,24 +270,24 @@ and proceed.
 The home page shows multiple options to try out the oAuth 2.0 grant types. Let's
 start with the [explicit flow](http://tools.ietf.org/html/rfc6749#section-4.2).
 
-![home](home.png)
+![home](docs/home.png)
 
 Now you need to log in as the resource owner.
 
-![login](login.png)
+![login](docs/login.png)
 
 The following dialog requests permission from the resource owner (user) to approve
 the access by the client application.
 
-![decision](decision.png)
+![decision](docs/decision.png)
 
 Click `allow`. The browser will be redirected to the callback page.
 
-![callback](callback.png)
+![callback](docs/callback.png)
 
 The callback page builds the links with the access token. Click on 'Calling /api/notes'.
 
-![notes](notes.png)
+![notes](docs/notes.png)
 
 
 #### Test out rate limiting
