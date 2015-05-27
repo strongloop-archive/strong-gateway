@@ -16,6 +16,7 @@
   ],
   "scripts": {
     "pretest": "jshint .",
+    "start": "npm i;node .",
     "test": "mocha"
   },
   "dependencies": {
