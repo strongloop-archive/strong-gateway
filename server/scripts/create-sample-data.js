@@ -56,6 +56,10 @@ function signupTestUserAndApp(app, cb) {
 if(require.main === module) {
   var server = require('../server');
   signupTestUserAndApp(server, function(err) {
-    console.log('Sample application/user data are populated.');
+    if (err) {
+      console.error(err);
+    } else {
+      console.log('Sample application/user data are populated.');
+    }
   });
 }
