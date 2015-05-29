@@ -4,8 +4,8 @@
 
 exports.loginForm = function(req, res) {
   var demoUser;
-  if (process.env.NODE_ENV !== 'prod'
-      || process.env.NODE_ENV !== 'production') {
+  if (process.env.NODE_ENV !== 'prod' &&
+      process.env.NODE_ENV !== 'production') {
     demoUser = {
       username: 'bob',
       password: 'secret'
