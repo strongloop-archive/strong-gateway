@@ -1,20 +1,13 @@
 # strong-gateway
 
-`strong-gateway` is an example application to demonstrate how to build
-an API gateway using LoopBack.
+The StrongLoop API gateway, `strong-gateway`, enables you to  externalize,
+secure, and manage APIs.  The API gateway is an intermediary between API consumers (clients) and API servers.
 
-## What is an API gateway
+See:
+- [StrongLoop API Gateway](http://docs.strongloop.com/display/LGW) for detailed documentation.
+- [strong-gateway-demo](https://github.com/strongloop/strong-gateway-demo) for an example.
 
-The API gateway is a component within systems architecture to externalize,
-secure and manage APIs.  The API gateway sits as an intermediary between the
-many consumers of APIs - API clients  and the many producers of the APIs on the
-backend - API servers.
-
-You can see more information at:
-
-http://strongloop.com/strongblog/open-source-node-js-api-gateway/
-
-## The basic features
+## Basic features
 
 In this tutorial, we'll build a simplified version of API gateway using LoopBack.
 The gateway supports basic features listed below:
