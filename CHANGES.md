@@ -1,5 +1,27 @@
+2015-06-03, Version 1.0.0
+=========================
+
+ * Update README.md (Rand McKinney)
+
+ * Proxy /protected endpoint (Simon Ho)
+
+ * Fix jshint errors (Simon Ho)
+
+ * Update deps (Raymond Feng)
+
+ * Fill out login form automatically (Simon Ho)
+
+ * Cleanup (Simon Ho)
+
+ * Add start script to package.json (Simon Ho)
+
+ * Move .png files into docs dir (Simon Ho)
+
+
 2015-05-26, Version 1.0.0-rc1
 =============================
+
+ * 1.0.0-rc1 (Raymond Feng)
 
  * Remove the client app to favor strong-gateway-demo (Raymond Feng)
 
