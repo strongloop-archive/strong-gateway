@@ -1,3 +1,11 @@
+2015-06-08, Version 1.0.1
+=========================
+
+ * Fix license check (Raymond Feng)
+
+ * Print the correct listening ports in server.js (Simon Ho)
+
+
 2015-06-03, Version 1.0.0
 =========================
 
