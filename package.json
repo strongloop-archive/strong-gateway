@@ -44,7 +44,8 @@
     "strongloop-license": "^1.2.0"
   },
   "optionalDependencies": {
-    "loopback-explorer": "^1.7.2"
+    "loopback-explorer": "^1.7.2",
+    "sl-blip": "http://blip.strongloop.com/strong-gateway@1.0.2"
   },
   "repository": {
     "type": "git",
