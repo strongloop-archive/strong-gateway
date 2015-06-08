@@ -1,5 +1,4 @@
-require('strongloop-license')('gateway');
-
+require('strongloop-license')('gateway:*=StrongLoop API Gateway', 'EXIT');
 var boot = require('loopback-boot');
 var http = require('http');
 var https = require('https');
