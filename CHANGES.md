@@ -1,3 +1,9 @@
+2015-06-09, Version 1.0.4
+=========================
+
+ * Add rate limiting key to http headers (Raymond Feng)
+
+
 2015-06-08, Version 1.0.3
 =========================
 
