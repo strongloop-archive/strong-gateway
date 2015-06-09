@@ -1,3 +1,9 @@
+2015-06-09, Version 1.0.5
+=========================
+
+ * Fix the script to set up db (Raymond Feng)
+
+
 2015-06-09, Version 1.0.4
 =========================
 
