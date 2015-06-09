@@ -23,6 +23,11 @@ var assertion = jwt.sign(body);
 console.log(assertion);
 
 var code = process.argv[2];
+if (!code) {
+  console.log('Usage: %s %s %s', process.argv[0],
+    process.argv[1], '<authorization_code>');
+  process.exit(1);
+}
 console.log('code: ', code);
 
 var form = {
@@ -33,9 +38,10 @@ var form = {
   client_assertion: assertion
 };
 
+var port = process.env.PORT || 3001;
 var request = require('request');
 request.post({
-  url: 'https://localhost:3001/oauth/token',
+  url: 'https://localhost:' + port + '/oauth/token',
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded'
   },

@@ -10,15 +10,19 @@ var form = {
 };
 
 function printRateLimitHeaders(err, res) {
-  console.log('Limit %d Remaining: %d Reset: %d',
+  console.log('%s: Limit %d Remaining: %d Reset: %d',
+    res.headers['x-ratelimit-key'] || null,
     res.headers['x-ratelimit-limit'] || null,
     res.headers['x-ratelimit-remaining'] || null,
     res.headers['x-ratelimit-reset'] || null);
 }
 
+var port = process.env.PORT || 3001;
+var count = Number(process.argv[2]) || 500;
+
 // Request the access token
 request.post({
-  url: 'https://localhost:3001/oauth/token',
+  url: 'https://localhost:' + port + '/oauth/token',
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded',
     'Accept': 'application/json'
@@ -33,12 +37,12 @@ request.post({
   form: form
 }, function(err, res, body) {
   var obj = JSON.parse(body);
-  console.log(obj.access_token);
+  console.log('Access Token: %s', obj.access_token);
 
   // Request a protected resources in a loop
-  for (var i = 0; i < 150; i++) {
-    request.get('https://localhost:3001/api/notes?access_token=' +
-        obj.access_token,
+  for (var i = 0; i < count; i++) {
+    request.get('https://localhost:' + port + '/api/notes?access_token=' +
+      obj.access_token,
       {strictSSL: false},
       printRateLimitHeaders);
   }

@@ -77,6 +77,7 @@ module.exports = function(options) {
       var res = ctx.res;
       ctx.limits = ctx.limits || {};
       ctx.limits[key] = result;
+      res.setHeader('X-RateLimit-Key', key);
       res.setHeader('X-RateLimit-Limit', result.limit);
       res.setHeader('X-RateLimit-Remaining', result.remaining);
       res.setHeader('X-RateLimit-Reset', result.reset);
