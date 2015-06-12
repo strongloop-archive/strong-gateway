@@ -1,3 +1,11 @@
+2015-06-12, Version 1.0.6
+=========================
+
+ * Add error handling to the rate limiting script (Raymond Feng)
+
+ * Add information about license (Raymond Feng)
+
+
 2015-06-09, Version 1.0.5
 =========================
 
