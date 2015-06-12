@@ -20,15 +20,19 @@ describe('Granting with authorization_code grant type', function () {
   // Hacky way to create an authorization code
   before(function(done) {
     var model = loopback.getModel('OAuthAuthorizationCode');
-    model.create({
-      id: 'abc2',
-      scopes: ['demo'],
-      userId: 1,
-      appId: '123',
-      issuedAt: new Date(),
-      expiredAt: new Date(Date.now() + 1000)
-    }, function(err, code) {
-      done(err, code);
+    model.destroyAll(function(err) {
+      if (err) return done(err);
+      model.create({
+        id: 'abc2',
+        scopes: ['demo'],
+        userId: 1,
+        appId: '123',
+        redirectURI: 'https://localhost:3001',
+        issuedAt: new Date(),
+        expiredAt: new Date(Date.now() + 5000)
+      }, function(err, code) {
+        done(err, code);
+      });
     });
   });
 
@@ -48,7 +52,7 @@ describe('Granting with authorization_code grant type', function () {
       .expect(400, /invalid_request/i, done);
   });
 
-  it('should invalid authorization_code', function (done) {
+  it('should report invalid authorization_code', function (done) {
     request
       .post(TOKEN_ENDPOINT)
       .set('Content-Type', 'application/x-www-form-urlencoded')
@@ -82,7 +86,8 @@ describe('Granting with authorization_code grant type', function () {
         grant_type: 'authorization_code',
         client_id: CLIENT_ID,
         client_secret: CLIENT_SECRET,
-        code: 'abc2'
+        code: 'abc2',
+        redirect_uri: 'https://localhost:3001'
       })
       .expect(200, /"access_token":"(.*)"/i, done);
   });
@@ -99,7 +104,7 @@ describe('Granting with authorization_code grant type', function () {
           code: 'abc2'
         })
         .expect(403, /invalid_grant/i, done);
-    }, 1000);
+    }, 5500);
   });
 
 });

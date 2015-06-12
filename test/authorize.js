@@ -192,23 +192,25 @@ describe('Authorize', function() {
   });
 
   it('should detect expired token', function(done) {
-    // Mock up an access token to be expired in 1 ms
-    model.create({
-      id: 'abc1',
-      scopes: ['demo'],
-      userId: 1,
-      appId: '123',
-      issuedAt: new Date(),
-      expiredAt: new Date(Date.now() + 1)
-    }, function(err, token) {
-      if (err) {
-        return done(err);
-      }
-      setTimeout(function() {
-        request
-          .get('/test?access_token=' + token)
-          .expect(401, done);
-      }, 5);
+    model.destroyById('abc1', function(err) {
+      // Mock up an access token to be expired in 1 ms
+      model.create({
+        id: 'abc1',
+        scopes: ['demo'],
+        userId: 1,
+        appId: '123',
+        issuedAt: new Date(),
+        expiredAt: new Date(Date.now() + 1)
+      }, function(err, token) {
+        if (err) {
+          return done(err);
+        }
+        setTimeout(function() {
+          request
+            .get('/test?access_token=' + token)
+            .expect(401, done);
+        }, 5);
+      });
     });
   });
 

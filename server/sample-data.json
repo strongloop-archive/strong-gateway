@@ -9,19 +9,19 @@
   "applications": [
     {
       "id": 123,
-      "restApiKey": "secret",
+      "clientSecret": "secret",
       "name": "demo-app",
-      "callbackUrls": ["https://localhost:3001"],
+      "redirectURIs": ["https://localhost:3001"],
       "scopes": ["basic", "demo", "note"]
     },
     {
       "id": 456,
-      "restApiKey": "secret",
+      "clientSecret": "secret",
       "name": "demo-app-2"
     },
     {
       "id": 789,
-      "restApiKey": "secret",
+      "clientSecret": "secret",
       "name": "demo-app-3",
       "responseTypes": ["code"],
       "grantTypes": ["authorization_code", "password"],

@@ -23,7 +23,7 @@ describe('Granting with client_credentials grant type', function() {
   before(function(done) {
     var permissionModel = loopback.getModel('OAuthPermission');
     permissionModel.destroyAll(function(err) {
-      if(err) {
+      if (err) {
         return done(err);
       }
       permissionModel.create({

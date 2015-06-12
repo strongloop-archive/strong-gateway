@@ -22,24 +22,28 @@ describe('JTW client authentication', function() {
   // Hacky way to create an authorization code
   before(function(done) {
     var model = loopback.getModel('OAuthAuthorizationCode');
-    model.create({
-      id: 'abc5',
-      scopes: ['demo'],
-      userId: 1,
-      appId: '123',
-      issuedAt: new Date(),
-      expiredAt: new Date(Date.now() + 1000)
-    }, function(err) {
-      if(err) {
-        return done(err);
-      }
-      var permissionModel = loopback.getModel('OAuthPermission');
-      permissionModel.create({
-        appId: '123',
+    model.destroyAll(function(err) {
+      if (err) return done(err);
+      model.create({
+        id: 'abc5',
         scopes: ['demo'],
         userId: 1,
-        issuedAt: new Date()
-      }, done);
+        appId: '123',
+        issuedAt: new Date(),
+        expiredAt: new Date(Date.now() + 10000)
+      }, function(err) {
+        if (err) return done(err);
+        var permissionModel = loopback.getModel('OAuthPermission');
+        permissionModel.destroyAll(function(err) {
+          if (err) return done(err);
+          permissionModel.create({
+            appId: '123',
+            scopes: ['demo'],
+            userId: 1,
+            issuedAt: new Date()
+          }, done);
+        });
+      });
     });
 
   });

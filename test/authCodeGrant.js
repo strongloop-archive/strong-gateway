@@ -25,11 +25,6 @@ describe('AuthCodeGrant', function() {
     app.close(done);
   });
 
-  beforeEach(function(done) {
-    // Clean up permissions so that the decision dialog will show up
-    app.loopback.getModel('OAuthPermission').destroyAll(done);
-  });
-
   it('should detect no response type', function(done) {
     request
       .get(AUTHORIZATION_ENDPOINT)
@@ -40,14 +35,14 @@ describe('AuthCodeGrant', function() {
   it('should detect invalid response type', function(done) {
     request
       .get(AUTHORIZATION_ENDPOINT)
-      .query({ response_type: 'token' })
+      .query({response_type: 'token'})
       .expect(400, done);
   });
 
   it('should detect no client_id', function(done) {
     request
       .get(AUTHORIZATION_ENDPOINT)
-      .query({ response_type: CODE, client_id: undefined })
+      .query({response_type: CODE, client_id: undefined})
       .expect(400, done);
   });
 
@@ -117,107 +112,111 @@ describe('AuthCodeGrant', function() {
   });
 
   function requestCodeOrToken(responseType, redirectURI, action, done) {
-    var cookie;
-    // Send the request to the authorization endpoint
-    request
-      .get(AUTHORIZATION_ENDPOINT)
-      .query({
-        response_type: responseType,
-        client_id: CLIENT_ID,
-        redirect_uri: redirectURI,
-        state: 'some_state'
-      })
-      .expect(302, function(err, res) {
-        if (err) {
-          return done(err);
-        }
-        // Redirect to the login page
-        cookie = res.headers['set-cookie'];
-        var location = res.header.location;
-        // Fetch the login form
-        request.get(location)
-          .set('cookie', cookie)
-          .expect(200, function(err, res) {
-            if (err) {
-              return done(err);
-            }
-            // Submit the login form
-            request.post(location)
-              .set('cookie', cookie)
-              .set('Content-Type', 'application/x-www-form-urlencoded')
-              .send({
-                username: 'bob',
-                password: 'secret'
-              })
-              .expect(302, function(err, res) {
-                if (err) {
-                  return done(err);
-                }
-                // Redirect to the decision dialog
-                var location = res.header.location;
-                // Fetch the decision page
-                request.get(location)
-                  .set('cookie', cookie)
-                  .expect(200, function(err, res) {
-                    if (err) {
-                      return done(err);
-                    }
-                    // Parse the page to extract the transaction id
-                    var pattern = '<input name="transaction_id"' +
-                      ' type="hidden" value="';
-                    var index = res.text.indexOf(pattern);
-                    var txid = res.text.substring(index + pattern.length,
+    app.loopback.getModel('OAuthPermission').destroyAll(function(err) {
+      if (err) return done(err);
+      var cookie;
+      // Send the request to the authorization endpoint
+      request
+        .get(AUTHORIZATION_ENDPOINT)
+        .query({
+          response_type: responseType,
+          client_id: CLIENT_ID,
+          redirect_uri: redirectURI,
+          state: 'some_state'
+        })
+        .expect(302, function(err, res) {
+          if (err) {
+            return done(err);
+          }
+          // Redirect to the login page
+          cookie = res.headers['set-cookie'];
+          var location = res.header.location;
+          // Fetch the login form
+          request.get(location)
+            .set('cookie', cookie)
+            .expect(200, function(err, res) {
+              if (err) {
+                return done(err);
+              }
+              // Submit the login form
+              request.post(location)
+                .set('cookie', cookie)
+                .set('Content-Type', 'application/x-www-form-urlencoded')
+                .send({
+                  username: 'bob',
+                  password: 'secret'
+                })
+                .expect(302, function(err, res) {
+                  if (err) {
+                    return done(err);
+                  }
+                  // Redirect to the decision dialog
+                  var location = res.header.location;
+                  // Fetch the decision page
+                  request.get(location)
+                    .set('cookie', cookie)
+                    .expect(200, function(err, res) {
+                      if (err) {
+                        return done(err);
+                      }
+                      // Parse the page to extract the transaction id
+                      var pattern = '<input name="transaction_id"' +
+                        ' type="hidden" value="';
+                      var index = res.text.indexOf(pattern);
+                      var txid = res.text.substring(index + pattern.length,
                         index + pattern.length + 8);
-                    // Submit the decision form
-                    var form = {
-                      transaction_id: txid
-                    };
-                    if (action === 'deny') {
-                      form.cancel = 'Deny';
-                    }
-                    request.post('/oauth/authorize/decision')
-                      .set('cookie', cookie)
-                      .set('Content-Type', 'application/x-www-form-urlencoded')
-                      .send(form)
-                      .expect(302, function(err, res) {
-                        if (err) {
-                          return done(err);
-                        }
-                        // Redirect to the url with authorization code
-                        var location = res.header.location;
-                        var str;
-                        if (responseType === 'code') {
-                          str = REDIRECT_URI +
-                            '\\/\\' + '?code=[^&]+&state=some_state';
-                          if (action === 'deny') {
-                            str =
-                              REDIRECT_URI +
-                              '\\/\\' +
-                              '?error=access_denied&state=some_state';
+                      // Submit the decision form
+                      var form = {
+                        transaction_id: txid
+                      };
+                      if (action === 'deny') {
+                        form.cancel = 'Deny';
+                      }
+                      request.post('/oauth/authorize/decision')
+                        .set('cookie', cookie)
+                        .set('Content-Type',
+                        'application/x-www-form-urlencoded')
+                        .send(form)
+                        .expect(302, function(err, res) {
+                          if (err) {
+                            return done(err);
                           }
-                        }
-                        if (responseType === 'token') {
-                          if (action === 'deny') {
-                            str =
-                              REDIRECT_URI +
-                              '\\/\\' +
-                              '#error=access_denied&state=some_state';
-                          } else {
-                            str =
-                              REDIRECT_URI +
-                              '\\/\\' +
-                              '#access_token=[^&]+&expires_in=1209600' +
+                          // Redirect to the url with authorization code
+                          var location = res.header.location;
+                          var str;
+                          if (responseType === 'code') {
+                            str = REDIRECT_URI +
+                              '\\/\\' + '?code=[^&]+&state=some_state';
+                            if (action === 'deny') {
+                              str =
+                                REDIRECT_URI +
+                                '\\/\\' +
+                                '?error=access_denied&state=some_state';
+                            }
+                          }
+                          if (responseType === 'token') {
+                            if (action === 'deny') {
+                              str =
+                                REDIRECT_URI +
+                                '\\/\\' +
+                                '#error=access_denied&state=some_state';
+                            } else {
+                              str =
+                                REDIRECT_URI +
+                                '\\/\\' +
+                                '#access_token=[^&]+&expires_in=1209600' +
                                 '&token_type=Bearer&state=some_state';
+                            }
                           }
-                        }
-                        var regex = new RegExp(str);
-                        location.should.match(regex);
-                        done();
-                      });
-                  });
-              });
-          });
-      });
+                          var regex = new RegExp(str);
+                          location.should.match(regex);
+                          done();
+                        });
+                    });
+                });
+            });
+        });
+    });
   }
 
   it('should accept valid request and return code and state using GET',
