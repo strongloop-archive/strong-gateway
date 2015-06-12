@@ -36,7 +36,21 @@ request.post({
   strictSSL: false,
   form: form
 }, function(err, res, body) {
-  var obj = JSON.parse(body);
+  if (err) {
+    console.error(err);
+    return;
+  }
+  if (res.statusCode !== 200) {
+    console.error(res.statusCode, body);
+    return;
+  }
+  var obj;
+  try {
+    obj = JSON.parse(body);
+  } catch (err) {
+    console.error(err, body);
+    return;
+  }
   console.log('Access Token: %s', obj.access_token);
 
   // Request a protected resources in a loop
