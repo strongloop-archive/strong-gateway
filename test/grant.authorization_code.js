@@ -12,13 +12,14 @@ var request = require('supertest')('https://localhost:3001');
 var TOKEN_ENDPOINT = '/oauth/token';
 var CLIENT_ID = '123';
 var CLIENT_SECRET = 'secret';
+var TTL = 1000;
 
 describe('Granting with authorization_code grant type', function () {
 
   before(require('./start-server'));
 
   // Hacky way to create an authorization code
-  before(function(done) {
+  beforeEach(function(done) {
     var model = loopback.getModel('OAuthAuthorizationCode');
     model.destroyAll(function(err) {
       if (err) return done(err);
@@ -29,7 +30,7 @@ describe('Granting with authorization_code grant type', function () {
         appId: '123',
         redirectURI: 'https://localhost:3001',
         issuedAt: new Date(),
-        expiredAt: new Date(Date.now() + 5000)
+        expiredAt: new Date(Date.now() + TTL)
       }, function(err, code) {
         done(err, code);
       });
@@ -78,7 +79,7 @@ describe('Granting with authorization_code grant type', function () {
       .expect(401, done);
   });
 
-  it('should allow valid request', function (done) {
+  function getAccessToken(status, body, done) {
     request
       .post(TOKEN_ENDPOINT)
       .set('Content-Type', 'application/x-www-form-urlencoded')
@@ -89,8 +90,20 @@ describe('Granting with authorization_code grant type', function () {
         code: 'abc2',
         redirect_uri: 'https://localhost:3001'
       })
-      .expect(200, /"access_token":"(.*)"/i, done);
+      .expect(status, body, done);
+  }
+
+  it('should allow valid request', function(done) {
+    getAccessToken(200, /"access_token":"(.*)"/i, done);
   });
+
+  it('should report error if an authorization code is used more than once',
+    function(done) {
+      getAccessToken(200, /"access_token":"(.*)"/i, function(err) {
+        if (err) return done(err);
+        getAccessToken(403, /Invalid authorization code/i, done);
+      });
+    });
 
   it('should detect expired code', function (done) {
     setTimeout(function() {
@@ -104,7 +117,7 @@ describe('Granting with authorization_code grant type', function () {
           code: 'abc2'
         })
         .expect(403, /invalid_grant/i, done);
-    }, 5500);
+    }, TTL + 500);
   });
 
 });
