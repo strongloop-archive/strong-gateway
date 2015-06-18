@@ -1,3 +1,9 @@
+2015-06-18, Version 1.0.8
+=========================
+
+ * Upgrade to loopback-component-oauth2 2.3.0 (Raymond Feng)
+
+
 2015-06-12, Version 1.0.7
 =========================
 
