@@ -1,3 +1,11 @@
+2015-06-24, Version 1.0.9
+=========================
+
+ * Upgrade deps (Raymond Feng)
+
+ * Remove unused file (Raymond Feng)
+
+
 2015-06-18, Version 1.0.8
 =========================
 

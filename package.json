@@ -1,7 +1,7 @@
 {
   "name": "strong-gateway",
   "description": "StrongLoop API Gateway",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "main": "server/server.js",
   "keywords": [
     "StrongLoop",
@@ -45,7 +45,7 @@
   },
   "optionalDependencies": {
     "loopback-explorer": "^1.7.2",
-    "sl-blip": "http://blip.strongloop.com/strong-gateway@1.0.0"
+    "sl-blip": "http://blip.strongloop.com/strong-gateway@1.0.9"
   },
   "repository": {
     "type": "git",
