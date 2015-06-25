@@ -1,3 +1,9 @@
+2015-06-25, Version 1.0.10
+==========================
+
+ * Add options for proxy and oauth2 http headers (Raymond Feng)
+
+
 2015-06-24, Version 1.0.9
 =========================
 
