@@ -3,20 +3,20 @@ var debug = require('debug')('strongloop:gateway:proxy');
 var httpProxy = require('http-proxy');
 
 function setupHeaders(proxyReq, req) {
-  if(!req.authInfo) {
+  if (!req.authInfo) {
     return;
   }
   var clientApp = req.authInfo.app;
   var clientId = clientApp && clientApp.id;
   var user = req.authInfo.user || req.user;
   var userId = user && user.id;
-  if(clientId) {
-    debug('X-Client-ID: %s', clientId);
-    proxyReq.setHeader('X-Client-ID', clientId);
+  if (clientId && !proxyReq.getHeader('X-CLIENT-ID')) {
+    debug('X-CLIENT-ID: %s', clientId);
+    proxyReq.setHeader('X-CLIENT-ID', clientId);
   }
-  if(userId) {
-    debug('X-User-ID: %s', userId);
-    proxyReq.setHeader('X-User-ID', userId);
+  if (userId && !proxyReq.getHeader('X-USER-ID')) {
+    debug('X-USER-ID: %s', userId);
+    proxyReq.setHeader('X-USER-ID', userId);
   }
 }
 
@@ -86,7 +86,7 @@ var noCaseSyntax = /NC/,
   flagSyntax = /\[(.*)\]$/,
   partsSyntax = /\s+|\t+/g;
 
-function urlRewrite(rules) {
+function urlRewrite(rules, options) {
 // Parse the rules to get flags, replace and match pattern
   rules = _parse(rules);
 
@@ -141,7 +141,14 @@ function urlRewrite(rules) {
         req.url = target.path;
         target = target.protocol + '//' + target.host;
         debug('Proxy %s', target);
-        var proxy = createProxy({target: target});
+        options.target = target;
+        if (options.xfwd === undefined) {
+          options.xfwd = true;
+        }
+        if (options.hostRewrite === undefined) {
+          options.hostRewrite = true;
+        }
+        var proxy = createProxy(options);
         proxy(req, res, next);
         callNext = false;
         return true;
@@ -174,7 +181,7 @@ function urlRewrite(rules) {
 module.exports = function(options) {
   options = options || {};
   var rules = options.rules || [];
-  return urlRewrite(rules);
+  return urlRewrite(rules, options.options || {});
 };
 
 /**
