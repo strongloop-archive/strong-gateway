@@ -47,6 +47,13 @@
       }
     }
   },
+  "auth:after": {
+    "./middleware/routes-acl": {
+      "params": {
+        "your-declarative-rules-here": "your-declarative-rules-here"
+      }
+    }
+  },
   "routes:before": {
     "./middleware/https-redirect": {
       "params": {
