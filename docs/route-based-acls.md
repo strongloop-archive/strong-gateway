@@ -5,31 +5,31 @@ ACL solution for the [StrongLoop API Gateway](https://strongloop.com/node-js/api
 
 ## Overview
 
-In order to access a resource protected by an authorization server (auth
-server), a client is required to provide valid credentials with each request.
-The credentials is an access token which is used by the auth server to determine
-the matching `userid` and `clientid` for the request. The typical flow
-goes something like:
+In order to access a resource protected by a gateway server (oAuth 2.0 resource
+server), a client application is required to provide valid credentials with each
+api request. The credential is an oAuth 2.0 access token which is used by the
+gateway server to determine the permissions and matching `userId` and `clientId`
+as `who` for the request. The typical flow goes something like:
 
 ```
    /api/notes/bounce?access_token=abcdef
                      |           (2) (3)
-+--------+           |      +---------------+                  +----------+
-| Client |-----------+-(1)->| Authorization |--{userid:1}-(4)->| Resource |
-|        |<-(6)-[notes]-----| Server        |<-(5)-[notes]-----| Server   |
-+--------+                  +---------------+                  +----------+
++--------+           |      +---------------+                  +--------------+
+| Client |-----------+-(1)->| Public API    |--{userId:1}-(4)->| Physical     |
+|        |<-(6)-[notes]-----| Endpoint      |<-(5)-[notes]-----| API Endpoint |
++--------+                  +---------------+                  +--------------+
 (Web Server)                (Gateway Server)                   (API Server)
 ```
 
-1. A client makes a request to the auth server in order to access a protected
+1. A client makes a request to the gateway server in order to access a protected
 resource.
-2. The auth server uses the access token provided in the request to find a
-matching a `userid`/`clientid`
-3. The auth server determines whether the client has sufficient rights to access the protected resource based on the [rules set in `middleware.json`](../server/middleware.json#L53).
-4. The auth server proxies the request to the resource server if the client has sufficient
+2. The gateway server uses the access token provided in the request to verify
+the legitimacy and find a matching `userId`/`clientId`.
+3. The gateway server determines whether the client has sufficient rights to access the protected resource based on the [rules set in `middleware.json`](../server/middleware.json#L53).
+4. The gateway server proxies the request to the resource server if the client has sufficient
 rights
-5. The resource server returns the resource to the auth server
-6. The auth server forwards the requested resource back to the client
+5. The api server returns the resource to the gateway server
+6. The gateway server forwards the requested resource back to the client
 
 To create a route based ACL solution that follows this design, you will need to:
 
@@ -55,13 +55,13 @@ Key|Description
 `req.accessToken`|The `access_token` value from the request query string parameter
 `req.url`|The resource being requested
 
-In addition, the `req.accessToken` also contains the `userid`, `clientid`, and
+In addition, the `req.accessToken` also contains the `userId`, `clientId`, and
 `scopes` keys:
 
 ```
 {
-  userid: 1,
-  clientid: 1,
+  userId: 1,
+  clientId: 'my-app',
   scopes: ['notes', 'admin']
 }
 ```
@@ -74,11 +74,11 @@ client has sufficient authorization to proceed.
 Before implementing the [`routes-acl` middleware ACL logic](../server/middleware/routes-acl.js#L9),
 there are some important points to note:
 
-- The `userid`/`clientid` is used to identify who is accessing the resource
-- The `userid`/`clientid` is preestablished by the resource server
+- The `userId`/`clientId` is used to identify who is accessing the resource
+- The `userId`/`clientId` is pre-established by the resource server
 - The scope determines which resources on the resource server are available to
   the client
-- ACLs determine whether the `userid`/`clientid` is allowed to access the
+- ACLs determine whether the `userId`/`clientId` is allowed to access the
 resource
   - Even if the client has access to the scope, it doesn't necessarily mean the
     client is allowed to access the resource (the ACL determines this)
@@ -99,7 +99,7 @@ The logic will involve:
 
 ####1. Determine the client role
 
-Use the provided `userid`/`clientid` in the access token to identify the
+Use the provided `userId`/`clientId` in the access token to identify the
 requester.
 
 ####2. Verify scope permissions
@@ -143,14 +143,14 @@ module.exports = function(options) {
   options = options || {};
 
   return function checkRouteAcls(req, res, next) {
-    // use `req.accessToken.clientid` or `req.accessToken.userid` to determine the role
+    // use `req.accessToken.clientId` or `req.accessToken.userId` to determine the role
     // check the determined role against the role rules you set in `middleware.json`
     // check `req.accessToken.scopes` against the scope rules you set in `middleware.json` to ensure the client has access to the scope
     // check the `req.url` against the ACL rules you set in `middleware.json` to determine the client is allowed to access the requested resource
 
     // insufficient credentials?
       // deny request and return 401
-    // sufficent credentials?
+    // sufficient credentials?
       // allow the request to go through, gateway will then continue down the
       // middleware stack and proxy the request to the resource server, etc.
 
