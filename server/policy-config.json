@@ -1,0 +1,119 @@
+{
+  "mappings": [
+    {
+      "name": "all-apis",
+      "verb": "ALL",
+      "endpoint": "^/api/(.*)$",
+      "pipelineId": "default-api-pipeline"
+    },
+    {
+      "name": "local-protected-resource",
+      "verb": "ALL",
+      "endpoint": "^/protected/(.*)$",
+      "pipelineId": "local-protected-resource-pipeline"
+    },
+    {
+      "name": "note-api",
+      "endpoint": "/api/notes",
+      "pipelineId": "note-api-pipeline"
+    }
+  ],
+  "pipelines": [
+    {
+      "name": "default-api-pipeline",
+      "policyIds": [
+        "default-metrics-policy",
+        "default-auth-policy",
+        "default-rate-limiting-policy",
+        "default-api-proxy-policy"
+      ]
+    },
+    {
+      "name": "note-api-pipeline",
+      "policyIds": [
+        "default-metrics-policy",
+        "auth-note-policy",
+        "auth-demo-policy",
+        "default-rate-limiting-policy",
+        "default-api-proxy-policy"
+      ]
+    },
+    {
+      "name": "local-protected-resource-pipeline",
+      "policyIds": [
+        "default-metrics-policy",
+        "auth-demo-policy",
+        "default-rate-limiting-policy",
+        "local-protected-resource-proxy-policy"
+      ]
+    }
+  ],
+  "policies": [
+    {
+      "name": "default-metrics-policy",
+      "type": "metrics",
+      "phase": "initial:before"
+    },
+    {
+      "name": "default-auth-policy",
+      "type": "auth",
+      "phase": "auth",
+      "scopes": [
+      ]
+    },
+    {
+      "name": "auth-note-policy",
+      "type": "auth",
+      "phase": "auth",
+      "scopes": [
+        "note", "demo"
+      ]
+    },
+    {
+      "name": "auth-demo-policy",
+      "type": "auth",
+      "phase": "auth",
+      "scopes": [
+        "demo"
+      ]
+    },
+    {
+      "name": "default-rate-limiting-policy",
+      "type": "rateLimiting",
+      "phase": "routes:after",
+      "limit": 100,
+      "interval": 60000,
+      "keys": {
+        "app": {
+          "template": "app-${app.id}",
+          "limit": 1000
+        },
+        "ip": 500,
+        "url": {
+          "template": "url-${urlPaths[0]}/${urlPaths[1]}",
+          "limit": 1000
+        },
+        "user": {
+          "template": "user-${user.id}",
+          "limit": 1000
+        },
+        "app,user": {
+          "template": "app-${app.id}-user-${user.id}",
+          "limit": 1000
+        }
+      }
+    },
+    {
+      "name": "default-api-proxy-policy",
+      "type": "reverseProxy",
+      "phase": "proxies",
+      "targetURL": "http://localhost:3002/api/$1"
+    },
+    {
+      "name": "local-protected-resource-proxy-policy",
+      "type": "reverseProxy",
+      "phase": "proxies",
+      "targetURL": "http://localhost:3000/protected/$1"
+    }
+  ]
+}
