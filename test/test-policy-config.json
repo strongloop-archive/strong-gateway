@@ -1,0 +1,56 @@
+{
+  "mappings": [
+    {
+      "name": "catalog",
+      "verb": "GET",
+      "endpoint": "/api/catalog",
+      "pipelineId": "default-pipeline-1"
+    },
+    {
+      "name": "invoice",
+      "verb": "ALL",
+      "endpoint": "/api/invoices",
+      "pipelineId": "default-pipeline-1"
+    },
+    {
+      "name": "order",
+      "verb": "ALL",
+      "endpoint": "/api/orders",
+      "pipelineId": "order-pipeline"
+    }
+  ],
+  "pipelines": [
+    {
+      "name": "default-pipeline-1",
+      "policyIds": [
+        "auth-catalog",
+        "rate-limiter-per-minute",
+        "proxy-to-catalog"
+      ]
+    }
+  ],
+  "policies": [
+    {
+      "name": "auth-catalog",
+      "type": "auth",
+      "phase": "auth",
+      "scopes": [
+        "catalog",
+        "shopping"
+      ]
+    },
+    {
+      "name": "rate-limiter-per-minute",
+      "type": "rateLimiting",
+      "phase": "auth:after",
+      "interval": 60000,
+      "limit": 1000
+    },
+    {
+      "name": "proxy-to-catalog",
+      "type": "reverseProxy",
+      "phase": "final",
+      "targetURL": "https://server1.example.com/api/catalog"
+    }
+  ]
+}
