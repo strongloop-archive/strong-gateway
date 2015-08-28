@@ -1,3 +1,9 @@
+2015-08-28, Version 1.1.0
+=========================
+
+ * Add ability to transpile policy configs to middleware (Raymond Feng)
+
+
 2015-06-25, Version 1.0.10
 ==========================
 
