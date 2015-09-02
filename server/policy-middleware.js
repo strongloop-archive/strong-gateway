@@ -1,5 +1,6 @@
 var debug = require('debug')('strong-gateway:policy');
 var util = require('util');
+var _ = require('lodash');
 module.exports = transpilePoliciesToMiddleware;
 
 function print(obj) {
@@ -37,7 +38,8 @@ function transpilePoliciesToMiddleware(policyConfig, options) {
             attachedMaps.policy = policy;
             policyAttachments[policy.name] = attachedMaps;
           }
-          attachedMaps.push(map);
+          var copy = _.cloneDeep(map);
+          attachedMaps.push(copy);
         }
       }
     }
