@@ -12,7 +12,7 @@ module.exports = function mountLoopBackExplorer(server) {
   var restApiRoot = server.get('restApiRoot');
 
   var explorerApp = explorer(server, { basePath: restApiRoot });
-  server.use('/explorer', explorerApp);
+  server.use('/_internal/explorer', explorerApp);
   server.once('started', function() {
     var baseUrl = server.get('url').replace(/\/$/, '');
     // express 4.x (loopback 2.x) uses `mountpath`

@@ -1,0 +1,25 @@
+{
+  "host": "api.company.com",
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Proxy",
+    "description": "A proxy API",
+    "contact": {
+      "name": "Proxy API Team"
+    },
+    "license": {
+      "name": "MIT"
+    }
+  },
+  "basePath": "/api",
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ]
+}

@@ -4,5 +4,6 @@
   "port": 3000,
   "legacyExplorer": false,
   "https-port": 3001,
-  "url": "https://localhost:3001/"
+  "url": "https://localhost:3001/",
+  "apiRegistryRoute": "/explorer/swagger.json"
 }
