@@ -1,3 +1,11 @@
+2015-09-08, Version 1.1.1
+=========================
+
+ * Clone mapping entries during transpile (Raymond Feng)
+
+ * Fix for https://github.com/strongloop/strong-gateway/issues/41 (Raymond Feng)
+
+
 2015-08-28, Version 1.1.0
 =========================
 
