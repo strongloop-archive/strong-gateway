@@ -54,10 +54,7 @@
   "bugs": {
     "url": "http://github.com/strongloop/strong-gateway/issues"
   },
-  "license": {
-    "name": "StrongLoop",
-    "url": "https://github.com/strongloop/strong-gateway/blob/master/LICENSE"
-  },
+  "license": "SEE LICENSE IN LICENSE.md",
   "devDependencies": {
     "chai": "^3.2.0",
     "jshint": "^2.8.0",
