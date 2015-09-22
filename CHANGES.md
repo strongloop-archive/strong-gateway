@@ -1,3 +1,11 @@
+2015-09-22, Version 1.1.2
+=========================
+
+ * Update README (Raymond Feng)
+
+ * Use strongloop conventions for licensing (Sam Roberts)
+
+
 2015-09-08, Version 1.1.1
 =========================
 
