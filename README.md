@@ -24,5 +24,5 @@ period for identified api consumers.
 The module is licensed under [StrongLoop Subscription Agreement](https://strongloop.com/license/).
 
 Please run `slc arc --licenses` and log in with your strongloop.com user to
-check if you have a valid license to use StrongLoop API Gateway. All new users
-will get a 30 day trial license for `gateway` automatically.
+check if you have a valid license to use StrongLoop API Gateway.
+
