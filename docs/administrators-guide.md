@@ -140,7 +140,7 @@ for more information about such requirement.
  the necessary metadata for oAuth 2.0 client application registrations. It's 
  based on https://tools.ietf.org/html/draft-ietf-oauth-dyn-reg-24.
 
-```
+```json
 {
   "name": "OAuthClientApplication",
   "base": "Application",
@@ -292,7 +292,7 @@ server/datasources.json
 {
   "db": {
     "name": "db",
-    "connector": "mongodb"
+    "connector": "mongodb",
     "host": "localhost",
     "port": 27017
   }
