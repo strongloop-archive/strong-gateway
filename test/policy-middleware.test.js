@@ -58,9 +58,21 @@ describe('policy to middleware transpilation', function() {
       var middleware = transpilePoliciesToMiddleware(policyConfig);
       var expectedResult = {
         'initial:before': {
-          'strong-express-metrics': [{
+          './middleware/activity-log': [{
             paths: [/^\/api\/(.*)$/, /^\/protected\/(.*)$/, '/api/notes'],
-            params: {}
+            params: {
+              connection: {
+                auth: {
+                  certFile: 'server/apim/public-cert.pem',
+                  keyFile: 'server/apim/private-key.pem',
+                  passphrase: '******',
+                  rejectUnauthorized: false,
+                },
+                url: 'https://host:port/x2020/v1/events/_bulk',
+              },
+              envId: 'apim-env-id',
+              orgId: 'apim-org-id',
+            }
           }]
         },
         auth: {

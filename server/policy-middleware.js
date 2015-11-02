@@ -134,6 +134,7 @@ transpilePoliciesToMiddleware.policyToMiddlewareMapping = {
   proxy: proxyPolicyMapper,
   reverseProxy: proxyPolicyMapper,
   rateLimiting: './middleware/rate-limiting-policy',
+  activityLog: './middleware/activity-log',
   metrics: 'strong-express-metrics'
 };
 
