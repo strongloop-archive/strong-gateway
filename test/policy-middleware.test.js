@@ -59,24 +59,27 @@ describe('policy to middleware transpilation', function() {
       var expectedResult = {
         'initial:before': {
           'strong-express-metrics': [{
-            paths: ['^/api/(.*)$', '^/protected/(.*)$', '/api/notes'],
+            paths: [/^\/api\/(.*)$/, /^\/protected\/(.*)$/, '/api/notes'],
             params: {}
           }]
         },
         auth: {
           'loopback-component-oauth2#authenticate': [{
-            paths: ['^/api/(.*)$'],
+            paths: [/^\/api\/(.*)$/],
             params: {scopes: []}
           },
-            {
-              paths: ['^/protected/(.*)$', '/api/notes'],
-              params: {scopes: ['demo']}
-            },
-            {paths: ['/api/notes'], params: {scopes: ['note', 'demo']}}]
+          {
+            paths: [/^\/protected\/(.*)$/, '/api/notes'],
+            params: {scopes: ['demo']}
+          },
+          {
+            paths: ['/api/notes'],
+            params: {scopes: ['note', 'demo']}
+          }]
         },
         'routes:after': {
           './middleware/rate-limiting-policy': [{
-            paths: ['^/api/(.*)$', '^/protected/(.*)$', '/api/notes'],
+            paths: [/^\/api\/(.*)$/, /^\/protected\/(.*)$/, '/api/notes'],
             params: {
               limit: 100,
               interval: 60000,
@@ -113,5 +116,4 @@ describe('policy to middleware transpilation', function() {
       expect(middleware).to.eql(expectedResult);
     })
   ;
-})
-;
+});
