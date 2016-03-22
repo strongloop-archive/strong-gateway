@@ -1,3 +1,26 @@
+# Deprecation Notice
+
+Please note that the StrongLoop beta for `strong-gateway` will be **deprecated**
+in 30 days starting 03/22/2016.
+
+After IBM’s acquisition of StrongLoop, we have integrated `strong-gateway` with
+the latest product offering from IBM called **API Connect**. IBM API Connect is
+a complete solution that addresses all aspects of the API lifecycle, for both
+on-premises and cloud environments. It offers comprehensive capabilities to
+create, run, manage, secure and monetize APIs and microservices. Delivering an
+unparalleled, integrated user experience, it enables rapid deployment and
+simplified administration of APIs.
+
+The new `apiconnect-microgateway` is the enforcement secure component of API
+Connect. It is fundamentally a proxy, securing and forwarding requests to
+backend APIs. API Connect Micro Gateway was created using StrongLoop technology
+and a series of middleware components. The package is customized to work with
+the API Connect infrastructure that automatically communicates with the micro
+gateway to dynamically load APIs, Products, and Plans so that APIs are secured
+and processed in a seamless fashion.
+
+Learn more about API Connect at https://developer.ibm.com/apiconnect/.
+
 # strong-gateway
 
 The StrongLoop API Gateway, `strong-gateway`, enables you to  externalize,
