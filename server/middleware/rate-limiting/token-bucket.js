@@ -1,3 +1,8 @@
+// Copyright IBM Corp. 2014,2015. All Rights Reserved.
+// Node module: strong-gateway
+// US Government Users Restricted Rights - Use, duplication or disclosure
+// restricted by GSA ADP Schedule Contract with IBM Corp.
+
 // https://github.com/jhurliman/node-rate-limiter
 // https://github.com/apigee-127/volos/tree/master/quota/
 var debug = require('debug')('strongloop:gateway:rate-limiting');
