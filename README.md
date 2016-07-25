@@ -1,7 +1,6 @@
 # Deprecation Notice
 
-Please note that the StrongLoop beta for `strong-gateway` will be **deprecated**
-in 30 days starting 03/22/2016.
+NOTE: StrongLoop Gateway `strong-gateway` is **deprecated** as of 03/22/2016.
 
 After IBM’s acquisition of StrongLoop, we have integrated `strong-gateway` with
 the latest product offering from IBM called **API Connect**. IBM API Connect is
