@@ -1,4 +1,18 @@
-2015-09-22, Version 1.1.2
+2016-08-10, Version 1.2.0
+=========================
+
+ * Update README.md (Rand McKinney)
+
+ * update copyright notices and license (Ryan Graham)
+
+ * Add deprecation notice (Raymond Feng)
+
+ * Refer to licenses with a link (Sam Roberts)
+
+ * JSON formatting fixes (Chris Campbell)
+
+
+2015-09-21, Version 1.1.2
 =========================
 
  * Update README (Raymond Feng)
@@ -109,8 +123,6 @@
 2015-05-26, Version 1.0.0-rc1
 =============================
 
- * 1.0.0-rc1 (Raymond Feng)
-
  * Remove the client app to favor strong-gateway-demo (Raymond Feng)
 
  * Add cors, refactor sample data creation (Raymond Feng)
@@ -121,15 +133,11 @@
 2015-05-16, Version 1.0.0-beta4
 ===============================
 
- * 1.0.0-beta4 (Raymond Feng)
-
  * Add more tests for revoke (Raymond Feng)
 
 
 2015-05-16, Version 1.0.0-beta3
 ===============================
-
- * 1.0.0-beta3 (Raymond Feng)
 
  * Fix tests and add revoke (Raymond Feng)
 
@@ -184,8 +192,6 @@
 
 2015-03-16, Version 1.0.0-beta2
 ===============================
-
- * 1.0.0-beta2 (Raymond Feng)
 
  * Tidy up the scope definition (Raymond Feng)
 

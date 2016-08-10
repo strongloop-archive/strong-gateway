@@ -1,7 +1,7 @@
 {
   "name": "strong-gateway",
   "description": "StrongLoop API Gateway",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "main": "server/server.js",
   "keywords": [
     "StrongLoop",
@@ -17,7 +17,8 @@
   "scripts": {
     "pretest": "jshint .",
     "start": "npm i;node .",
-    "test": "mocha"
+    "test": "mocha",
+    "preinstall": "node .sl-blip.js || exit 0"
   },
   "dependencies": {
     "async": "^1.4.0",
@@ -44,8 +45,7 @@
     "strongloop-license": "^1.4.0"
   },
   "optionalDependencies": {
-    "loopback-explorer": "^1.8.0",
-    "sl-blip": "http://blip.strongloop.com/strong-gateway@1.1.2"
+    "loopback-explorer": "^1.8.0"
   },
   "repository": {
     "type": "git",
