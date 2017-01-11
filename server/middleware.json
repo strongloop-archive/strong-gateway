@@ -4,7 +4,8 @@
     },
     "cors": {
     },
-    "strong-express-metrics": []
+    "strong-express-metrics": [],
+    "./middleware/activity-log": []
   },
   "initial": {
     "compression": {

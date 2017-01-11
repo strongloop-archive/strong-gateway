@@ -22,7 +22,7 @@
     {
       "name": "default-api-pipeline",
       "policyIds": [
-        "default-metrics-policy",
+        "default-activity-log-policy",
         "default-auth-policy",
         "default-rate-limiting-policy",
         "default-api-proxy-policy"
@@ -31,7 +31,7 @@
     {
       "name": "note-api-pipeline",
       "policyIds": [
-        "default-metrics-policy",
+        "default-activity-log-policy",
         "auth-note-policy",
         "auth-demo-policy",
         "default-rate-limiting-policy",
@@ -41,7 +41,7 @@
     {
       "name": "local-protected-resource-pipeline",
       "policyIds": [
-        "default-metrics-policy",
+        "default-activity-log-policy",
         "auth-demo-policy",
         "default-rate-limiting-policy",
         "local-protected-resource-proxy-policy"
@@ -50,9 +50,20 @@
   ],
   "policies": [
     {
-      "name": "default-metrics-policy",
-      "type": "metrics",
-      "phase": "initial:before"
+      "name": "default-activity-log-policy",
+      "type": "activityLog",
+      "phase": "initial:before",
+      "connection": {
+        "url": "https://host:port/x2020/v1/events/_bulk",
+        "auth": {
+          "keyFile": "server/apim/private-key.pem",
+          "certFile": "server/apim/public-cert.pem",
+          "passphrase": "******",
+          "rejectUnauthorized": false
+        }
+      },
+      "orgId": "apim-org-id",
+      "envId": "apim-env-id"
     },
     {
       "name": "default-auth-policy",

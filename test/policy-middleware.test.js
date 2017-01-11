@@ -63,25 +63,40 @@ describe('policy to middleware transpilation', function() {
       var middleware = transpilePoliciesToMiddleware(policyConfig);
       var expectedResult = {
         'initial:before': {
-          'strong-express-metrics': [{
-            paths: ['^/api/(.*)$', '^/protected/(.*)$', '/api/notes'],
-            params: {}
+          './middleware/activity-log': [{
+            paths: [/^\/api\/(.*)$/, /^\/protected\/(.*)$/, '/api/notes'],
+            params: {
+              connection: {
+                auth: {
+                  certFile: 'server/apim/public-cert.pem',
+                  keyFile: 'server/apim/private-key.pem',
+                  passphrase: '******',
+                  rejectUnauthorized: false,
+                },
+                url: 'https://host:port/x2020/v1/events/_bulk',
+              },
+              envId: 'apim-env-id',
+              orgId: 'apim-org-id',
+            }
           }]
         },
         auth: {
           'loopback-component-oauth2#authenticate': [{
-            paths: ['^/api/(.*)$'],
+            paths: [/^\/api\/(.*)$/],
             params: {scopes: []}
           },
-            {
-              paths: ['^/protected/(.*)$', '/api/notes'],
-              params: {scopes: ['demo']}
-            },
-            {paths: ['/api/notes'], params: {scopes: ['note', 'demo']}}]
+          {
+            paths: [/^\/protected\/(.*)$/, '/api/notes'],
+            params: {scopes: ['demo']}
+          },
+          {
+            paths: ['/api/notes'],
+            params: {scopes: ['note', 'demo']}
+          }]
         },
         'routes:after': {
           './middleware/rate-limiting-policy': [{
-            paths: ['^/api/(.*)$', '^/protected/(.*)$', '/api/notes'],
+            paths: [/^\/api\/(.*)$/, /^\/protected\/(.*)$/, '/api/notes'],
             params: {
               limit: 100,
               interval: 60000,
@@ -118,5 +133,4 @@ describe('policy to middleware transpilation', function() {
       expect(middleware).to.eql(expectedResult);
     })
   ;
-})
-;
+});

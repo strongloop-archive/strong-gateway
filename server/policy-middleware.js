@@ -61,9 +61,16 @@ function transpilePoliciesToMiddleware(policyConfig, options) {
       var entry = {
         params: middlewareEntry.params
       };
-      if (middlewareEntry.paths) {
-        entry.paths = middlewareEntry.paths;
+      var paths = middlewareEntry.paths;
+      if (paths) {
+        if (Array.isArray(paths)) {
+          paths = paths.map(fixMiddlewarePathType);
+        } else {
+          paths = fixMiddlewarePathType(paths);
+        }
+        entry.paths = paths;
       }
+
       if (Array.isArray(middlewareEntry.methods) &&
         middlewareEntry.methods.indexOf('all') === -1) {
         // Only add methods if it's not empty and not all
@@ -83,6 +90,11 @@ function transpilePoliciesToMiddleware(policyConfig, options) {
   }
   debug('Middleware for policies: %s', print(middleware));
   return middleware;
+}
+
+function fixMiddlewarePathType(value) {
+  return typeof value === 'string' && value[0] === '^' ?
+    new RegExp(value) : value;
 }
 
 function findPipeline(pipelines, id) {
@@ -127,6 +139,7 @@ transpilePoliciesToMiddleware.policyToMiddlewareMapping = {
   proxy: proxyPolicyMapper,
   reverseProxy: proxyPolicyMapper,
   rateLimiting: './middleware/rate-limiting-policy',
+  activityLog: './middleware/activity-log',
   metrics: 'strong-express-metrics'
 };
 

@@ -42,7 +42,8 @@
     "request": "^2.60.0",
     "serve-favicon": "^2.3.0",
     "strong-express-metrics": "^2.0.1",
-    "strongloop-license": "^1.4.0"
+    "strongloop-license": "^1.4.0",
+    "uuid": "^2.0.1"
   },
   "optionalDependencies": {
     "loopback-explorer": "^1.8.0"
