@@ -1,4 +1,4 @@
-> Our new gateway product is available at https://github.com/strongloop/microgateway
+> Our new gateway product is available at https://github.com/strongloop/microgateway.
 
 # Deprecation notice | March 22, 2016
 
