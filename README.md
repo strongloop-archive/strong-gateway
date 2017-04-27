@@ -1,7 +1,6 @@
-# Deprecation Notice
+> Our new gateway product is available at https://github.com/strongloop/microgateway
 
-- StrongLoop Gateway `strong-gateway` is **deprecated** as of 03/22/2016
-- Our new gateway product is available at https://github.com/strongloop/microgateway
+# Deprecation Notice | 2016 March 22
 
 After IBM’s acquisition of StrongLoop, we have integrated `strong-gateway` with
 the latest product offering from IBM called **API Connect**. IBM API Connect is
